@@ -14,18 +14,26 @@ end it_ctrl;
 
 architecture rtl of it_ctrl is
 
+  signal it       : std_logic;
+  signal it_r     : std_logic;
   signal it_val_r : std_logic;
 
 begin
 
+  it <= it_i and not it_r;
+
   p_it_val_r: process (clk_i, arstn_i) is
   begin  -- process p_it_val_r
     if arstn_i = '0' then                 -- asynchronous reset (active low)
+      it_r     <= '0';
       it_val_r <= '0';
+      
     elsif clk_i'event and clk_i = '1' then  -- rising clock edge
+      it_r <= it_i;
+      
       if it_ack_i = '1' then
         it_val_r <= '0';
-      elsif it_i = '1' then
+      elsif it = '1' then
         it_val_r <= '1';
       end if;
     end if;
