@@ -1,67 +1,64 @@
---------------------------------------------------------------------------------
 --
---   FileName:         debounce.vhd
---   Dependencies:     none
---   Design Software:  Quartus Prime Version 17.0.0 Build 595 SJ Lite Edition
+-- This module is used to debounce any switch or button coming into the FPGA.
+-- Does not allow the output of the switch to change unless the switch is
+-- steady for enough time (not toggling).
+-- Input i_Switch is the unstable input
+-- Output o_Switch is the debounced version of i_Switch
+-- Set the DEBOUNCE_LIMIT in i_Clk clock ticks to ensure signal is steady.
 --
---   HDL CODE IS PROVIDED "AS IS."  DIGI-KEY EXPRESSLY DISCLAIMS ANY
---   WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT
---   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
---   PARTICULAR PURPOSE, OR NON-INFRINGEMENT. IN NO EVENT SHALL DIGI-KEY
---   BE LIABLE FOR ANY INCIDENTAL, SPECIAL, INDIRECT OR CONSEQUENTIAL
---   DAMAGES, LOST PROFITS OR LOST DATA, HARM TO YOUR EQUIPMENT, COST OF
---   PROCUREMENT OF SUBSTITUTE GOODS, TECHNOLOGY OR SERVICES, ANY CLAIMS
---   BY THIRD PARTIES (INCLUDING BUT NOT LIMITED TO ANY DEFENSE THEREOF),
---   ANY CLAIMS FOR INDEMNITY OR CONTRIBUTION, OR OTHER SIMILAR COSTS.
---
---   Version History
---   Version 2.0 6/28/2019 Scott Larson
---     Added asynchronous active-low reset
---     Made stable time higher resolution and simpler to specify
---   Version 1.0 3/26/2012 Scott Larson
---     Initial Public Release
---
---------------------------------------------------------------------------------
 
-LIBRARY ieee;
-USE ieee.std_logic_1164.all;
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
-ENTITY debounce IS
-  GENERIC(
-    clk_freq    : INTEGER := 50_000_000;  --system clock frequency in Hz
-    stable_time : INTEGER := 10);         --time button must remain stable in ms
-  PORT(
-    clk     : IN  STD_LOGIC;  --input clock
-    reset_n : IN  STD_LOGIC;  --asynchronous active low reset
-    button  : IN  STD_LOGIC;  --input signal to be debounced
-    result  : OUT STD_LOGIC); --debounced signal
-END debounce;
+entity debounce is
+  generic (
+    DEBOUNCE_LIMIT : natural := 250000);
+  port (
+    i_Clk    : in  std_logic;
+    i_arstn  : in  std_logic;
+    i_Switch : in  std_logic;
+    o_Switch : out std_logic
+    );
+end entity debounce;
 
-ARCHITECTURE logic OF debounce IS
-  constant COUNTER_MAX : integer := clk_freq*stable_time/1000;
-  SIGNAL flipflops   : STD_LOGIC_VECTOR(1 DOWNTO 0); --input flip flops
-  SIGNAL counter_set : STD_LOGIC;                    --sync reset to zero
-BEGIN
+architecture RTL of debounce is
 
-  counter_set <= flipflops(0) xor flipflops(1);  --determine when to start/reset counter
-  
-  PROCESS(clk, reset_n)
-    VARIABLE count :  INTEGER RANGE 0 TO COUNTER_MAX;  --counter for timing
-  BEGIN
-    IF(reset_n = '0') THEN                        --reset
-      flipflops(1 DOWNTO 0) <= "00";                 --clear input flipflops
-      result <= '0';                                 --clear result register
-    ELSIF(clk'EVENT and clk = '1') THEN           --rising clock edge
-      flipflops(0) <= button;                        --store button value in 1st flipflop
-      flipflops(1) <= flipflops(0);                  --store 1st flipflop value in 2nd flipflop
-      If(counter_set = '1') THEN                     --reset counter because input is changing
-        count := COUNTER_MAX;                                    --clear the counter
-      ELSIF(count /= 0) THEN  --stable input time is not yet met
-        count := count - 1;                            --decrement counter
-      ELSE                                           --stable input time is met
-        result <= flipflops(1);                        --output the stable value
-      END IF;    
-    END IF;
-  END PROCESS;
-  
-END logic;
+  signal r_Debounce_Count : natural range 0 to DEBOUNCE_LIMIT;
+
+  signal r_Switch_State : std_logic;
+
+begin
+
+  p_Debounce : process (i_Clk,i_arstn) is
+  begin
+    if i_arstn = '0' then
+      r_Debounce_Count <= 0;
+      r_Switch_State   <= '0';
+      
+    elsif rising_edge(i_Clk) then
+
+      -- Switch input is different than internal switch value, so an input is
+      -- changing.  Increase the counter until it is stable for 10 ms.
+      if (i_Switch /= r_Switch_State and
+          r_Debounce_Count > 0) then
+        r_Debounce_Count <= r_Debounce_Count - 1;
+
+      -- End of counter reached, switch input is stable, register it.
+      elsif r_Debounce_Count = 0 then
+        r_Switch_State <= i_Switch;
+        
+      -- Switches are the same state, reset the counter
+      else
+        r_Debounce_Count <= DEBOUNCE_LIMIT;
+
+      end if;
+    end if;
+  end process p_Debounce;
+
+
+  -- Assign internal register to output (debounced!)
+  o_Switch <= r_Switch_State;
+
+
+end architecture rtl;
