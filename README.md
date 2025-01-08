@@ -1,7 +1,5 @@
 # ESIEE_SEI_5201A
 
-[TOC]
-
 # Préambule
 ## Environnement logiciel
 Pour réaliser ce TP, l’environnement logiciel est encapsulé dans une machine virtuelle basée sur une distribution CentOS 8 dont les identifiants sont les suivant :
@@ -57,9 +55,13 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
     ./init.sh
     ```
     
-    Ce script va cloner le dépôt **asylum-soc-OB8_gpio** qui contient les sources du SoC. 
+    Ce script va cloner le dépôt **asylum-soc-OB8_gpio** qui contient les sources du SoC.
 
-    Ensuite, Le script va configurer fusesoc. Le script va affichier la liste des libraries (ici asylum-cores et local) ainsi que la liste des modules disponibles. 
+    ![image](https://github.com/user-attachments/assets/981d4471-e4de-4b08-ad3a-d3b8ab1e146d)
+
+    Ensuite, Le script va configurer fusesoc. Le script va affichier la liste des libraries (ici asylum-cores et local) ainsi que la liste des modules disponibles.
+
+    ![image](https://github.com/user-attachments/assets/0a3c148a-1737-414e-b719-a842dd62abd4)
 
   >   [!CAUTION]
   >   Ce script ne doit être exécuter qu'une fois.
@@ -87,14 +89,18 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
     1.  Les variables du makefile qui peuvent être surchargé
     2.  Les règles du Makefile disponible
     3.  Les informations contenues dans le fichier **OB8_GPIO.core**
+  
+    ![image](https://github.com/user-attachments/assets/b17da5bb-15a4-423e-b3c1-2e2198774f97)
  
 6.  Le fichier **asylum-soc-OB8_gpio/src/OB8_GPIO.vhd** contient le top level du SOC présenté dans la Figure 1.
  
     Ce SoC contient 2 contrôleurs GPIO, le premier connecter aux switchs, le second connecter aux LEDs.
 
+    ![image](https://github.com/user-attachments/assets/33438615-f12f-446a-b871-de1b26f61897)
+
     Ouvrir le code source et lister les modules. Les modules doivent être listés dans l’étape 2 … sauf 1 lequel et pourquoi ?
 
-7.  Le dossier **asylum-soc-OB8_gpio/soft** contient l’application *identity* qui va lire les switchs et les écrire sur les leds en continu. L’application est écrite en C (identity.c) et en assembleur PicoBlaze (identity.psm).
+8.  Le dossier **asylum-soc-OB8_gpio/soft** contient l’application *identity* qui va lire les switchs et les écrire sur les leds en continu. L’application est écrite en C (identity.c) et en assembleur PicoBlaze (identity.psm).
 
     Lancer la simulation avec l’application écrite en C en utilisant la commande suivante :
     ```
@@ -103,7 +109,7 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
 
     Que fait l’exécution de cette commande ?
 
-8.  Les fichiers générer par les generateurs de fusesoc sont localisé dans le dossier de cache de l'outil :
+9.  Les fichiers générer par les generateurs de fusesoc sont localisé dans le dossier de cache de l'outil :
 
     ```
     cd ~/.cache/fusesoc/generated/asylum_soc_OB8_GPIO-gen_c_identity_1.1.4
@@ -167,6 +173,8 @@ Les interruptions peuvent être masquées ou non. Elles sont masquées par défa
 
 Le gestionnaire d'interruption du PicoBlazee3 est situé à l’adresse 0x3FF
 
+![image](https://github.com/user-attachments/assets/40baf90e-4a81-4b26-9122-a74030412d1b)
+
 1.  Placez-vous dans le dossier **labo05**
 
     ```
@@ -187,6 +195,8 @@ Le gestionnaire d'interruption du PicoBlazee3 est situé à l’adresse 0x3FF
     -  Modifier l’interface pour ajouter le vecteur *button_i* et *led1_o*
     -  Utiliser le composant **it_ctrl** situer dans **hdl/it_ctrl.vhd** pour connecter le bouton sur le processeur
     -  Ajouter ce fichier dans le **OB8_GPIO.core**
+       ![image](https://github.com/user-attachments/assets/b35439cf-c063-4f21-8e88-45d86359976b)
+
     -  Ajouter une instance de GPIO pour connecter le vecteur *led1_o*
     -  Connecter le au OR Bus et attribué lui l’identifiant **0x8**
 4.  Modifier le fichier  **asylum-soc-OB8_gpio/src/OB8_GPIO_top.vhd** pour incorporer les changements
@@ -208,8 +218,11 @@ Le gestionnaire d'interruption du PicoBlazee3 est situé à l’adresse 0x3FF
     | button_i[0] | IOB10_D14P | S12  |
 
 6.  Dans le fichier **asylum-soc-OB8_gpio/OB8_GPIO.core**, commenter le paramètre *NB_LED* pour pouvoir utiliser la valeur par défaut.
+
+    ![image](https://github.com/user-attachments/assets/2f166685-e6fe-42d6-b58e-a6a81d2da316)
+
   
-7.  Pour vérifier la bonne intégration du contrôleur GPIO2., modifier l’application inclus dans le fichier **asylum-soc-OB8_gpio/soft/identity.c** pour afficher l’état des switches sur les leds contrôlées par le GPIO1 et l’inverse sur les leds contrôlées par le GPIO2.
+8.  Pour vérifier la bonne intégration du contrôleur GPIO2., modifier l’application inclus dans le fichier **asylum-soc-OB8_gpio/soft/identity.c** pour afficher l’état des switches sur les leds contrôlées par le GPIO1 et l’inverse sur les leds contrôlées par le GPIO2.
     
 9.  Valider sur carte
 10. Modifier le fichier **asylum-soc-OB8_gpio/soft/identity.c** pour supporter les interruptions.
@@ -248,7 +261,9 @@ Le gestionnaire d'interruption du PicoBlazee3 est situé à l’adresse 0x3FF
  
 # labo06 : Lock-Step
 Dans cette partie, nous allons réaliser une implémentation avec « Lock Step » du SOC vu dans le labo05.
- 
+
+![image](https://github.com/user-attachments/assets/16d872fe-c980-497c-b6a4-e8f4895039fa)
+
 1.  Placez-vous dans le dossier **labo06**
 
     ```
@@ -283,7 +298,9 @@ Dans cette partie, nous allons réaliser une implémentation avec « Lock Step �
  
 # labo07 : Lock-Step
 Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du lock step.
- 
+
+![image](https://github.com/user-attachments/assets/199074a6-8fd0-4d2c-93f2-741ab774b7a8)
+
 1.  Placez-vous dans le dossier **labo07**
 
     ```
@@ -347,7 +364,9 @@ generate : [gen_c_identity, gen_c_supervisor]
  
 # labo08 : TMR
 Dans ce labo, nous allons modifier les processeurs en lock-step du soc applicatif par des processeurs avec triplication.
- 
+
+![image](https://github.com/user-attachments/assets/d3c9fb6b-d132-47df-91e8-f1c76a8b5f0a)
+
 1.  Placez-vous dans le dossier **labo08**
 
     ```
