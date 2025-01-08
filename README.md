@@ -282,9 +282,9 @@ Dans cette partie, nous allons réaliser une implémentation avec « Lock Step �
 6.  Que faire du registre diff_r ?
  
 # labo07 : Lock-Step
-Dans cette dernière partie, nous allons ajouter un superviseur pour gérer les erreurs du lock step.
+Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du lock step.
  
-1.  Placez-vous dans le dossier **labo05**
+1.  Placez-vous dans le dossier **labo07**
 
     ```
     cd labo05
@@ -295,44 +295,47 @@ Dans cette dernière partie, nous allons ajouter un superviseur pour gérer les 
     ./init.sh
     ```
     
-    Ce script va copier le dossier **labo04/asylum-soc-OB8_gpio** dans le dossier **labo05**
+    Ce script va copier le dossier **labo06/asylum-soc-OB8_gpio** dans le dossier **labo07**
 
   >   [!CAUTION]
   >   Ce script ne doit être exécuter qu'une fois.
 
-3.  Créer le fichier asylum-soc-OB8_gpio/src/OB8_GPIO_supervisor.vhd pour ajouter le SoC superviseur (Figure 4).
+3.  Créer le fichier **asylum-soc-OB8_gpio/src/OB8_GPIO_supervisor.vhd** pour ajouter le SoC superviseur (Figure 4).
 
     Le SOC superviseur possède 2 contrôleurs GPIO :
     - Le premier contient une sortie d’un bit est va être le reset du SOC applicatif
     - Le second contient une sortie de 3 bits connectés aux leds LD17 à LD19.
 
-4.  Modifier le fichier asylum-soc-OB8_gpio/src/OB8_GPIO_top.vhd pour instancier le SoC superviseur et le connecter avec le SoC applicatif.
-5.  Editer le fichier asylum-soc-OB8_gpio/soft/supervisor.c qui contient les fonctions suivantes :
+  >   [!TIPS]
+  >   Le SoC superviseur ressemble au SoC modifié lors du labo 5 en modifiant la largeur des vecteurs de LED et en supprimant les switchs.
 
-    - void main (void)
+4.  Modifier le fichier **asylum-soc-OB8_gpio/src/OB8_GPIO_top.vhd** pour instancier le SoC superviseur et le connecter avec le SoC applicatif.
+5.  Editer le fichier **asylum-soc-OB8_gpio/soft/supervisor.c** qui contient les fonctions suivantes :
+
+    - `void main (void)`
       1.  Faire un reset du SOC applicatif
       2.  Autoriser les interruptions
-      3.  Faire une boucle infinie (équivalent à un while (1); )
-    -  void isr (void) __interrupt(1)
+      3.  Faire une boucle infinie (équivalent à un `while (1);` )
+    -  `void isr (void) __interrupt(1)`
       1.  Incrémenter un compteur global
       2.  Envoyer l’état du compteur sur les leds LD17 à LD19
       3.  faire un reset du SOC applicatif
       
-    L’interruption du SOC superviseur sera connecté au registre diff_r.
-6.  Editer le fichier asylum-soc-OB8_gpio/OB8_GPIO.core
+    L’interruption du SOC superviseur provient du registre **diff_r** du SoC applicatif.
+6.  Editer le fichier **asylum-soc-OB8_gpio/OB8_GPIO.core**
 
-    -  Ajouter les lignes suivant après le générateur gen_c_identity :
+    -  Ajouter les lignes suivant après le générateur *gen_c_identity* :
 
-    ```
+```
 gen_c_supervisor :
   generator : pbcc_gen
   parameters :
     file : soft/supervisor.c
     type : c
     entity : ROM_supervisor
-    ```
+```
     
-   - Dans la target emu_ng_medium_c_identity, ajouter l’appel au générateur nouvellement créé : 
+    - Dans la target *emu_ng_medium_c_identity*, ajouter l’appel au générateur nouvellement créé : 
 
 ```
 generate : [gen_c_identity, gen_c_supervisor]
@@ -345,10 +348,10 @@ generate : [gen_c_identity, gen_c_supervisor]
 # labo08 : TMR
 Dans ce labo, nous allons modifier les processeurs en lock-step du soc applicatif par des processeurs avec triplication.
  
-1.  Placez-vous dans le dossier **labo05**
+1.  Placez-vous dans le dossier **labo08**
 
     ```
-    cd labo05
+    cd labo08
     ```
 
 2.  Exécuter le script **init.sh**.
@@ -356,16 +359,16 @@ Dans ce labo, nous allons modifier les processeurs en lock-step du soc applicati
     ./init.sh
     ```
     
-    Ce script va copier le dossier **labo04/asylum-soc-OB8_gpio** dans le dossier **labo05**
+    Ce script va copier le dossier **labo07/asylum-soc-OB8_gpio** dans le dossier **labo08**
 
   >   [!CAUTION]
   >   Ce script ne doit être exécuter qu'une fois.
 
-3.  Editer le fichier asylum-soc-OB8_gpio/src/OB8_GPIO.vhd pour ajouter les modification suivante (Figure 1) :
+3.  Editer le fichier **asylum-soc-OB8_gpio/src/OB8_GPIO.vhd** pour ajouter les modification suivante (Figure 1) :
 
     1.  Un troisième processeur dans le SOC applicatif
     2.  Toutes les sorties des 3 processeurs doivent être votées
-    3.  Les différences doivent être calculées processeur par processeur et être envoyées au soc superviseur
+    3.  Les différences doivent être calculées processeur par processeur et être envoyées au soc superviseur (le registre *diff_r* est donc sur 3 bits)
     4.  Le soc superviseur possède 2 GPIO supplémentaires :
     	1.  GPIO5 va fournir un vecteur pour masquer les lignes d’interruptions
 	2.  GPIO6 va recevoir le vecteur d’interruptions masqués courant.
@@ -373,7 +376,7 @@ Dans ce labo, nous allons modifier les processeurs en lock-step du soc applicati
 
     Ce dernier va lire l’état des interruptions et en déduire quel est le processeur fautif. Si c’est la première erreur détectée alors il va masquer les interruptions provenant de ce processeur.
 
-    Si c’est la deuxième erreur détectée alors le soc applicatif va être remis à zéro.
+    Si c’est une seconde erreur est détectée alors le soc applicatif va être remis à zéro.
 
     - Pourquoi ne faisons-nous pas de reset après la première erreur détectée ?
     - Pourquoi ne faisons-nous pas de reset du processeur fautif uniquement ?
@@ -397,20 +400,20 @@ En assembleur cela donne :
 ```
 _isr:
 ; soft/identity.c:34: PORT_WR(LED1,cpt);
-STORE s0, (sF)
-SUB sF, 01
+STORE s0, (sF)   ; Sauvegarde du contexte d'exécution
+SUB sF, 01       ; Décrément du pointeur de pile
 FETCH s0, _cpt
 OUTPUT s0, 08
 ; soft/identity.c:35: cpt ++;
 ADD s0, 01
-ADD sF, 01
-FETCH s0, (sF)
-STORE s0, _cpt
+ADD sF, 01       ; Incrément du pointeur de pile
+FETCH s0, (sF)   ; Restauration du contexte d'exécution (sF est le pointeur de pile)
+STORE s0, _cpt   ; Mise à jour de cpt, s0 ne contient plus cpt !!!
 RETURNI ENABLE
 ```
 L’instruction STORE est placée après la restauration du contexte.
 
-Le contournement trouvé est d’appeler une fonction null avant de chaque retour de fonction pour obliger le compilateur à mettre à jour les variables globales.
+Le contournement trouvé est d’appeler une fonction **null** avant de chaque retour de fonction pour obliger le compilateur à mettre à jour les variables globales.
 ```
 void null (void)
 {
@@ -434,16 +437,16 @@ RETURN
 ; soft/identity.c:32: void isr (void) __interrupt(1)
 _isr:
 ; soft/identity.c:34: PORT_WR(LED1,cpt);
-STORE s0, (sF)
-SUB sF, 01
+STORE s0, (sF)   ; Sauvegarde du contexte d'exécution
+SUB sF, 01       ; Décrément du pointeur de pile
 FETCH s0, _cpt
 OUTPUT s0, 08
 ; soft/identity.c:35: cpt ++;
 ADD s0, 01
 ; soft/identity.c:40: null();
-STORE s0, _cpt
+STORE s0, _cpt   ; Mise à jour de cpt
 CALL _null
-ADD sF, 01
-FETCH s0, (sF)
+ADD sF, 01       ; Incrément du pointeur de pile
+FETCH s0, (sF)   ; Restauration du contexte d'exécution (sF est le pointeur de pile)
 RETURNI ENABLE
 ```
