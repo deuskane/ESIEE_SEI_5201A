@@ -89,14 +89,15 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
     1.  Les variables du makefile qui peuvent être surchargé
     2.  Les règles du Makefile disponible
     3.  Les informations contenues dans le fichier **OB8_GPIO.core**
-  
+
     ![image](https://github.com/user-attachments/assets/b17da5bb-15a4-423e-b3c1-2e2198774f97)
- 
-6.  Le fichier **asylum-soc-OB8_gpio/src/OB8_GPIO.vhd** contient le top level du SOC présenté dans la Figure 1.
+
+7.  Le fichier **asylum-soc-OB8_gpio/src/OB8_GPIO.vhd** contient le top level du SOC présenté dans la Figure 1.
  
     Ce SoC contient 2 contrôleurs GPIO, le premier connecter aux switchs, le second connecter aux LEDs.
 
     ![image](https://github.com/user-attachments/assets/33438615-f12f-446a-b871-de1b26f61897)
+    ***Figure 1 : OB8_GPIO***
 
     Ouvrir le code source et lister les modules. Les modules doivent être listés dans l’étape 2 … sauf 1 lequel et pourquoi ?
 
@@ -174,6 +175,7 @@ Les interruptions peuvent être masquées ou non. Elles sont masquées par défa
 Le gestionnaire d'interruption du PicoBlazee3 est situé à l’adresse 0x3FF
 
 ![image](https://github.com/user-attachments/assets/40baf90e-4a81-4b26-9122-a74030412d1b)
+***Figure 2 : Labo05***
 
 1.  Placez-vous dans le dossier **labo05**
 
@@ -263,6 +265,7 @@ Le gestionnaire d'interruption du PicoBlazee3 est situé à l’adresse 0x3FF
 Dans cette partie, nous allons réaliser une implémentation avec « Lock Step » du SOC vu dans le labo05.
 
 ![image](https://github.com/user-attachments/assets/16d872fe-c980-497c-b6a4-e8f4895039fa)
+***Figure 3 : labo06***
 
 1.  Placez-vous dans le dossier **labo06**
 
@@ -300,6 +303,7 @@ Dans cette partie, nous allons réaliser une implémentation avec « Lock Step �
 Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du lock step.
 
 ![image](https://github.com/user-attachments/assets/199074a6-8fd0-4d2c-93f2-741ab774b7a8)
+***Figure 4 : labo07***
 
 1.  Placez-vous dans le dossier **labo07**
 
@@ -366,6 +370,7 @@ generate : [gen_c_identity, gen_c_supervisor]
 Dans ce labo, nous allons modifier les processeurs en lock-step du soc applicatif par des processeurs avec triplication.
 
 ![image](https://github.com/user-attachments/assets/d3c9fb6b-d132-47df-91e8-f1c76a8b5f0a)
+***Figure 5 : labo08***
 
 1.  Placez-vous dans le dossier **labo08**
 
@@ -383,7 +388,7 @@ Dans ce labo, nous allons modifier les processeurs en lock-step du soc applicati
   >   [!CAUTION]
   >   Ce script ne doit être exécuter qu'une fois.
 
-3.  Editer le fichier **asylum-soc-OB8_gpio/src/OB8_GPIO.vhd** pour ajouter les modification suivante (Figure 1) :
+3.  Editer le fichier **asylum-soc-OB8_gpio/src/OB8_GPIO.vhd** pour ajouter les modification suivante (Figure 5) :
 
     1.  Un troisième processeur dans le SOC applicatif
     2.  Toutes les sorties des 3 processeurs doivent être votées
