@@ -162,26 +162,35 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
 Dans cette partie, nous allons étudier le fonctionnement des interruptions d’un processeur.
 
 Les interruptions peuvent être masquées ou non. Elles sont masquées par défaut après un reset.
+- Lorsqu'une interruption survient et qu'elle est masquée, alors le processeur l'ignore et continue l'exécution de son programme
+- Lorsqu’une interruption survient et qu’elle n’est pas masquée, alors le processeur sauvegarde l'adresse courante et saute au gestionnaire d’interruption.
 
-Lorsqu’une interruption survient et qu’elle n’est pas masquée, le processeur saute au gestionnaire d’interruption. Ce dernier est situé à l’adresse 0x3FF pour le PicoBlaze3.
+Le gestionnaire d'interruption du PicoBlazee3 est situé à l’adresse 0x3FF
 
-1.  Placez-vous dans le dossier labo05
+1.  Placez-vous dans le dossier **labo05**
 
-2.  Exécuter le script init.sh.
+    ```
+    cd labo05
+    ```
 
-    >[!CAUTION]
-    > Ce script ne doit être exécuter qu’une fois.
+2.  Exécuter le script **init.sh**.
+    ```
+    ./init.sh
+    ```
+    
+    Ce script va copier le dossier **labo04/asylum-soc-OB8_gpio** dans le dossier **labo05**
 
-    Ce script va copier le dossier labo04/asylum-soc-OB8_gpio dans le dossier labo05
+  >   [!CAUTION]
+  >   Ce script ne doit être exécuter qu'une fois.
 
-3.  Modifier le fichier  asylum-soc-OB8_gpio/src/OB8_GPIO.vhd pour réaliser l’application Figure 2.
-    -  Modifier l’interface pour ajouter le vecteur button_i et led1_o
-    -  Utiliser le composant it_ctrl situer dans hdl/it_ctrl.vhd pour connecter le bouton sur le processeur
-    -  Ajouter ce fichier dans le OB8_GPIO.core
-    -  Ajouter une instance de GPIO pour connecter le vecteur led1_o
-    -  Connecter le au OR Bus et attribué lui l’identifiant 0x8
-4.  Modifier le fichier  asylum-soc-OB8_gpio/src/OB8_GPIO_top.vhd pour incorporer les changements
-5.  Modifier le fichier asylum-soc-OB8_gpio/boards/NanoXplore-DK625V0/pads.py pour ajouter les nouveaux ports (led_o et button_i). Les sorties led0_o[18 :16] seront connectés à 0 dans ce labo.
+3.  Modifier le fichier  **asylum-soc-OB8_gpio/src/OB8_GPIO.vhd** pour réaliser l’application Figure 2.
+    -  Modifier l’interface pour ajouter le vecteur *button_i* et *led1_o*
+    -  Utiliser le composant **it_ctrl** situer dans **hdl/it_ctrl.vhd** pour connecter le bouton sur le processeur
+    -  Ajouter ce fichier dans le **OB8_GPIO.core**
+    -  Ajouter une instance de GPIO pour connecter le vecteur *led1_o*
+    -  Connecter le au OR Bus et attribué lui l’identifiant **0x8**
+4.  Modifier le fichier  **asylum-soc-OB8_gpio/src/OB8_GPIO_top.vhd** pour incorporer les changements
+5.  Modifier le fichier **asylum-soc-OB8_gpio/boards/NanoXplore-DK625V0/pads.py** pour ajouter les nouveaux ports (led_o et button_i). Les sorties *led0_o[18 :16]* seront connectés à 0 dans ce labo.
 
     | HDL Name    | Location   | PCB  |
     |-------------|------------|------|
@@ -198,16 +207,17 @@ Lorsqu’une interruption survient et qu’elle n’est pas masquée, le process
     | led_o[18]   | USER_D10   | LD19 |
     | button_i[0] | IOB10_D14P | S12  |
 
-6.  Dans le fichier asylum-soc-OB8_gpio/OB8_GPIO.core asylum-soc-OB8_gpio/OB8_GPIO.core, commenter le paramètre NB_LED pour pouvoir utiliser la valeur par défaut
- 
- 
-7.  Modifier l’application inclus dans le fichier asylum-soc-OB8_gpio/soft/identity.c pour afficher l’état des switches sur les leds contrôlées par le GPIO1 et l’inverse sur les leds contrôlées par le GPIO2. Cette fonction permettra facilement de vérifier la bonne intégration du contrôleur GPIO2.
-8.  Valider sur carte
-9.  Modifier le fichier asylum-soc-OB8_gpio/soft/identity.c pour supporter les interruptions.
+6.  Dans le fichier **asylum-soc-OB8_gpio/OB8_GPIO.core**, commenter le paramètre *NB_LED* pour pouvoir utiliser la valeur par défaut.
+  
+7.  Pour vérifier la bonne intégration du contrôleur GPIO2., modifier l’application inclus dans le fichier **asylum-soc-OB8_gpio/soft/identity.c** pour afficher l’état des switches sur les leds contrôlées par le GPIO1 et l’inverse sur les leds contrôlées par le GPIO2.
+    
+9.  Valider sur carte
+10. Modifier le fichier **asylum-soc-OB8_gpio/soft/identity.c** pour supporter les interruptions.
 
     La fonction **pbcc_enable_interrupt(void)**, définit dans le fichier **intr.h**, va démasquer les interruptions.
     Les interruptions sont par défaut masquer dans un processeur.
-    Quand une interruption survient, le processeur va « mettre en pause » l’application courante est exécuter une application spécifique qui est le gestionnaire d’interruption.
+
+    Quand une interruption survient, le processeur va « mettre en pause » l’application courante est exécuter une application spécifique qui est le gestionnaire d’interruption (ISR : Interrupt Service Routine).
 
     Le gestionnaire d’interruption a le prototype suivant :
 
@@ -225,30 +235,36 @@ Lorsqu’une interruption survient et qu’elle n’est pas masquée, le process
     }
     ```
     
-    L’application à réaliser va afficher en continue l’état des switch sur les  leds contrôlées par le GPIO1.
+    L’application a réaliser doit afficher en continue l’état des switch sur les leds contrôlées par le GPIO1.
 
-    Un compteur global sera incrémenté et affiché sur les leds contrôlées par le GPIO2.
+    L'application va également initialiser à 0 un compteur global et l'afficher une fois sur les leds contrôlées par le GPIO2.
+  
+    Le gestionnaire d'interruption doit incrémenté le compteur puis l'afficher sur les leds contrôlées par le GPIO2.
     
-10.  Valider sur carte.
+12.  Valider sur carte.
 
-     Quel est la polarité du bouton quand il n’est pas appuyé ?
-11.  Que se passe t’il si le bouton qui génère l’interruption est toujours appuyé ?
-
-     Expliquer le comportement observé.
-
-     Comment fixer le comportement observé ?
+     - Quel est la valeur du compteur une fois l'application démarer ?
+     - En déduire la polarité du bouton quand il n’est pas appuyé et corriger votre code si nécessaire
  
 # labo06 : Lock-Step
 Dans cette partie, nous allons réaliser une implémentation avec « Lock Step » du SOC vu dans le labo05.
  
-1.  Placez-vous dans le dossier labo06
-2.  Exécuter le script init.sh.
+1.  Placez-vous dans le dossier **labo05**
 
+    ```
+    cd labo05
+    ```
 
-    >[!CAUTION]
-    > Ce script ne doit être exécuter qu’une fois.
+2.  Exécuter le script **init.sh**.
+    ```
+    ./init.sh
+    ```
+    
+    Ce script va copier le dossier **labo04/asylum-soc-OB8_gpio** dans le dossier **labo05**
 
-    Ce script va copier le dossier labo05/asylum-soc-OB8_gpio dans le dossier labo06
+  >   [!CAUTION]
+  >   Ce script ne doit être exécuter qu'une fois.
+
 3.  Editer le fichier asylum-soc-OB8_gpio/src/OB8_GPIO.vhd pour ajouter un 2ème processeur (Figure 3)
 
     Créer le registre diff_r (module rouge sur la Figure 3) qui va être initialisé à 0 après un reset et qui va être mis à 1 si l’une des sorties du processeur 0 diffère de celle du processeur 1 (iaddr_o, pbi_ini_o, it_ack_o).
@@ -258,13 +274,22 @@ Dans cette partie, nous allons réaliser une implémentation avec « Lock Step �
 # labo07 : Lock-Step
 Dans cette dernière partie, nous allons ajouter un superviseur pour gérer les erreurs du lock step.
  
-1.  Placez-vous dans le dossier labo07
-2.  Exécuter le script init.sh.
+1.  Placez-vous dans le dossier **labo05**
 
-    >[!CAUTION]
-    > Ce script ne doit être exécuter qu’une fois.
+    ```
+    cd labo05
+    ```
 
-    Ce script va copier le dossier labo05/asylum-soc-OB8_gpio dans le dossier labo06
+2.  Exécuter le script **init.sh**.
+    ```
+    ./init.sh
+    ```
+    
+    Ce script va copier le dossier **labo04/asylum-soc-OB8_gpio** dans le dossier **labo05**
+
+  >   [!CAUTION]
+  >   Ce script ne doit être exécuter qu'une fois.
+
 3.  Créer le fichier asylum-soc-OB8_gpio/src/OB8_GPIO_supervisor.vhd pour ajouter le SoC superviseur (Figure 4).
 
     Le SOC superviseur possède 2 contrôleurs GPIO :
@@ -310,15 +335,22 @@ generate : [gen_c_identity, gen_c_supervisor]
 # labo08 : TMR
 Dans ce labo, nous allons modifier les processeurs en lock-step du soc applicatif par des processeurs avec triplication.
  
-1.  Placez-vous dans le dossier labo08
-2.  Exécuter le script init.sh.
+1.  Placez-vous dans le dossier **labo05**
 
+    ```
+    cd labo05
+    ```
 
-    >[!CAUTION]
-    > Ce script ne doit être exécuter qu’une fois.
+2.  Exécuter le script **init.sh**.
+    ```
+    ./init.sh
+    ```
+    
+    Ce script va copier le dossier **labo04/asylum-soc-OB8_gpio** dans le dossier **labo05**
 
-   
-   Ce script va copier le dossier labo05/asylum-soc-OB8_gpio dans le dossier labo07
+  >   [!CAUTION]
+  >   Ce script ne doit être exécuter qu'une fois.
+
 3.  Editer le fichier asylum-soc-OB8_gpio/src/OB8_GPIO.vhd pour ajouter les modification suivante (Figure 1) :
 
     1.  Un troisième processeur dans le SOC applicatif
