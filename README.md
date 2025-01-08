@@ -6,9 +6,9 @@
 ## Environnement logiciel
 Pour réaliser ce TP, l’environnement logiciel est encapsulé dans une machine virtuelle basée sur une distribution CentOS 8 dont les identifiants sont les suivant :
 
-> Login    : user
-
-> Password : user
+> [!IMPORTANT]
+> **Login**    : user\
+> **Password** : user
 
 ##  Environnement matériel
 Dans ce TP, nous allons mettre en œuvre la technique du « Lock Step » pour mettre en évidence un événement dans un processeur.
@@ -22,7 +22,7 @@ Les documentations sont disponibles dans les fichiers suivants :
 | Devkit        | Guide utilisateur de la carte de développement du NX1H35S |
 |               | NanoXplore_NX1H35S_DevKitV3_User_Guide_V1_04.pdf |
 |               | NanoXplore_NX1H35S_DevKitV3_board.pdf |
-| NG-MEDIUM	    | Documentation du FPGA NX1H35S |
+| NG-MEDIUM	| Documentation du FPGA NX1H35S |
 |               | NanoXplore_NX1H35AS_Datasheet_v2.3.pdf |
  
 ## Archive
@@ -30,7 +30,10 @@ Les sources du TP sont disponibles sur le dépôt suivant :
 > https://github.com/deuskane/ESIEE_SEI_5201A 
 
 Récupérer les sources en clonant le dépôt :
-> git clone https://github.com/deuskane/ESIEE_SEI_5201A.git
+
+```
+git clone https://github.com/deuskane/ESIEE_SEI_5201A.git
+```
 
 # labo04 : Prise en main de l’environnement 
 Dans cette partie nous allons réaliser la même fonctionnalité que dans le labo01 mais avec System On Chip à base d’un clone du PicoBlaze3.
@@ -45,18 +48,23 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
 
 1.  Placez-vous dans le dossier **labo04**
 
+    ```
+    cd labo04
+    ```
+
 2.  Exécuter le script **init.sh**.
-    > ./init.sh
-
-    >[!CAUTION]
-    > Ce script ne doit être exécuter qu’une fois.
-
-    Ce script va cloner le dépôt asylum-soc-OB8_gpio qui contient les sources du SoC. 
+    ```
+    ./init.sh
+    ```
+    
+    Ce script va cloner le dépôt **asylum-soc-OB8_gpio** qui contient les sources du SoC. 
 
     Ensuite, Le script va configurer fusesoc. Le script va affichier la liste des libraries (ici asylum-cores et local) ainsi que la liste des modules disponibles. 
-  
-3.  Placer vous dans le dossier nouvellement créé asylum-soc-OB8_gpio. Celui-ci contient les fichiers et dossier suivant :
 
+  >   [!CAUTION]
+  >   Ce script ne doit être exécuter qu'une fois.
+  
+3.  Placer vous dans le dossier nouvellement créé **asylum-soc-OB8_gpio**. Celui-ci contient les fichiers et dossier suivant :
 
     | Fichier / Dossier | Description |
     |-------------------|-------------|
@@ -66,69 +74,87 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
     | soft              | Dossier contenant les codes applicatifs à exécuter par le processeur |
     | boards            | Dossier contenant les fichiers spécifiques pour une intégration sur carte |
     | OB8_GPIO.core     | Fichier de description de l’IP pour l’outil fusesoc |
-    | Fusesoc.conf      | Fichier de configuration de l’outil fusesoc |
+    | fusesoc.conf      | Fichier de configuration de l’outil fusesoc |
     | Makefile          | Fichier d’execution de commande |
 
-4.  Toutes les commandes sont encapsulées avec l’outil make. Une aide est disponible en exécutant la commande suivante :
+5.  Toutes les commandes sont encapsulées avec l’outil **make**. Une aide est disponible en exécutant la commande suivante :
 
-    > make help
-  
+    ```
+    make help
+    ```
+    
     L’aide est divisé en 3 parties : 
     1.  Les variables du makefile qui peuvent être surchargé
     2.  Les règles du Makefile disponible
-    3.  Les informations contenues dans le fichier OB8_GPIO.core
+    3.  Les informations contenues dans le fichier **OB8_GPIO.core**
  
-5.  Le fichier asylum-soc-OB8_gpio/src/OB8_GPIO.vhd contient le top level du SOC présenté dans la Figure 1.
+6.  Le fichier **asylum-soc-OB8_gpio/src/OB8_GPIO.vhd** contient le top level du SOC présenté dans la Figure 1.
  
     Ce SoC contient 2 contrôleurs GPIO, le premier connecter aux switchs, le second connecter aux LEDs.
 
     Ouvrir le code source et lister les modules. Les modules doivent être listés dans l’étape 2 … sauf 1 lequel et pourquoi ?
 
-6.  Le dossier asylum-soc-OB8_gpio/soft contient l’application identity qui va lire le les switch et les écrire sur les leds. L’application est écrite en C (identity.c) et en assembleur PicoBlaze (identity.psm).
+7.  Le dossier **asylum-soc-OB8_gpio/soft** contient l’application *identity* qui va lire les switchs et les écrire sur les leds en continu. L’application est écrite en C (identity.c) et en assembleur PicoBlaze (identity.psm).
 
     Lancer la simulation avec l’application écrite en C en utilisant la commande suivante :
-    > make sim_c_identity
+    ```
+    make sim_c_identity
+    ```
 
     Que fait l’exécution de cette commande ?
 
-7.  Les fichiers générer par les generateurs de fusesoc sont localisé dans son cache :
+8.  Les fichiers générer par les generateurs de fusesoc sont localisé dans le dossier de cache de l'outil :
 
-    > cd ~/.cache/fusesoc/generated/asylum_soc_OB8_GPIO-gen_c_identity_1.1.4
+    ```
+    cd ~/.cache/fusesoc/generated/asylum_soc_OB8_GPIO-gen_c_identity_1.1.4
+    ```
 
-    •  Que contient ce dossier ?
-    •  Comparer le fichier identity.psm généré avec le fichier asylum-soc-OB8_gpio/soft/identity.psm
-    •  Que contient le fichier identity.vhd ?
+    -  Que contient ce dossier ?
+    -  Comparer le fichier **identity.psm** généré avec le fichier **asylum-soc-OB8_gpio/soft/identity.psm**
+       - Localiser la boucle d'écrit dans l'étape 7
+       - Combien d'instructions contient le fichier **identity.psm** généré par le compilateur ?
+       - Pourquoi le fichier  **asylum-soc-OB8_gpio/soft/identity.psm** contient moins d'instructions ?
+    -  Que contient le fichier identity.vhd ?
+       - Quel est le nom du module ?
+       - Décrire le contenu du module 
 
-8.  La simulation à générer un chronogramme. Ouvrir ce fichier à l’aide de la commande suivante : 
+> [!WARNING]
+> Les fichiers psm contiennent des directives de compilations (EQU, ORG), des directives de simulations (DSIN, DSOUT) et des labels. Ce ne sont pas des instructions    
 
-    > gtkwave build/sim_c_identity-ghdl/dut.vcd
+9.  La simulation a généré un chronogramme.
+    Ouvrir ce fichier à l’aide de la commande suivante : 
 
-    Observer les signaux interne au soc (instance tb_ob8_gpio/dut/ins_ob8_gpio).
-    1.  En déduire la latence entre la lecture des switchs et l’affichage sur les LEDs. Est-ce cohérent avec le code source ?
-    2.  En déduire le temps d’exécution d’une instruction ?
+    ```
+    gtkwave build/sim_c_identity-ghdl/dut.vcd
+    ```
 
-9.  Pour lancer l’exécution sur la carte, exécuter la commande suivante :
+    Observer les signaux interne au soc (instance **tb_ob8_gpio/dut/ins_ob8_gpio**).
+    2.  Observer la boucle d'instruction identifié dans les étapes 7 et 8, en déduire la latence entre 2 lectures de switchs
+    3.  En déduire le temps d’exécution d’une instruction ?
 
-    > make emu_ng_medium_c_identity
+11. La commande suivante va compiler le module **OB8_gpio_top** pour le FPGA **NG_MEDIUM** avec l'application *identity* écrite en c
 
-    Actuellement, dans le Makefile, la variable TARGET est positionné à emu_ng_medium_c_identity, par conséquent, vous pouvez utiliser les commandes suivantes pour respectivement lancer la compilation et l’exécution sur carte :
+    ```
+    make build
+    ```
 
-    > make build
-    
-    > make run
+    La commande suivante va initialiser le devkit et télécharger le bitstream généré dans le FPGA
 
-    L’exécution de la commande make run doit fournir la sortie suivante :
+    ```
+    make run
+    ```
+
+    L’exécution de la commande `make run` doit fournir la sortie suivante :
  
-    Il arrive parfois que la commande échoue et n’arrive pas à ce connecter à la board via la l’USB de la VM, n’hésitez pas à relancer la commande
+> [!TIP]
+> Il arrive parfois que la commande échoue et n’arrive pas à ce connecter à la board via la l’USB de la VM, n’hésitez pas à relancer la commande `make run`
  
+11. Modifier le code source exécuté par le processeur : **asylum-soc-OB8_gpio/soft/identity.c** pour inverser l’état des switchs avant de les envoyer sur les leds.
 
-10.  Modifier le code source exécuté par le processeur : asylum-soc-OB8_gpio/soft/identity.c pour inverser l’état des switchs avant de les envoyer sur les leds.
+12. Simuler le design.
 
-11.  Simuler le design.
-
-    Quel résultat obtenez-vous ?
-
-    Modifier le code de test en conséquence.
+    - Quel résultat obtenez-vous ?
+    - Modifier le code de test en conséquence (**asylum-soc-OB8_gpio/sim/tb_OB8_gpio.vhd**)
 12.  Valider sur carte 
  
 # labo05 : Prise en main des interruptions
