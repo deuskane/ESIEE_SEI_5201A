@@ -278,7 +278,14 @@ generate : [gen_c_identity, gen_c_supervisor]
 ```
 
 7.  Valider sur carte
-8.  Modifier votre design pour injecter une erreur sur une entrée du processeur 1 avec le bouton S10 (IOB10_D07N).
+8.  Modifier votre design pour injecter une erreur sur une entrée du processeur. L'erreur injecté ssera sur le MSB de l'entrée idata_i du processeur (donc l'instruction est corrompue).
+
+    | HDL Name          | Location   | PCB  | Comment             |
+    |-------------------|------------|------|---------------------|
+    | inject_error_i[0] | IOB10_D07P | S8   | Injection d'une erreur sur le processor 0 |
+    | inject_error_i[1] | IOB10_D12P | S9   | Injection d'une erreur sur le processor 1 |
+    | inject_error_i[2] | IOB10_D07N | S10  | Injection d'une erreur sur le processor 2 (cf labo08) |
+
 9.  Valider sur carte
  
 # labo08 : TMR
