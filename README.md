@@ -273,7 +273,7 @@ Dans cette partie, nous allons réaliser une implémentation avec « Lock Step �
 1.  Placez-vous dans le dossier **labo06**
 
     ```
-    cd labo05
+    cd labo06
     ```
 
 2.  Exécuter le script **init.sh**.
@@ -312,7 +312,7 @@ Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du
 1.  Placez-vous dans le dossier **labo07**
 
     ```
-    cd labo05
+    cd labo07
     ```
 
 2.  Exécuter le script **init.sh**.
