@@ -19,7 +19,7 @@ Les documentations sont disponibles dans les fichiers suivants :
 | CPU           | [ug129](https://docs.amd.com/v/u/en-US/ug129) |
 | Devkit        | [NanoXplore_NX1H35S_DevKitV3_User_Guide](https://files.nanoxplore.com/f/79d605999def475da0ec/) |
 |               | [NanoXplore_NX1H35S_DevKitV3_Schematics](https://files.nanoxplore.com/f/c5dcf72c018e44939a2f) |
-| NG-MEDIUM	| [NanoXplore NX1H35AS Datashee](https://files.nanoxplore.com/f/5ad5e8a333654fb2ac76) |
+| NG-MEDIUM	| [NanoXplore NX1H35AS Datasheet](https://files.nanoxplore.com/f/5ad5e8a333654fb2ac76) |
  
 ## Archive
 Les sources du TP sont disponibles sur le dépôt suivant :
