@@ -16,12 +16,10 @@ Pour cela, nous allons utiliser un System On Chip minimaliste à base d’un clo
 Les documentations sont disponibles dans les fichiers suivants :
 | Documentation |	Lien |
 |---------------|------|
-| CPU           |	ug129.pdf |
-| Devkit        | Guide utilisateur de la carte de développement du NX1H35S |
-|               | NanoXplore_NX1H35S_DevKitV3_User_Guide_V1_04.pdf |
-|               | NanoXplore_NX1H35S_DevKitV3_board.pdf |
-| NG-MEDIUM	| Documentation du FPGA NX1H35S |
-|               | NanoXplore_NX1H35AS_Datasheet_v2.3.pdf |
+| CPU           | [ug129](https://docs.amd.com/v/u/en-US/ug129) |
+| Devkit        | [NanoXplore_NX1H35S_DevKitV3_User_Guide](https://files.nanoxplore.com/f/79d605999def475da0ec/) |
+|               | [NanoXplore_NX1H35S_DevKitV3_Schematics](https://files.nanoxplore.com/f/c5dcf72c018e44939a2f) |
+| NG-MEDIUM	| [NanoXplore NX1H35AS Datashee](https://files.nanoxplore.com/f/5ad5e8a333654fb2ac76) |
  
 ## Archive
 Les sources du TP sont disponibles sur le dépôt suivant :
