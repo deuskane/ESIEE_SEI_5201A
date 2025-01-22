@@ -16,12 +16,10 @@ Pour cela, nous allons utiliser un System On Chip minimaliste à base d’un clo
 Les documentations sont disponibles dans les fichiers suivants :
 | Documentation |	Lien |
 |---------------|------|
-| CPU           |	ug129.pdf |
-| Devkit        | Guide utilisateur de la carte de développement du NX1H35S |
-|               | NanoXplore_NX1H35S_DevKitV3_User_Guide_V1_04.pdf |
-|               | NanoXplore_NX1H35S_DevKitV3_board.pdf |
-| NG-MEDIUM	| Documentation du FPGA NX1H35S |
-|               | NanoXplore_NX1H35AS_Datasheet_v2.3.pdf |
+| CPU           | [ug129](https://docs.amd.com/v/u/en-US/ug129) |
+| Devkit        | [NanoXplore_NX1H35S_DevKitV3_User_Guide](https://files.nanoxplore.com/f/79d605999def475da0ec/) |
+|               | [NanoXplore_NX1H35S_DevKitV3_Schematics](https://files.nanoxplore.com/f/c5dcf72c018e44939a2f) |
+| NG-MEDIUM	| [NanoXplore NX1H35AS Datasheet](https://files.nanoxplore.com/f/5ad5e8a333654fb2ac76) |
  
 ## Archive
 Les sources du TP sont disponibles sur le dépôt suivant :
@@ -113,18 +111,18 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
 
 10.  Les fichiers générer par les generateurs de fusesoc sont localisé dans le dossier de cache de l'outil :
 
-    ```
-    cd ~/.cache/fusesoc/generated/asylum_soc_OB8_GPIO-gen_c_identity_1.1.4
-    ```
+     ```
+     cd ~/.cache/fusesoc/generated/asylum_soc_OB8_GPIO-gen_c_identity_1.1.4
+     ```
 
-    -  Que contient ce dossier ?
-    -  Comparer le fichier **identity.psm** généré avec le fichier **asylum-soc-OB8_gpio/soft/identity.psm**
-       - Localiser la boucle d'écrit dans l'étape 7
-       - Combien d'instructions contient le fichier **identity.psm** généré par le compilateur ?
-       - Pourquoi le fichier  **asylum-soc-OB8_gpio/soft/identity.psm** contient moins d'instructions ?
-    -  Que contient le fichier identity.vhd ?
-       - Quel est le nom du module ?
-       - Décrire le contenu du module 
+     -  Que contient ce dossier ?
+     -  Comparer le fichier **identity.psm** généré avec le fichier **asylum-soc-OB8_gpio/soft/identity.psm**
+        - Localiser la boucle d'écrit dans l'étape 7
+        - Combien d'instructions contient le fichier **identity.psm** généré par le compilateur ?
+        - Pourquoi le fichier  **asylum-soc-OB8_gpio/soft/identity.psm** contient moins d'instructions ?
+     -  Que contient le fichier identity.vhd ?
+        - Quel est le nom du module ?
+        - Décrire le contenu du module 
 
 > [!WARNING]
 > Les fichiers psm contiennent des directives de compilations (EQU, ORG), des directives de simulations (DSIN, DSOUT) et des labels. Ce ne sont pas des instructions    
@@ -331,8 +329,8 @@ Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du
     - Le premier contient une sortie d’un bit est va être le reset du SOC applicatif
     - Le second contient une sortie de 3 bits connectés aux leds LD17 à LD19.
 
-  >   [!TIPS]
-  >   Le SoC superviseur ressemble au SoC modifié lors du labo 5 en modifiant la largeur des vecteurs de LED et en supprimant les switchs.
+  > [!IMPORTANT]
+  >  Le SoC superviseur ressemble au SoC modifié lors du labo 5 en modifiant la largeur des vecteurs de LED et en supprimant les switchs.
 
 4.  Modifier le fichier **asylum-soc-OB8_gpio/src/OB8_GPIO_top.vhd** pour instancier le SoC superviseur et le connecter avec le SoC applicatif.
 5.  Editer le fichier **asylum-soc-OB8_gpio/soft/supervisor.c** qui contient les fonctions suivantes :
@@ -349,7 +347,7 @@ Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du
     L’interruption du SOC superviseur provient du registre **diff_r** du SoC applicatif.
 6.  Editer le fichier **asylum-soc-OB8_gpio/OB8_GPIO.core**
 
-    -  Ajouter les lignes suivant après le générateur *gen_c_identity* :
+    -  Ajouter les lignes suivant après le générateur *gen_c_identity* et les lignes d'après dans  la target *emu_ng_medium_c_identity* :
 
 ```
 gen_c_supervisor :
@@ -359,8 +357,6 @@ gen_c_supervisor :
     type : c
     entity : ROM_supervisor
 ```
-    
-    - Dans la target *emu_ng_medium_c_identity*, ajouter l’appel au générateur nouvellement créé : 
 
 ```
 generate : [gen_c_identity, gen_c_supervisor]
