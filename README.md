@@ -34,101 +34,113 @@ git clone https://github.com/deuskane/ESIEE_SEI_5201A.git
 # labo01 : Prise en main de l'outil Impulse
 Dans cette première partie, nous allons prendre en main l’environnement logiciel **impulse**.
 
-1.      Éditer le fichier *labo01/src/labo01.vhd* pour réaliser la fonctionnalité illustrée dans la Figure 1.
+1. Éditer le fichier *labo01/src/labo01.vhd* pour réaliser la fonctionnalité illustrée dans la Figure 1.
 
-2.      Dans le répertoire *labo01/nxmap*, lancer la commande *impulse*. Cette commande ouvre l’interface graphique présenté dans la Figure 2.
+2. Dans le répertoire *labo01/nxmap*, lancer la commande *impulse*. Cette commande ouvre l’interface graphique présenté dans la Figure 2.
 
-3.      Créer un nouveau projet
+3. Créer un nouveau projet
 
-        Create New Project (ou File/Project)
-        - Onglet «1. Set Project Information»
+   Create New Project (ou File/Project)
+   - Onglet «1. Set Project Information»
 
-          | Project Name | labo01 | |
-          | Path         | labo01/nxmap | Définition du dossier de travail. |
+    | Champ        | Valeur       | Description |
+    |--------------|--------------|---------------|
+    | Project Name | labo01       | Nom du projet |
+    | Path         | labo01/nxmap | Définition du dossier de travail. |
         
-        -  Onglet « 2. Add Sources »
-           - Ajouter le fichier *labo01/src/labo01.vhd*
-           - Définir le Top cell name comme étant **labo01**
+    -  Onglet « 2. Add Sources »
+       - Ajouter le fichier *labo01/src/labo01.vhd*
+       - Définir le Top cell name comme étant **labo01**
 
-        - Onglet « 4. Select Devices »
+    - Onglet « 4. Select Devices »
 
-          | Device  | NG-MEDIUM |
-          | Package | LGA-625   |
+      | Champ        | Valeur       | Description |
+      |--------------|--------------|---------------|
+      | Device       | NG-MEDIUM    | |
+      | Package      | LGA-625      | |
 
-        - Onglet « 5. Project Summary»
+    - Onglet « 5. Project Summary»
 
-        Après avoir vérifier les informations, cliquez sur « Finish »
+      Après avoir vérifier les informations, cliquez sur « Finish »
 
 
-        Après avoir créé le projet, la fenêtre de travail apparaît.
+   Après avoir créé le projet, la fenêtre de travail apparaît.
 
-4.      Sauvegarder votre projet : 
+4. Sauvegarder votre projet : 
 
-        File>Save Project
+       File>Save Project
 
-5.      Affectation des IOs 
+5. Affectation des IOs 
 
-        Au début d’un projet, les IOs et les bancs ne sont pas configurés : le placement des IOs sera automatique ce qui peut être dangereux pour une exécution sur carte.
+   Au début d’un projet, les IOs et les bancs ne sont pas configurés : le placement des IOs sera automatique ce qui peut être dangereux pour une exécution sur carte.
  
-        Pour cette exemple, vous devez avoir la configuration suivante :
+   Pour cette exemple, vous devez avoir la configuration suivante :
 
-        | HDL Name      | FPGA Name       | PCB Name |
-	|---------------|-----------------|----------|
-        | led_n_o[0]    | IOB0_D01P       | LD1	     |
-        | led_n_o[1]    | IOB0_D03N       | LD2	     |
-        | led_n_o[2]    | IOB0_D03P       | LD3	     |
-        | led_n_o[3]    | IOB1_D05N       | LD4	     |
-        | led_n_o[4]    | IOB1_D05P       | LD5	     |
-        | led_n_o[5]    | IOB1_D06N       | LD6	     |
-        | led_n_o[6]    | IOB1_D06P       | LD7	     |
-        | led_n_o[7]    | IOB1_D02N       | LD8	     |
-        | switch_i[0]   | IOB10_D09P      | S1	     |
-        | switch_i[1]   | IOB10_D03P      | S2	     |
-        | switch_i[2]   | IOB10_D03N      | S3	     |
-        | switch_i[3]   | IOB10_D04P      | S4	     |
-        | switch_i[4]   | IOB10_D09N      | S5	     |
-        | switch_i[5]   | IOB10_D04N      | S6       |
+   | HDL Name      | FPGA Name       | PCB Name |
+	 |---------------|-----------------|----------|
+   | led_n_o[0]    | IOB0_D01P       | LD1	     |
+   | led_n_o[1]    | IOB0_D03N       | LD2	     |
+   | led_n_o[2]    | IOB0_D03P       | LD3	     |
+   | led_n_o[3]    | IOB1_D05N       | LD4	     |
+   | led_n_o[4]    | IOB1_D05P       | LD5	     |
+   | led_n_o[5]    | IOB1_D06N       | LD6	     |
+   | led_n_o[6]    | IOB1_D06P       | LD7	     |
+   | led_n_o[7]    | IOB1_D02N       | LD8	     |
+   | switch_i[0]   | IOB10_D09P      | S1	     |
+   | switch_i[1]   | IOB10_D03P      | S2	     |
+   | switch_i[2]   | IOB10_D03N      | S3	     |
+   | switch_i[3]   | IOB10_D04P      | S4	     |
+   | switch_i[4]   | IOB10_D09N      | S5	     |
+   | switch_i[5]   | IOB10_D04N      | S6       |
 
-        | Bank Name     | Voltage |
-	|---------------|---------|
-        | IOB0          | 3.3V	  |
-        | IOB1          | 3.3V	  |
-        | IOB10         | 1.8V    |
+   | Bank Name     | Voltage |
+	 |---------------|---------|
+   | IOB0          | 3.3V	  |
+   | IOB1          | 3.3V	  |
+   | IOB10         | 1.8V    |
 
-        Exporter la configuration dans le fichier labo01/project/pads.py
+   Exporter la configuration dans le fichier labo01/project/pads.py
 	
-6.      Sauvegarder votre Projet
-7.      Synthèse : Cliquer sur Synthesis
-8.      Placement : Cliquer sur Place
-9.      Routage : Cliquer sur Route
-10.     Générer un Bitstream : Cliquer sur Bitstream
-11.     Dans le dossier labo01/nxmap il y a les fichiers suivants :
-        - pads.py : fichier d’affectation des IOs et de configuration des bancs
-        - labo01.nxb : fichier de bitstream
-        - Fichiers *.nym : Fichier interne à la suite impulse
-        - transcript.py : Fichier pour relancer le projet en ligne de commande
-        - logs : contient les différents logs de l’outils :
-          - instances.rpt : ce fichier fournit les statistiques d’utilisations des ressources internes du FPGA.
-            Ce labo utilise 6 LUTs, ces dernières réalisent les 6 inverseurs du design
-          - ios.rpt : ce fichier fournit un résumé des IOs.
+6. Sauvegarder votre Projet
+7. Synthèse : Cliquer sur Synthesis
+8. Placement : Cliquer sur Place
+9. Routage : Cliquer sur Route
+10. Générer un Bitstream : Cliquer sur Bitstream
+11. Dans le dossier labo01/nxmap il y a les fichiers suivants :
+    - pads.py : fichier d’affectation des IOs et de configuration des bancs
+    - labo01.nxb : fichier de bitstream
+    - Fichiers *.nym : Fichier interne à la suite impulse
+    - transcript.py : Fichier pour relancer le projet en ligne de commande
+    - logs : contient les différents logs de l’outils :
+      - instances.rpt : ce fichier fournit les statistiques d’utilisations des ressources internes du FPGA.
+      
+        ````
+        Ce labo utilise 6 LUTs, ces dernières réalisent les 6 inverseurs du design
+        ````
 
-12.     Téléchargement du bitstream sur la carte :
+      - ios.rpt : ce fichier fournit un résumé des IOs.
 
-        Dans le répertoire labo01/nxmap, exécutez-le avec la commande suivante :
-        nxbase2 labo01.nxb
+12. Téléchargement du bitstream sur la carte :
 
-> [!IMPORTANT]
->       Le périphérique USB « 584E:424E » doit être accessible par la VM, sinon vous risquez d’avoir le message suivant :
->       No board found, plese plug a board
+    Dans le répertoire labo01/nxmap, exécutez-le avec la commande suivante :
+    ````
+    nxbase2 labo01.nxb
+    ````
+    
+    > [!WARNING]
+    >       Le périphérique USB « **584E:424E** » doit être accessible par la VM, sinon vous risquez d’avoir le message suivant :
+    >       No board found, plese plug a board
 
-> [!WARNING]
->       Après la première exécution, windows va remapper le périphérique inconnue en « Nanoxplore Angie USB-JTAG ». Ce périphérique doit également être accessible par la VM, sinon vous riquez d’avoir le message suivant :
->       Cannot find the new board
+    > [!NOTE]
+    >       Après la première exécution, windows va remapper le périphérique inconnue en « **Nanoxplore Angie USB-JTAG** ». Ce périphérique doit également être accessible par la VM, sinon vous riquez d’avoir le message suivant :
+    >       Cannot find the new board
 
-13.     Expérimenter sur carte
+13. Expérimenter sur carte
 
-        La connection entre nxbase2 et le devkit est étable quand l’exécution de la commande affiche le message suivant :
-        Init board up to a loadable state
+    La connection entre nxbase2 et le devkit est étable quand l’exécution de la commande affiche le message suivant :
+    ````
+    Init board up to a loadable state
+    ````
 
 # labo02 : Prise en main de l’environnement 
 Dans cette partie nous allons réaliser la même fonctionnalité que dans le labo01 mais avec System On Chip à base d’un clone du PicoBlaze3.
