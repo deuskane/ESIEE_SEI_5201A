@@ -127,13 +127,13 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
     nxbase2 labo01.nxb
     ````
     
-    > [!WARNING]
-    >       Le périphérique USB « **584E:424E** » doit être accessible par la VM, sinon vous risquez d’avoir le message suivant :
-    >       No board found, plese plug a board
+  > [!WARNING]
+  > Le périphérique USB « **584E:424E** » doit être accessible par la VM, sinon vous risquez d’avoir le message suivant :
+  > No board found, plese plug a board
 
-    > [!NOTE]
-    >       Après la première exécution, windows va remapper le périphérique inconnue en « **Nanoxplore Angie USB-JTAG** ». Ce périphérique doit également être accessible par la VM, sinon vous riquez d’avoir le message suivant :
-    >       Cannot find the new board
+  > [!NOTE]
+  > Après la première exécution, windows va remapper le périphérique inconnue en « **Nanoxplore Angie USB-JTAG** ». Ce périphérique doit également être accessible par la VM, sinon vous riquez d’avoir le message suivant :
+  > Cannot find the new board
 
 13. Expérimenter sur carte
 
@@ -172,8 +172,8 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
 
     ![image](https://github.com/user-attachments/assets/0a3c148a-1737-414e-b719-a842dd62abd4)
 
-  >   [!CAUTION]
-  >   Ce script ne doit être exécuter qu'une fois.
+  > [!CAUTION]
+  > Ce script ne doit être exécuter qu'une fois.
   
 3.  Placer vous dans le dossier nouvellement créé **asylum-soc-OB8_gpio**. Celui-ci contient les fichiers et dossier suivant :
 
@@ -235,8 +235,8 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
         - Quel est le nom du module ?
         - Décrire le contenu du module 
 
-> [!WARNING]
-> Les fichiers psm contiennent des directives de compilations (EQU, ORG), des directives de simulations (DSIN, DSOUT) et des labels. Ce ne sont pas des instructions    
+  > [!WARNING]
+  > Les fichiers psm contiennent des directives de compilations (EQU, ORG), des directives de simulations (DSIN, DSOUT) et des labels. Ce ne sont pas des instructions    
 
 9.  La simulation a généré un chronogramme.
     Ouvrir ce fichier à l’aide de la commande suivante : 
@@ -263,8 +263,8 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
 
     L’exécution de la commande `make run` doit fournir la sortie suivante :
  
-> [!TIP]
-> Il arrive parfois que la commande échoue et n’arrive pas à ce connecter à la board via la l’USB de la VM, n’hésitez pas à relancer la commande `make run`
+  > [!TIP]
+  > Il arrive parfois que la commande échoue et n’arrive pas à ce connecter à la board via la l’USB de la VM, n’hésitez pas à relancer la commande `make run`
  
 11. Modifier le code source exécuté par le processeur : **asylum-soc-OB8_gpio/soft/identity.c** pour inverser l’état des switchs avant de les envoyer sur les leds.
 
@@ -301,8 +301,8 @@ Le gestionnaire d'interruption du PicoBlazee3 est situé à l’adresse 0x3FF
     
     Ce script va copier le dossier **labo02/asylum-soc-OB8_gpio** dans le dossier **labo03**
 
-  >   [!CAUTION]
-  >   Ce script ne doit être exécuter qu'une fois.
+  > [!CAUTION]
+  > Ce script ne doit être exécuter qu'une fois.
 
 3.  Modifier le fichier  **asylum-soc-OB8_gpio/src/OB8_GPIO.vhd** pour réaliser l’application Figure 2.
     -  Modifier l’interface pour ajouter le vecteur *button_i* et *led1_o*
@@ -392,8 +392,8 @@ Dans cette partie, nous allons réaliser une implémentation avec « Lock Step �
     
     Ce script va copier le dossier **labo03/asylum-soc-OB8_gpio** dans le dossier **labo04**
 
-  >   [!CAUTION]
-  >   Ce script ne doit être exécuter qu'une fois.
+  > [!CAUTION]
+  > Ce script ne doit être exécuter qu'une fois.
 
 3.  Editer le fichier **asylum-soc-OB8_gpio/src/OB8_GPIO.vhd** pour ajouter un 2ème processeur (Figure 3)
 
@@ -431,8 +431,8 @@ Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du
     
     Ce script va copier le dossier **labo04/asylum-soc-OB8_gpio** dans le dossier **labo05**
 
-  >   [!CAUTION]
-  >   Ce script ne doit être exécuter qu'une fois.
+  > [!CAUTION]
+  > Ce script ne doit être exécuter qu'une fois.
 
 3.  Créer le fichier **asylum-soc-OB8_gpio/src/OB8_GPIO_supervisor.vhd** pour ajouter le SoC superviseur (Figure 4).
 
@@ -504,8 +504,8 @@ Dans ce labo, nous allons modifier les processeurs en lock-step du soc applicati
     
     Ce script va copier le dossier **labo05/asylum-soc-OB8_gpio** dans le dossier **labo06**
 
-  >   [!CAUTION]
-  >   Ce script ne doit être exécuter qu'une fois.
+  > [!CAUTION]
+  > Ce script ne doit être exécuter qu'une fois.
 
 3.  Editer le fichier **asylum-soc-OB8_gpio/src/OB8_GPIO.vhd** pour ajouter les modification suivante (Figure 5) :
 
