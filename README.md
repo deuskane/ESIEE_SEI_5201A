@@ -14,12 +14,12 @@ Pour cela, nous allons utiliser un System On Chip minimaliste à base d’un clo
 
 ## Documentation
 Les documentations sont disponibles dans les fichiers suivants :
-| Documentation |	Lien |
+| Documentation |       Lien |
 |---------------|------|
 | CPU           | [ug129](https://docs.amd.com/v/u/en-US/ug129) |
 | Devkit        | [NanoXplore_NX1H35S_DevKitV3_User_Guide](https://files.nanoxplore.com/f/79d605999def475da0ec/) |
 |               | [NanoXplore_NX1H35S_DevKitV3_Schematics](https://files.nanoxplore.com/f/c5dcf72c018e44939a2f) |
-| NG-MEDIUM	| [NanoXplore NX1H35AS Datasheet](https://files.nanoxplore.com/f/5ad5e8a333654fb2ac76) |
+| NG-MEDIUM     | [NanoXplore NX1H35AS Datasheet](https://files.nanoxplore.com/f/5ad5e8a333654fb2ac76) |
  
 ## Archive
 Les sources du TP sont disponibles sur le dépôt suivant :
@@ -31,7 +31,106 @@ Récupérer les sources en clonant le dépôt :
 git clone https://github.com/deuskane/ESIEE_SEI_5201A.git
 ```
 
-# labo04 : Prise en main de l’environnement 
+# labo01 : Prise en main de l'outil Impulse
+Dans cette première partie, nous allons prendre en main l’environnement logiciel **impulse**.
+
+1.      Éditer le fichier *labo01/src/labo01.vhd* pour réaliser la fonctionnalité illustrée dans la Figure 1.
+
+2.      Dans le répertoire *labo01/nxmap*, lancer la commande *impulse*. Cette commande ouvre l’interface graphique présenté dans la Figure 2.
+
+3.      Créer un nouveau projet
+
+        Create New Project (ou File/Project)
+        - Onglet «1. Set Project Information»
+
+          | Project Name | labo01 | |
+          | Path         | labo01/nxmap | Définition du dossier de travail. |
+        
+        -  Onglet « 2. Add Sources »
+           - Ajouter le fichier *labo01/src/labo01.vhd*
+           - Définir le Top cell name comme étant **labo01**
+
+        - Onglet « 4. Select Devices »
+
+          | Device  | NG-MEDIUM |
+          | Package | LGA-625   |
+
+        - Onglet « 5. Project Summary»
+
+        Après avoir vérifier les informations, cliquez sur « Finish »
+
+
+        Après avoir créé le projet, la fenêtre de travail apparaît.
+
+4.      Sauvegarder votre projet : 
+
+        File>Save Project
+
+5.      Affectation des IOs 
+
+        Au début d’un projet, les IOs et les bancs ne sont pas configurés : le placement des IOs sera automatique ce qui peut être dangereux pour une exécution sur carte.
+ 
+        Pour cette exemple, vous devez avoir la configuration suivante :
+
+        | HDL Name      | FPGA Name       | PCB Name |
+	|---------------|-----------------|----------|
+        | led_n_o[0]    | IOB0_D01P       | LD1	     |
+        | led_n_o[1]    | IOB0_D03N       | LD2	     |
+        | led_n_o[2]    | IOB0_D03P       | LD3	     |
+        | led_n_o[3]    | IOB1_D05N       | LD4	     |
+        | led_n_o[4]    | IOB1_D05P       | LD5	     |
+        | led_n_o[5]    | IOB1_D06N       | LD6	     |
+        | led_n_o[6]    | IOB1_D06P       | LD7	     |
+        | led_n_o[7]    | IOB1_D02N       | LD8	     |
+        | switch_i[0]   | IOB10_D09P      | S1	     |
+        | switch_i[1]   | IOB10_D03P      | S2	     |
+        | switch_i[2]   | IOB10_D03N      | S3	     |
+        | switch_i[3]   | IOB10_D04P      | S4	     |
+        | switch_i[4]   | IOB10_D09N      | S5	     |
+        | switch_i[5]   | IOB10_D04N      | S6       |
+
+        | Bank Name     | Voltage |
+	|---------------|---------|
+        | IOB0          | 3.3V	  |
+        | IOB1          | 3.3V	  |
+        | IOB10         | 1.8V    |
+
+        Exporter la configuration dans le fichier labo01/project/pads.py
+	
+6.      Sauvegarder votre Projet
+7.      Synthèse : Cliquer sur Synthesis
+8.      Placement : Cliquer sur Place
+9.      Routage : Cliquer sur Route
+10.     Générer un Bitstream : Cliquer sur Bitstream
+11.     Dans le dossier labo01/nxmap il y a les fichiers suivants :
+        - pads.py : fichier d’affectation des IOs et de configuration des bancs
+        - labo01.nxb : fichier de bitstream
+        - Fichiers *.nym : Fichier interne à la suite impulse
+        - transcript.py : Fichier pour relancer le projet en ligne de commande
+        - logs : contient les différents logs de l’outils :
+          - instances.rpt : ce fichier fournit les statistiques d’utilisations des ressources internes du FPGA.
+            Ce labo utilise 6 LUTs, ces dernières réalisent les 6 inverseurs du design
+          - ios.rpt : ce fichier fournit un résumé des IOs.
+
+12.     Téléchargement du bitstream sur la carte :
+
+        Dans le répertoire labo01/nxmap, exécutez-le avec la commande suivante :
+        nxbase2 labo01.nxb
+
+> [!IMPORTANT]
+>       Le périphérique USB « 584E:424E » doit être accessible par la VM, sinon vous risquez d’avoir le message suivant :
+>       No board found, plese plug a board
+
+> [!WARNING]
+>       Après la première exécution, windows va remapper le périphérique inconnue en « Nanoxplore Angie USB-JTAG ». Ce périphérique doit également être accessible par la VM, sinon vous riquez d’avoir le message suivant :
+>       Cannot find the new board
+
+13.     Expérimenter sur carte
+
+        La connection entre nxbase2 et le devkit est étable quand l’exécution de la commande affiche le message suivant :
+        Init board up to a loadable state
+
+# labo02 : Prise en main de l’environnement 
 Dans cette partie nous allons réaliser la même fonctionnalité que dans le labo01 mais avec System On Chip à base d’un clone du PicoBlaze3.
 
 Les IPs sont présentes dans le dépôt git suivant :
@@ -42,10 +141,10 @@ Dans la suite de ce TP, nous utiliserons l’outil fusesoc.
 
 Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
 
-1.  Placez-vous dans le dossier **labo04**
+1.  Placez-vous dans le dossier **labo02**
 
     ```
-    cd labo04
+    cd labo02
     ```
 
 2.  Exécuter le script **init.sh**.
@@ -163,7 +262,7 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
     - Modifier le code de test en conséquence (**asylum-soc-OB8_gpio/sim/tb_OB8_gpio.vhd**)
 12.  Valider sur carte 
  
-# labo05 : Prise en main des interruptions
+# labo03 : Prise en main des interruptions
 
 Dans cette partie, nous allons étudier le fonctionnement des interruptions d’un processeur.
 
@@ -175,12 +274,12 @@ Le gestionnaire d'interruption du PicoBlazee3 est situé à l’adresse 0x3FF
 
 ![image](https://github.com/user-attachments/assets/40baf90e-4a81-4b26-9122-a74030412d1b)
 
-***Figure 2 : Labo05***
+***Figure 2 : Labo03***
 
-1.  Placez-vous dans le dossier **labo05**
+1.  Placez-vous dans le dossier **labo03**
 
     ```
-    cd labo05
+    cd labo03
     ```
 
 2.  Exécuter le script **init.sh**.
@@ -188,7 +287,7 @@ Le gestionnaire d'interruption du PicoBlazee3 est situé à l’adresse 0x3FF
     ./init.sh
     ```
     
-    Ce script va copier le dossier **labo04/asylum-soc-OB8_gpio** dans le dossier **labo05**
+    Ce script va copier le dossier **labo02/asylum-soc-OB8_gpio** dans le dossier **labo03**
 
   >   [!CAUTION]
   >   Ce script ne doit être exécuter qu'une fois.
@@ -261,17 +360,17 @@ Le gestionnaire d'interruption du PicoBlazee3 est situé à l’adresse 0x3FF
      - Quel est la valeur du compteur une fois l'application démarer ?
      - En déduire la polarité du bouton quand il n’est pas appuyé et corriger votre code si nécessaire
  
-# labo06 : Lock-Step
-Dans cette partie, nous allons réaliser une implémentation avec « Lock Step » du SOC vu dans le labo05.
+# labo04 : Lock-Step
+Dans cette partie, nous allons réaliser une implémentation avec « Lock Step » du SOC vu dans le labo03.
 
 ![image](https://github.com/user-attachments/assets/16d872fe-c980-497c-b6a4-e8f4895039fa)
 
-***Figure 3 : labo06***
+***Figure 3 : labo04***
 
-1.  Placez-vous dans le dossier **labo06**
+1.  Placez-vous dans le dossier **labo04**
 
     ```
-    cd labo06
+    cd labo04
     ```
 
 2.  Exécuter le script **init.sh**.
@@ -279,7 +378,7 @@ Dans cette partie, nous allons réaliser une implémentation avec « Lock Step �
     ./init.sh
     ```
     
-    Ce script va copier le dossier **labo05/asylum-soc-OB8_gpio** dans le dossier **labo06**
+    Ce script va copier le dossier **labo03/asylum-soc-OB8_gpio** dans le dossier **labo04**
 
   >   [!CAUTION]
   >   Ce script ne doit être exécuter qu'une fois.
@@ -300,17 +399,17 @@ Dans cette partie, nous allons réaliser une implémentation avec « Lock Step �
   
 6.  Que faire du registre diff_r ?
  
-# labo07 : Lock-Step
+# labo05 : Lock-Step
 Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du lock step.
 
 ![image](https://github.com/user-attachments/assets/199074a6-8fd0-4d2c-93f2-741ab774b7a8)
 
-***Figure 4 : labo07***
+***Figure 4 : labo05***
 
-1.  Placez-vous dans le dossier **labo07**
+1.  Placez-vous dans le dossier **labo05**
 
     ```
-    cd labo07
+    cd labo05
     ```
 
 2.  Exécuter le script **init.sh**.
@@ -318,7 +417,7 @@ Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du
     ./init.sh
     ```
     
-    Ce script va copier le dossier **labo06/asylum-soc-OB8_gpio** dans le dossier **labo07**
+    Ce script va copier le dossier **labo04/asylum-soc-OB8_gpio** dans le dossier **labo05**
 
   >   [!CAUTION]
   >   Ce script ne doit être exécuter qu'une fois.
@@ -369,21 +468,21 @@ generate : [gen_c_identity, gen_c_supervisor]
     |-------------------|------------|------|---------------------|
     | inject_error_i[0] | IOB10_D07P | S8   | Injection d'une erreur sur le processor 0 |
     | inject_error_i[1] | IOB10_D12P | S9   | Injection d'une erreur sur le processor 1 |
-    | inject_error_i[2] | IOB10_D07N | S10  | Injection d'une erreur sur le processor 2 (cf labo08) |
+    | inject_error_i[2] | IOB10_D07N | S10  | Injection d'une erreur sur le processor 2 (cf labo06) |
 
 9.  Valider sur carte
  
-# labo08 : TMR
+# labo06 : TMR
 Dans ce labo, nous allons modifier les processeurs en lock-step du soc applicatif par des processeurs avec triplication.
 
 ![image](https://github.com/user-attachments/assets/d3c9fb6b-d132-47df-91e8-f1c76a8b5f0a)
 
-***Figure 5 : labo08***
+***Figure 5 : labo06***
 
-1.  Placez-vous dans le dossier **labo08**
+1.  Placez-vous dans le dossier **labo06**
 
     ```
-    cd labo08
+    cd labo06
     ```
 
 2.  Exécuter le script **init.sh**.
@@ -391,7 +490,7 @@ Dans ce labo, nous allons modifier les processeurs en lock-step du soc applicati
     ./init.sh
     ```
     
-    Ce script va copier le dossier **labo07/asylum-soc-OB8_gpio** dans le dossier **labo08**
+    Ce script va copier le dossier **labo05/asylum-soc-OB8_gpio** dans le dossier **labo06**
 
   >   [!CAUTION]
   >   Ce script ne doit être exécuter qu'une fois.
@@ -402,8 +501,8 @@ Dans ce labo, nous allons modifier les processeurs en lock-step du soc applicati
     2.  Toutes les sorties des 3 processeurs doivent être votées
     3.  Les différences doivent être calculées processeur par processeur et être envoyées au soc superviseur (le registre *diff_r* est donc sur 3 bits)
     4.  Le soc superviseur possède 2 GPIO supplémentaires :
-    	1.  GPIO5 va fournir un vecteur pour masquer les lignes d’interruptions
-	2.  GPIO6 va recevoir le vecteur d’interruptions masqués courant.
+        1.  GPIO5 va fournir un vecteur pour masquer les lignes d’interruptions
+        2.  GPIO6 va recevoir le vecteur d’interruptions masqués courant.
 4.  Editer le gestionnaire d’interruption défini dans le fichier asylum-soc-OB8_gpio/soft/supervisor.c.
 
     Ce dernier va lire l’état des interruptions et en déduire quel est le processeur fautif. Si c’est la première erreur détectée alors il va masquer les interruptions provenant de ce processeur.
