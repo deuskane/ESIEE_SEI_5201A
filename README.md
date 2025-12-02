@@ -1,6 +1,14 @@
 # ESIEE_SEI_5201A
 
 # Préambule
+Dans ces séances de TP, nous allons utiliser un System On Chip académique à base d’un clone du microcontrôleur 8 bits PicoBlaze3 et de quelques prériphériques GPIO, UART, SPI, Timer, ... .
+
+Les TP sont découpés en 4 parties :
+1. Prendre en main l'environnement logiciel et matérielle
+2. Implémenté un nouveau périphérique et intégration dans le SoC existant
+3. Mise en place de la technique du Lock-Step
+4. Mise en place de la technique de la triplication (TMR)
+
 ## Environnement logiciel
 Pour réaliser ce TP, l’environnement logiciel est encapsulé dans une machine virtuelle basée sur une distribution CentOS 8 dont les identifiants sont les suivant :
 
@@ -9,11 +17,17 @@ Pour réaliser ce TP, l’environnement logiciel est encapsulé dans une machine
 > **Password** : user
 
 ##  Environnement matériel
-Dans ce TP, nous allons mettre en œuvre la technique du « Lock Step » pour mettre en évidence un événement dans un processeur.
-Pour cela, nous allons utiliser un System On Chip minimaliste à base d’un clone du microcontrôleur PicoBlaze3 et de contrôleurs de GPIO.
+Ce TP utilise la carte de developpement DK625 intégrant un FPGA NX1H35S.
+Il s'agit d'un FPGA radhard de 35K LUT de la société NanoXplore.
+
+Dans ce TP, nous allons utiliser 2 outils:
+- L'outil **impulse** génére un bitstream à partir des codes VHDL / Verilog.
+- L'outil **nxbase** télécharge le bitstream dans le FPGA.
+
+ ![image](doc/ressources/Devkit_ng_medium.jpg)
 
 ## Documentation
-Les documentations sont disponibles dans les fichiers suivants :
+Les documentations sont disponibles dans les liens suivants :
 | Documentation |       Lien |
 |---------------|------|
 | CPU           | [ug129](https://docs.amd.com/v/u/en-US/ug129) |
@@ -34,9 +48,13 @@ git clone https://github.com/deuskane/ESIEE_SEI_5201A.git
 # labo01 : Prise en main de l'outil Impulse
 Dans cette première partie, nous allons prendre en main l’environnement logiciel **impulse**.
 
-1. Éditer le fichier *labo01/src/labo01.vhd* pour réaliser la fonctionnalité illustrée dans la Figure 1.
 
-2. Dans le répertoire *labo01/nxmap*, lancer la commande *impulse*. Cette commande ouvre l’interface graphique présenté dans la Figure 2.
+1. Éditer le fichier *labo01/src/labo01.vhd* pour réaliser la fonctionnalité illustrée dans la Figure suivante.
+   ![image](doc/ressources/labo-labo01.png)
+
+
+2. Dans le répertoire *labo01/build*, lancer la commande **impulse**. Cette commande ouvre l’interface graphique présenté dans la figure suivante.
+   ![image](doc/ressources/labo-impulse_starting.png)
 
 3. Créer un nouveau projet
 
@@ -46,7 +64,7 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
     | Champ        | Valeur       | Description |
     |--------------|--------------|---------------|
     | Project Name | labo01       | Nom du projet |
-    | Path         | labo01/nxmap | Définition du dossier de travail. |
+    | Path         | labo01/build | Définition du dossier de travail. |
         
     -  Onglet « 2. Add Sources »
        - Ajouter le fichier *labo01/src/labo01.vhd*
@@ -78,35 +96,35 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
 
    | HDL Name      | FPGA Name       | PCB Name |
 	 |---------------|-----------------|----------|
-   | led_n_o[0]    | IOB0_D01P       | LD1	     |
-   | led_n_o[1]    | IOB0_D03N       | LD2	     |
-   | led_n_o[2]    | IOB0_D03P       | LD3	     |
-   | led_n_o[3]    | IOB1_D05N       | LD4	     |
-   | led_n_o[4]    | IOB1_D05P       | LD5	     |
-   | led_n_o[5]    | IOB1_D06N       | LD6	     |
-   | led_n_o[6]    | IOB1_D06P       | LD7	     |
-   | led_n_o[7]    | IOB1_D02N       | LD8	     |
-   | switch_i[0]   | IOB10_D09P      | S1	     |
-   | switch_i[1]   | IOB10_D03P      | S2	     |
-   | switch_i[2]   | IOB10_D03N      | S3	     |
-   | switch_i[3]   | IOB10_D04P      | S4	     |
-   | switch_i[4]   | IOB10_D09N      | S5	     |
+   | led_n_o[0]    | IOB0_D01P       | LD1	    |
+   | led_n_o[1]    | IOB0_D03N       | LD2	    |
+   | led_n_o[2]    | IOB0_D03P       | LD3	    |
+   | led_n_o[3]    | IOB1_D05N       | LD4	    |
+   | led_n_o[4]    | IOB1_D05P       | LD5	    |
+   | led_n_o[5]    | IOB1_D06N       | LD6	    |
+   | led_n_o[6]    | IOB1_D06P       | LD7	    |
+   | led_n_o[7]    | IOB1_D02N       | LD8	    |
+   | switch_i[0]   | IOB10_D09P      | S1	      |
+   | switch_i[1]   | IOB10_D03P      | S2	      |
+   | switch_i[2]   | IOB10_D03N      | S3	      |
+   | switch_i[3]   | IOB10_D04P      | S4	      |
+   | switch_i[4]   | IOB10_D09N      | S5	      |
    | switch_i[5]   | IOB10_D04N      | S6       |
 
    | Bank Name     | Voltage |
 	 |---------------|---------|
-   | IOB0          | 3.3V	  |
-   | IOB1          | 3.3V	  |
+   | IOB0          | 3.3V	   |
+   | IOB1          | 3.3V	   |
    | IOB10         | 1.8V    |
 
-   Exporter la configuration dans le fichier labo01/project/pads.py
+   Exporter la configuration dans le fichier labo01/src/pads.py
 	
 6. Sauvegarder votre Projet
 7. Synthèse : Cliquer sur Synthesis
 8. Placement : Cliquer sur Place
 9. Routage : Cliquer sur Route
 10. Générer un Bitstream : Cliquer sur Bitstream
-11. Dans le dossier labo01/nxmap il y a les fichiers suivants :
+11. Dans le dossier labo01/build il y a les fichiers suivants :
     - pads.py : fichier d’affectation des IOs et de configuration des bancs
     - labo01.nxb : fichier de bitstream
     - Fichiers *.nym : Fichier interne à la suite impulse
@@ -129,15 +147,17 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
     
   > [!WARNING]
   > Le périphérique USB « **584E:424E** » doit être accessible par la VM, sinon vous risquez d’avoir le message suivant :
+  > 
   > No board found, plese plug a board
 
   > [!NOTE]
   > Après la première exécution, windows va remapper le périphérique inconnue en « **Nanoxplore Angie USB-JTAG** ». Ce périphérique doit également être accessible par la VM, sinon vous riquez d’avoir le message suivant :
+  >
   > Cannot find the new board
 
 13. Expérimenter sur carte
 
-    La connection entre nxbase2 et le devkit est étable quand l’exécution de la commande affiche le message suivant :
+    La connection entre **nxbase2** et le devkit est étable quand l’exécution de la commande affiche le message suivant :
     ````
     Init board up to a loadable state
     ````
