@@ -1,7 +1,7 @@
 # ESIEE_SEI_5201A
 
 # Préambule
-Dans ces séances de TP, nous allons utiliser un System On Chip académique à base d’un clone du microcontrôleur 8 bits PicoBlaze3 et de quelques prériphériques GPIO, UART, SPI, Timer, ... .
+Dans ces séances de TP, nous allons utiliser un System On Chip académique à base d'un clone du microcontrôleur 8 bits PicoBlaze3 et de quelques périphériques GPIO, UART, SPI, Timer, ...
 
 Les TP sont découpés en 4 parties :
 1. Prendre en main l'environnement logiciel et matérielle
@@ -10,18 +10,18 @@ Les TP sont découpés en 4 parties :
 4. Mise en place de la technique de la triplication (TMR)
 
 ## Environnement logiciel
-Pour réaliser ce TP, l’environnement logiciel est encapsulé dans une machine virtuelle basée sur une distribution CentOS 8 dont les identifiants sont les suivant :
+Pour réaliser ce TP, l'environnement logiciel est encapsulé dans une machine virtuelle basée sur une distribution CentOS 8 dont les identifiants sont les suivants :
 
 > [!IMPORTANT]
 > **Login**    : user\
 > **Password** : user
 
 ##  Environnement matériel
-Ce TP utilise la carte de developpement DK625 intégrant un FPGA NX1H35S.
+Ce TP utilise la carte de développement DK625 intégrant un FPGA NX1H35S.
 Il s'agit d'un FPGA radhard de 35K LUT de la société NanoXplore.
 
-Dans ce TP, nous allons utiliser 2 outils:
-- L'outil **impulse** génére un bitstream à partir des codes VHDL / Verilog.
+Dans ce TP, nous allons utiliser 2 outils :
+- L'outil **impulse** génère un bitstream à partir des codes VHDL / Verilog.
 - L'outil **nxbase** télécharge le bitstream dans le FPGA.
 
  ![image](doc/ressources/Devkit_ng_medium.jpg)
@@ -61,21 +61,30 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
    Create New Project (ou File/Project)
    - Onglet «1. Set Project Information»
 
-    | Champ        | Valeur       | Description |
-    |--------------|--------------|---------------|
-    | Project Name | labo01       | Nom du projet |
-    | Path         | labo01/build | Définition du dossier de travail. |
+     | Champ        | Valeur       | Description |
+     |--------------|--------------|---------------|
+     | Project Name | labo01       | Nom du projet |
+     | Path         | labo01/build | Définition du dossier de travail. |
         
-    -  Onglet « 2. Add Sources »
-       - Ajouter le fichier *labo01/src/labo01.vhd*
-       - Définir le Top cell name comme étant **labo01**
+     ![image](doc/ressources/labo-impulse_project_1.png)
 
-    - Onglet « 4. Select Devices »
+   -  Onglet « 2. Add Sources »
+      - Ajouter le fichier *labo01/src/labo01.vhd*
+      - Définir le Top cell name comme étant **labo01**
+      
+       ![image](doc/ressources/labo-impulse_project_2.png)
 
+   - Onglet « 4. Select Devices »
+
+     
+     
       | Champ        | Valeur       | Description |
       |--------------|--------------|---------------|
       | Device       | NG-MEDIUM    | |
       | Package      | LGA-625      | |
+
+      ![image](doc/ressources/labo-impulse_project_4.png)
+
 
     - Onglet « 5. Project Summary»
 
@@ -84,15 +93,15 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
 
    Après avoir créé le projet, la fenêtre de travail apparaît.
 
-4. Sauvegarder votre projet : 
+1. Sauvegarder votre projet : 
 
        File>Save Project
 
-5. Affectation des IOs 
+2. Affectation des IOs 
 
    Au début d’un projet, les IOs et les bancs ne sont pas configurés : le placement des IOs sera automatique ce qui peut être dangereux pour une exécution sur carte.
  
-   Pour cette exemple, vous devez avoir la configuration suivante :
+   Pour cet exemple, vous devez avoir la configuration suivante :
 
    | HDL Name      | FPGA Name       | PCB Name |
 	 |---------------|-----------------|----------|
@@ -119,18 +128,18 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
 
    Exporter la configuration dans le fichier labo01/src/pads.py
 	
-6. Sauvegarder votre Projet
-7. Synthèse : Cliquer sur Synthesis
-8. Placement : Cliquer sur Place
-9. Routage : Cliquer sur Route
-10. Générer un Bitstream : Cliquer sur Bitstream
-11. Dans le dossier labo01/build il y a les fichiers suivants :
+3. Sauvegarder votre Projet
+4. Synthèse : Cliquer sur Synthesis
+5. Placement : Cliquer sur Place
+6. Routage : Cliquer sur Route
+7.  Générer un Bitstream : Cliquer sur Bitstream
+8.  Dans le dossier labo01/build il y a les fichiers suivants :
     - pads.py : fichier d’affectation des IOs et de configuration des bancs
     - labo01.nxb : fichier de bitstream
     - Fichiers *.nym : Fichier interne à la suite impulse
     - transcript.py : Fichier pour relancer le projet en ligne de commande
     - logs : contient les différents logs de l’outils :
-      - instances.rpt : ce fichier fournit les statistiques d’utilisations des ressources internes du FPGA.
+      - instances.rpt : ce fichier fournit les statistiques d'utilisation des ressources internes du FPGA.
       
         ````
         Ce labo utilise 6 LUTs, ces dernières réalisent les 6 inverseurs du design
@@ -138,7 +147,7 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
 
       - ios.rpt : ce fichier fournit un résumé des IOs.
 
-12. Téléchargement du bitstream sur la carte :
+9.  Téléchargement du bitstream sur la carte :
 
     Dans le répertoire labo01/nxmap, exécutez-le avec la commande suivante :
     ````
@@ -146,24 +155,24 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
     ````
     
   > [!WARNING]
-  > Le périphérique USB « **584E:424E** » doit être accessible par la VM, sinon vous risquez d’avoir le message suivant :
+  > Le périphérique USB « **584E:424E** » doit être accessible par la VM, sinon vous risquez d'avoir le message suivant :
   > 
-  > No board found, plese plug a board
+  > No board found, please plug a board
 
   > [!NOTE]
-  > Après la première exécution, windows va remapper le périphérique inconnue en « **Nanoxplore Angie USB-JTAG** ». Ce périphérique doit également être accessible par la VM, sinon vous riquez d’avoir le message suivant :
+  > Après la première exécution, Windows va remapper le périphérique inconnu en « **Nanoxplore Angie USB-JTAG** ». Ce périphérique doit également être accessible par la VM, sinon vous risquez d'avoir le message suivant :
   >
   > Cannot find the new board
 
 13. Expérimenter sur carte
 
-    La connection entre **nxbase2** et le devkit est étable quand l’exécution de la commande affiche le message suivant :
+    La connexion entre **nxbase2** et le devkit est établie quand l'exécution de la commande affiche le message suivant :
     ````
     Init board up to a loadable state
     ````
 
-# labo02 : Prise en main de l’environnement 
-Dans cette partie nous allons réaliser la même fonctionnalité que dans le labo01 mais avec System On Chip à base d’un clone du PicoBlaze3.
+# labo02 : Prise en main de l'environnement
+Dans cette partie nous allons réaliser la même fonctionnalité que dans le labo01 mais avec un System On Chip à base d'un clone du PicoBlaze3.
 
 Les IPs sont présentes dans le dépôt git suivant :
 > https://github.com/deuskane
@@ -188,12 +197,12 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
 
     ![image](https://github.com/user-attachments/assets/981d4471-e4de-4b08-ad3a-d3b8ab1e146d)
 
-    Ensuite, Le script va configurer fusesoc. Le script va affichier la liste des libraries (ici asylum-cores et local) ainsi que la liste des modules disponibles.
+    Ensuite, le script va configurer fusesoc. Le script va afficher la liste des libraries (ici asylum-cores et local) ainsi que la liste des modules disponibles.
 
     ![image](https://github.com/user-attachments/assets/0a3c148a-1737-414e-b719-a842dd62abd4)
 
   > [!CAUTION]
-  > Ce script ne doit être exécuter qu'une fois.
+  > Ce script ne doit être exécuté qu'une fois.
   
 3.  Placer vous dans le dossier nouvellement créé **asylum-soc-OB8_gpio**. Celui-ci contient les fichiers et dossier suivant :
 
@@ -214,22 +223,22 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
     make help
     ```
     
-    L’aide est divisé en 3 parties : 
+    L'aide est divisée en 3 parties :
     1.  Les variables du makefile qui peuvent être surchargé
     2.  Les règles du Makefile disponible
     3.  Les informations contenues dans le fichier **OB8_GPIO.core**
 
     ![image](https://github.com/user-attachments/assets/b17da5bb-15a4-423e-b3c1-2e2198774f97)
 
-7.  Le fichier **asylum-soc-OB8_gpio/src/OB8_GPIO.vhd** contient le top level du SOC présenté dans la Figure 1.
+7.  Le fichier **asylum-soc-OB8_gpio/src/OB8_GPIO.vhd** contient le top level du SoC présenté dans la Figure 1.
  
-    Ce SoC contient 2 contrôleurs GPIO, le premier connecter aux switchs, le second connecter aux LEDs.
+    Ce SoC contient 2 contrôleurs GPIO, le premier connecté aux switchs, le second connecté aux LEDs.
 
     ![image](https://github.com/user-attachments/assets/33438615-f12f-446a-b871-de1b26f61897)
     
     ***Figure 1 : OB8_GPIO***
 
-    Ouvrir le code source et lister les modules. Les modules doivent être listés dans l’étape 2 … sauf 1 lequel et pourquoi ?
+    Ouvrir le code source et lister les modules. Les modules doivent être listés dans l'étape 2... sauf 1, lequel et pourquoi ?
 
 9.  Le dossier **asylum-soc-OB8_gpio/soft** contient l’application *identity* qui va lire les switchs et les écrire sur les leds en continu. L’application est écrite en C (identity.c) et en assembleur PicoBlaze (identity.psm).
 
@@ -240,7 +249,7 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
 
     Que fait l’exécution de cette commande ?
 
-10.  Les fichiers générer par les generateurs de fusesoc sont localisé dans le dossier de cache de l'outil :
+10.  Les fichiers générés par les générateurs de fusesoc sont localisés dans le dossier de cache de l'outil :
 
      ```
      cd ~/.cache/fusesoc/generated/asylum_soc_OB8_GPIO-gen_c_identity_1.1.4
@@ -248,7 +257,7 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
 
      -  Que contient ce dossier ?
      -  Comparer le fichier **identity.psm** généré avec le fichier **asylum-soc-OB8_gpio/soft/identity.psm**
-        - Localiser la boucle d'écrit dans l'étape 7
+        - Localiser la boucle d'écriture dans l'étape 7
         - Combien d'instructions contient le fichier **identity.psm** généré par le compilateur ?
         - Pourquoi le fichier  **asylum-soc-OB8_gpio/soft/identity.psm** contient moins d'instructions ?
      -  Que contient le fichier identity.vhd ?
@@ -256,7 +265,7 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
         - Décrire le contenu du module 
 
   > [!WARNING]
-  > Les fichiers psm contiennent des directives de compilations (EQU, ORG), des directives de simulations (DSIN, DSOUT) et des labels. Ce ne sont pas des instructions    
+  > Les fichiers psm contiennent des directives de compilation (EQU, ORG), des directives de simulation (DSIN, DSOUT) et des labels. Ce ne sont pas des instructions
 
 9.  La simulation a généré un chronogramme.
     Ouvrir ce fichier à l’aide de la commande suivante : 
@@ -265,11 +274,11 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
     gtkwave build/sim_c_identity-ghdl/dut.vcd
     ```
 
-    Observer les signaux interne au soc (instance **tb_ob8_gpio/dut/ins_ob8_gpio**).
-    2.  Observer la boucle d'instruction identifié dans les étapes 7 et 8, en déduire la latence entre 2 lectures de switchs
+    Observer les signaux internes au SoC (instance **tb_ob8_gpio/dut/ins_ob8_gpio**).
+    2.  Observer la boucle d'instruction identifiée dans les étapes 7 et 8, en déduire la latence entre 2 lectures de switchs
     3.  En déduire le temps d’exécution d’une instruction ?
 
-11. La commande suivante va compiler le module **OB8_gpio_top** pour le FPGA **NG_MEDIUM** avec l'application *identity* écrite en c
+11. La commande suivante va compiler le module **OB8_GPIO_top** pour le FPGA **NG_MEDIUM** avec l'application *identity* écrite en C
 
     ```
     make build
@@ -286,13 +295,14 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
   > [!TIP]
   > Il arrive parfois que la commande échoue et n’arrive pas à ce connecter à la board via la l’USB de la VM, n’hésitez pas à relancer la commande `make run`
  
-11. Modifier le code source exécuté par le processeur : **asylum-soc-OB8_gpio/soft/identity.c** pour inverser l’état des switchs avant de les envoyer sur les leds.
+12. Modifier le code source exécuté par le processeur : **asylum-soc-OB8_gpio/soft/identity.c** pour inverser l'état des switchs avant de les envoyer sur les LEDs.
 
-12. Simuler le design.
+13. Simuler le design.
 
     - Quel résultat obtenez-vous ?
-    - Modifier le code de test en conséquence (**asylum-soc-OB8_gpio/sim/tb_OB8_gpio.vhd**)
-12.  Valider sur carte 
+    - Modifier le code de test en conséquence (**asylum-soc-OB8_gpio/sim/tb_OB8_GPIO.vhd**)
+
+14. Valider sur carte
  
 # labo03 : Prise en main des interruptions
 
@@ -302,7 +312,7 @@ Les interruptions peuvent être masquées ou non. Elles sont masquées par défa
 - Lorsqu'une interruption survient et qu'elle est masquée, alors le processeur l'ignore et continue l'exécution de son programme
 - Lorsqu’une interruption survient et qu’elle n’est pas masquée, alors le processeur sauvegarde l'adresse courante et saute au gestionnaire d’interruption.
 
-Le gestionnaire d'interruption du PicoBlazee3 est situé à l’adresse 0x3FF
+Le gestionnaire d'interruption du PicoBlaze3 est situé à l'adresse 0x3FF
 
 ![image](https://github.com/user-attachments/assets/40baf90e-4a81-4b26-9122-a74030412d1b)
 
@@ -319,21 +329,21 @@ Le gestionnaire d'interruption du PicoBlazee3 est situé à l’adresse 0x3FF
     ./init.sh
     ```
     
-    Ce script va copier le dossier **labo02/asylum-soc-OB8_gpio** dans le dossier **labo03**
+    Ce script va copier le dossier **labo02/asylum-soc-OB8_gpio** dans le dossier **labo03**.
 
   > [!CAUTION]
-  > Ce script ne doit être exécuter qu'une fois.
+  > Ce script ne doit être exécuté qu'une fois.
 
-3.  Modifier le fichier  **asylum-soc-OB8_gpio/src/OB8_GPIO.vhd** pour réaliser l’application Figure 2.
-    -  Modifier l’interface pour ajouter le vecteur *button_i* et *led1_o*
-    -  Utiliser le composant **it_ctrl** situer dans **hdl/it_ctrl.vhd** pour connecter le bouton sur le processeur
+3.  Modifier le fichier **asylum-soc-OB8_gpio/src/OB8_GPIO.vhd** pour réaliser l'application Figure 2.
+    -  Modifier l'interface pour ajouter le vecteur *button_i* et *led1_o*
+    -  Utiliser le composant **it_ctrl** situé dans **hdl/it_ctrl.vhd** pour connecter le bouton sur le processeur
     -  Ajouter ce fichier dans le **OB8_GPIO.core**
        ![image](https://github.com/user-attachments/assets/b35439cf-c063-4f21-8e88-45d86359976b)
 
     -  Ajouter une instance de GPIO pour connecter le vecteur *led1_o*
-    -  Connecter le au OR Bus et attribué lui l’identifiant **0x8**
+    -  Le connecter au OR Bus et lui attribuer l'identifiant **0x8**
 4.  Modifier le fichier  **asylum-soc-OB8_gpio/src/OB8_GPIO_top.vhd** pour incorporer les changements
-5.  Modifier le fichier **asylum-soc-OB8_gpio/boards/NanoXplore-DK625V0/pads.py** pour ajouter les nouveaux ports (led_o et button_i). Les sorties *led0_o[18 :16]* seront connectés à 0 dans ce labo.
+5.  Modifier le fichier **asylum-soc-OB8_gpio/boards/NanoXplore-DK625V0/pads.py** pour ajouter les nouveaux ports (led_o et button_i). Les sorties *led0_o[18:16]* seront connectées à 0 dans ce labo.
 
     | HDL Name    | Location   | PCB  |
     |-------------|------------|------|
@@ -355,7 +365,7 @@ Le gestionnaire d'interruption du PicoBlazee3 est situé à l’adresse 0x3FF
     ![image](https://github.com/user-attachments/assets/2f166685-e6fe-42d6-b58e-a6a81d2da316)
 
   
-8.  Pour vérifier la bonne intégration du contrôleur GPIO2., modifier l’application inclus dans le fichier **asylum-soc-OB8_gpio/soft/identity.c** pour afficher l’état des switches sur les leds contrôlées par le GPIO1 et l’inverse sur les leds contrôlées par le GPIO2.
+8.  Pour vérifier la bonne intégration du contrôleur GPIO2, modifier l'application incluse dans le fichier **asylum-soc-OB8_gpio/soft/identity.c** pour afficher l'état des switchs sur les LEDs contrôlées par le GPIO1 et l'inverse sur les LEDs contrôlées par le GPIO2.
     
 9.  Valider sur carte
 10. Modifier le fichier **asylum-soc-OB8_gpio/soft/identity.c** pour supporter les interruptions.
@@ -410,10 +420,10 @@ Dans cette partie, nous allons réaliser une implémentation avec « Lock Step �
     ./init.sh
     ```
     
-    Ce script va copier le dossier **labo03/asylum-soc-OB8_gpio** dans le dossier **labo04**
+    Ce script va copier le dossier **labo03/asylum-soc-OB8_gpio** dans le dossier **labo04**.
 
   > [!CAUTION]
-  > Ce script ne doit être exécuter qu'une fois.
+  > Ce script ne doit être exécuté qu'une fois.
 
 3.  Editer le fichier **asylum-soc-OB8_gpio/src/OB8_GPIO.vhd** pour ajouter un 2ème processeur (Figure 3)
 
@@ -449,10 +459,10 @@ Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du
     ./init.sh
     ```
     
-    Ce script va copier le dossier **labo04/asylum-soc-OB8_gpio** dans le dossier **labo05**
+    Ce script va copier le dossier **labo04/asylum-soc-OB8_gpio** dans le dossier **labo05**.
 
   > [!CAUTION]
-  > Ce script ne doit être exécuter qu'une fois.
+  > Ce script ne doit être exécuté qu'une fois.
 
 3.  Créer le fichier **asylum-soc-OB8_gpio/src/OB8_GPIO_supervisor.vhd** pour ajouter le SoC superviseur (Figure 4).
 
@@ -475,7 +485,7 @@ Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du
       2.  Envoyer l’état du compteur sur les leds LD17 à LD19
       3.  faire un reset du SOC applicatif
       
-    L’interruption du SOC superviseur provient du registre **diff_r** du SoC applicatif.
+    L'interruption du SoC superviseur provient du registre **diff_r** du SoC applicatif.
 6.  Editer le fichier **asylum-soc-OB8_gpio/OB8_GPIO.core**
 
     -  Ajouter les lignes suivant après le générateur *gen_c_identity* et les lignes d'après dans  la target *emu_ng_medium_c_identity* :
@@ -494,7 +504,7 @@ generate : [gen_c_identity, gen_c_supervisor]
 ```
 
 7.  Valider sur carte
-8.  Modifier votre design pour injecter une erreur sur une entrée du processeur. L'erreur injecté ssera sur le MSB de l'entrée idata_i du processeur (donc l'instruction est corrompue).
+8.  Modifier votre design pour injecter une erreur sur une entrée du processeur. L'erreur injectée sera sur le MSB de l'entrée idata_i du processeur (donc l'instruction est corrompue).
 
     | HDL Name          | Location   | PCB  | Comment             |
     |-------------------|------------|------|---------------------|
@@ -522,10 +532,10 @@ Dans ce labo, nous allons modifier les processeurs en lock-step du soc applicati
     ./init.sh
     ```
     
-    Ce script va copier le dossier **labo05/asylum-soc-OB8_gpio** dans le dossier **labo06**
+    Ce script va copier le dossier **labo05/asylum-soc-OB8_gpio** dans le dossier **labo06**.
 
   > [!CAUTION]
-  > Ce script ne doit être exécuter qu'une fois.
+  > Ce script ne doit être exécuté qu'une fois.
 
 3.  Editer le fichier **asylum-soc-OB8_gpio/src/OB8_GPIO.vhd** pour ajouter les modification suivante (Figure 5) :
 
@@ -539,11 +549,11 @@ Dans ce labo, nous allons modifier les processeurs en lock-step du soc applicati
 
     Ce dernier va lire l’état des interruptions et en déduire quel est le processeur fautif. Si c’est la première erreur détectée alors il va masquer les interruptions provenant de ce processeur.
 
-    Si c’est une seconde erreur est détectée alors le soc applicatif va être remis à zéro.
+    Si une seconde erreur est détectée alors le SoC applicatif va être remis à zéro.
 
     - Pourquoi ne faisons-nous pas de reset après la première erreur détectée ?
     - Pourquoi ne faisons-nous pas de reset du processeur fautif uniquement ?
-    - Pourquoi nous pouvons continuer l’éxécution avec un processeur ayant une erreur ?
+    - Pourquoi pouvons-nous continuer l'exécution avec un processeur ayant une erreur ?
 5.  Valider sur carte
 6.  Modifier votre design pour injecter une erreur sur une entrée du processeur 0 avec le bouton S8 (IOB10_D07P).
 7.  Valider sur carte
