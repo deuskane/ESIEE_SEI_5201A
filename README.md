@@ -53,7 +53,7 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
    ![image](doc/ressources/labo-labo01.png)
 
 
-2. Dans le répertoire *labo01/build*, lancer la commande **impulse**. Cette commande ouvre l’interface graphique présenté dans la figure suivante.
+2. Dans le répertoire *labo01/project*, lancer la commande **impulse**. Cette commande ouvre l’interface graphique présenté dans la figure suivante.
    ![image](doc/ressources/labo-impulse_starting.png)
 
 3. Créer un nouveau projet
@@ -61,10 +61,10 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
    Create New Project (ou File/Project)
    - Onglet «1. Set Project Information»
 
-     | Champ        | Valeur       | Description |
-     |--------------|--------------|---------------|
-     | Project Name | labo01       | Nom du projet |
-     | Path         | labo01/build | Définition du dossier de travail. |
+     | Champ        | Valeur         | Description |
+     |--------------|----------------|---------------|
+     | Project Name | labo01         | Nom du projet |
+     | Path         | labo01/project | Définition du dossier de travail. |
         
      ![image](doc/ressources/labo-impulse_project_1.png)
 
@@ -133,7 +133,7 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
 5. Placement : Cliquer sur Place
 6. Routage : Cliquer sur Route
 7.  Générer un Bitstream : Cliquer sur Bitstream
-8.  Dans le dossier labo01/build il y a les fichiers suivants :
+8.  Dans le dossier labo01/project il y a les fichiers suivants :
     - pads.py : fichier d’affectation des IOs et de configuration des bancs
     - labo01.nxb : fichier de bitstream
     - Fichiers *.nym : Fichier interne à la suite impulse
