@@ -340,19 +340,23 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
 
 14. Valider sur carte
  
-# labo03 : Prise en main des interruptions
 
-Dans cette partie, nous allons étudier le fonctionnement des interruptions d’un processeur.
+# labo03 : Esclave modbus
 
-Les interruptions peuvent être masquées ou non. Elles sont masquées par défaut après un reset.
-- Lorsqu'une interruption survient et qu'elle est masquée, alors le processeur l'ignore et continue l'exécution de son programme
-- Lorsqu’une interruption survient et qu’elle n’est pas masquée, alors le processeur sauvegarde l'adresse courante et saute au gestionnaire d’interruption.
+A partir du SoC précédent, nous allons prendre une application plus représentative : **un esclave modbus**.
 
-Le gestionnaire d'interruption du PicoBlaze3 est situé à l'adresse 0x3FF
+Un esclave Modbus RTU est un périphérique qui répond aux requêtes d'un maître sur une liaison série. Il reçoit des trames Modbus RTU contenant l'adresse d'esclave, le code fonction, les données et un CRC 16 bits, exécute les opérations demandées (lecture/écriture de registres ou de bobines) et renvoie une réponse ou un code d'erreur.
 
-![image](https://github.com/user-attachments/assets/40baf90e-4a81-4b26-9122-a74030412d1b)
+Modbus RTU délimite les trames par des périodes de silence et est couramment utilisé pour des communications fiables entre automates, capteurs et actionneurs.
 
-***Figure 2 : Labo03***
+Dans la suite du TP, nous allons implémenter un esclave Modbus RTU qui a les caractéristique suivante :
+
+| Type                          | Valeur |
+|-------------------------------|--------|
+| Adresse de l'esclave          | 0x5A   |
+| Baud Rate de la liaison série | 9600   |
+| Function Modbus supportée     | Read Holding Registers (0x03) |
+|                               | Write Single Register (0x06)  |
 
 1.  Placez-vous dans le dossier **labo03**
 
@@ -370,75 +374,64 @@ Le gestionnaire d'interruption du PicoBlaze3 est situé à l'adresse 0x3FF
   > [!CAUTION]
   > Ce script ne doit être exécuté qu'une fois.
 
-3.  Modifier le fichier **asylum-soc-picosoc/hdl/PicoSoC.vhd** pour réaliser l'application Figure 2.
-    -  Modifier l'interface pour ajouter le vecteur *button_i* et *led1_o*
-    -  Utiliser le composant **it_ctrl** situé dans **hdl/it_ctrl.vhd** pour connecter le bouton sur le processeur
-    -  Ajouter ce fichier dans le **PicoSoC.core**
-       ![image](https://github.com/user-attachments/assets/b35439cf-c063-4f21-8e88-45d86359976b)
+3.  L'esclave modbus va utiliser le software présent dans le fichier **asylum-soc-picosoc/esw/user_modbus_rtu.c**. Ce dernier va exécuter en boucle la fonction **modbus_slave** et va attendre des caractères provenant de l'uart. 
+   
+    L'environnement de simulation est fourni dans le fichier **asylum-soc-picosoc/sim/tb_PicoSoC_modbus.vhd**
 
-    -  Ajouter une instance de GPIO pour connecter le vecteur *led1_o*
-    -  Le connecter au OR Bus et lui attribuer l'identifiant **0x8**
-4.  Modifier le fichier  **asylum-soc-picosoc/hdl/PicoSoC_top.vhd** pour incorporer les changements
-5.  Modifier le fichier **asylum-soc-picosoc/boards/NanoXplore-DK625V0/pads.py** pour ajouter les nouveaux ports (led_o et button_i). Les sorties *led0_o[18:16]* seront connectées à 0 dans ce labo.
-
-    | HDL Name    | Location   | PCB  |
-    |-------------|------------|------|
-    | led_o[8]    | USER_D0    | LD9  |
-    | led_o[9]    | USER_D1    | LD10 |
-    | led_o[10]   | USER_D2    | LD11 |
-    | led_o[11]   | USER_D3    | LD12 |
-    | led_o[12]   | USER_D4    | LD13 |
-    | led_o[13]   | USER_D5    | LD14 |
-    | led_o[14]   | USER_D6    | LD15 |
-    | led_o[15]   | USER_D7    | LD16 |
-    | led_o[16]   | USER_D8    | LD17 |
-    | led_o[17]   | USER_D9    | LD18 |
-    | led_o[18]   | USER_D10   | LD19 |
-    | button_i[0] | IOB10_D14P | S12  |
-
-6.  Dans le fichier **asylum-soc-picosoc/PicoSoC.core**, commenter le paramètre *NB_LED* pour pouvoir utiliser la valeur par défaut.
-
-    ![image](https://github.com/user-attachments/assets/2f166685-e6fe-42d6-b58e-a6a81d2da316)
-
-  
-8.  Pour vérifier la bonne intégration du contrôleur GPIO2, modifier l'application incluse dans le fichier **asylum-soc-picosoc/esw/identity.c** pour afficher l'état des switchs sur les LEDs contrôlées par le GPIO1 et l'inverse sur les LEDs contrôlées par le GPIO2.
-    
-9.  Valider sur carte
-10. Modifier le fichier **asylum-soc-picosoc/esw/identity.c** pour supporter les interruptions.
-
-    La fonction **pbcc_enable_interrupt(void)**, définit dans le fichier **intr.h**, va démasquer les interruptions.
-    Les interruptions sont par défaut masquer dans un processeur.
-
-    Quand une interruption survient, le processeur va « mettre en pause » l’application courante est exécuter une application spécifique qui est le gestionnaire d’interruption (ISR : Interrupt Service Routine).
-
-    Le gestionnaire d’interruption a le prototype suivant :
-
+    Lancer la simulation :
     ```
-    void null (void)
-    {
-    // Empty
-    }
-    void isr (void) __interrupt(1)
-    {
-      // Gestionnaire d’interruption
-    
-      // Contournement dans un bug de sdcc pour picoblaze, laisser l’appel de fonction null en fin de fonction (cf Annexe)
-      null();
-    }
-    ```
-    
-    L’application a réaliser doit afficher en continue l’état des switch sur les leds contrôlées par le GPIO1.
+    make sim_soc1_c_user_modbus_rtu
+    ```    
 
-    L'application va également initialiser à 0 un compteur global et l'afficher une fois sur les leds contrôlées par le GPIO2.
-  
-    Le gestionnaire d'interruption doit incrémenté le compteur puis l'afficher sur les leds contrôlées par le GPIO2.
-    
-12.  Valider sur carte.
+    Déterminer combien de cycles sont nécessaire pour faire le calcul du CRC:
+    - Localiser la fonction qui ajoute un mots de 8b au crc
+    - Déterminer l'adresse de début et de fin de cette fonction
+    - Dans la waveform généré combien de cycles sont nécessaire pour éxecuter cette fonction ?
+      - Est ce que le temps d'exécution de cette fonction est constant ?
+      - En regardant le code généré, quel est le nombre d'instruction maximale par bit de donnée, en déduire le nombre de cycle nécessaire. Comparer le résultat obtenu avec celui de l'analyse de la waveform.
 
-     - Quel est la valeur du compteur une fois l'application démarer ?
-     - En déduire la polarité du bouton quand il n’est pas appuyé et corriger votre code si nécessaire
+4.  Pour réaliser la validation sur cible, il faut un maître modbus qui sera présent sur votre station de travail et se connectera à l'application dans le FPGA au travers d'un chip [FTDI232RL](https://ftdichip.com/wp-content/uploads/2020/08/DS_FT232R.pdf) inclus dans le chip [SH-U09C2 USB to TTL Adapter](https://www.deshide.com/product-details_SH-U09C2.html)
+    
+    La connection entre l'adaptateur se fait comme indiqué sur la photo suivante :
+    
+    ![image](doc/ressources/labo03_uart_env.jpeg)
+
+    Ainsi les broches du banc 5 sont connecté comme tel :
+
+    | HDL Name        | FPGA Name       | PCB Name | Emplacement   | Couleur du câble |
+	  |-----------------|-----------------|----------|---------------|------------------|
+    | debug_uart_tx_o | IOB5_D05P       | P505     | 2ème à gauche | N/A              |
+    | N/A             | IOB5_D05N       | N505     | 3ème à gauche | N/A              |
+    | uart_rts_b_o    | IOB5_D01P       | P501     | 4ème à gauche | Blanc            |
+    | uart_cts_b_i    | IOB5_D01N       | N501     | 5ème à gauche | Orange           |
+    | uart_tx_o       | IOB5_D03P       | P503     | 6ème à gauche | Vert             |
+    | uart_rx_i       | IOB5_D03N       | N503     | 7ème à gauche | Bleu             |
+    | N/A             |                 | GND      | 8ème à gauche | Noir             |
+    
+    Note : les connections du FPGA sont présent dans le fichier **asylum-soc-picosoc/boards/NanoXplore-DK625V0/pads.py**
+
+    Une fois l'adaptateur connecté, lancer la compilation avec l'esclave modbus :
+
+    ````
+    TARGET=emu_ng_medium_soc1_modbus make target
+    ````
+
+    > [!TIP]
+    > La règle de makefile **target** est équivalente à **setup**, **build** et **run**
+
+5. Une fois l'application chargé dans le FPGA, lancer le script **asylum-soc-picosoc/tools/modbus_server.py** qui va effectuer les actions suivantes en continue :
+
+   -  Lire les switchs
+   -  Ecrire la valeur des switchs dans le contrôleur LED0
+   -  Ecrire la valeur d'un compteur dans le contrôleur LED1
+   -  Incrémenter le compteur
+
+
+# labo04 : Ajout d'un CRC matériel
+
+
  
-# labo04 : Lock-Step
+# labo05 : Lock-Step
 Dans cette partie, nous allons réaliser une implémentation avec « Lock Step » du SOC vu dans le labo03.
 
 ![image](https://github.com/user-attachments/assets/16d872fe-c980-497c-b6a4-e8f4895039fa)
@@ -477,7 +470,7 @@ Dans cette partie, nous allons réaliser une implémentation avec « Lock Step �
   
 6.  Que faire du registre diff_r ?
  
-# labo05 : Lock-Step
+# labo06 : Lock-Step et superviseur
 Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du lock step.
 
 ![image](https://github.com/user-attachments/assets/199074a6-8fd0-4d2c-93f2-741ab774b7a8)
@@ -550,7 +543,7 @@ generate : [gen_c_identity, gen_c_supervisor]
 
 9.  Valider sur carte
  
-# labo06 : TMR
+# labo07 : TMR
 Dans ce labo, nous allons modifier les processeurs en lock-step du soc applicatif par des processeurs avec triplication.
 
 ![image](https://github.com/user-attachments/assets/d3c9fb6b-d132-47df-91e8-f1c76a8b5f0a)
