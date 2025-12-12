@@ -49,7 +49,7 @@ git clone https://github.com/deuskane/ESIEE_SEI_5201A.git
 Dans cette première partie, nous allons prendre en main l’environnement logiciel **impulse**.
 
 
-1. Éditer le fichier *labo01/src/labo01.vhd* pour réaliser la fonctionnalité illustrée dans la Figure suivante.
+1. Éditer le fichier *labo01/hdl/labo01.vhd* pour réaliser la fonctionnalité illustrée dans la Figure suivante.
    ![image](doc/ressources/labo-labo01.png)
 
 
@@ -69,7 +69,7 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
      ![image](doc/ressources/labo-impulse_project_1.png)
 
    -  Onglet « 2. Add Sources »
-      - Ajouter le fichier *labo01/src/labo01.vhd*
+      - Ajouter le fichier *labo01/hdl/labo01.vhd*
       - Définir le Top cell name comme étant **labo01**
       
        ![image](doc/ressources/labo-impulse_project_2.png)
@@ -92,6 +92,8 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
 
 
    Après avoir créé le projet, la fenêtre de travail apparaît.
+
+   ![image](doc/ressources/labo-impulse_work.png)
 
 1. Sauvegarder votre projet : 
 
@@ -126,7 +128,7 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
    | IOB1          | 3.3V	   |
    | IOB10         | 1.8V    |
 
-   Exporter la configuration dans le fichier labo01/src/pads.py
+   Exporter la configuration dans le fichier labo01/hdl/pads.py
 	
 3. Sauvegarder votre Projet
 4. Synthèse : Cliquer sur Synthesis
@@ -144,6 +146,8 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
         ````
         Ce labo utilise 6 LUTs, ces dernières réalisent les 6 inverseurs du design
         ````
+
+        ![image](doc/ressources/labo01_instances.png)
 
       - ios.rpt : ce fichier fournit un résumé des IOs.
 
@@ -171,13 +175,13 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
     Init board up to a loadable state
     ````
 
-# labo02 : Prise en main de l'environnement
+# labo02 : Prise en main du System On Chip
 Dans cette partie nous allons réaliser la même fonctionnalité que dans le labo01 mais avec un System On Chip à base d'un clone du PicoBlaze3.
 
 Les IPs sont présentes dans le dépôt git suivant :
 > https://github.com/deuskane
 
-Dans la suite de ce TP, nous utiliserons l’outil fusesoc.
+Dans la suite de ce TP, nous utiliserons l’outil fusesoc et son encapsulation dans des Makefile.
 > https://github.com/olofk/fusesoc
 
 Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
@@ -193,29 +197,31 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
     ./init.sh
     ```
     
-    Ce script va cloner le dépôt **asylum-soc-OB8_gpio** qui contient les sources du SoC.
+    Ce script va cloner le dépôt **asylum-soc-picosoc** qui contient les sources du SoC.
 
-    ![image](https://github.com/user-attachments/assets/981d4471-e4de-4b08-ad3a-d3b8ab1e146d)
+    ![image](doc/ressources/labo02_init_script.png)
 
     Ensuite, le script va configurer fusesoc. Le script va afficher la liste des libraries (ici asylum-cores et local) ainsi que la liste des modules disponibles.
 
-    ![image](https://github.com/user-attachments/assets/0a3c148a-1737-414e-b719-a842dd62abd4)
+    ![image](doc/ressources/labo02_cores_list.png)
 
   > [!CAUTION]
   > Ce script ne doit être exécuté qu'une fois.
   
-3.  Placer vous dans le dossier nouvellement créé **asylum-soc-OB8_gpio**. Celui-ci contient les fichiers et dossier suivant :
+3.  Placer vous dans le dossier nouvellement créé **asylum-soc-picosoc**. Celui-ci contient les fichiers et dossier suivant :
 
     | Fichier / Dossier | Description |
     |-------------------|-------------|
     | README.md         | Fichier d’aide |
-    | src               | Dossier contenant le code source du SoC |
+    | hdl               | Dossier contenant le code source du SoC |
     | sim               | Dossier contenant le testbench du SoC |
-    | soft              | Dossier contenant les codes applicatifs à exécuter par le processeur |
+    | esw               | Dossier contenant les codes applicatifs à exécuter par le processeur |
     | boards            | Dossier contenant les fichiers spécifiques pour une intégration sur carte |
-    | OB8_GPIO.core     | Fichier de description de l’IP pour l’outil fusesoc |
+    | tools             | Dossier contenant des scripts |
+    | PicoSoC.core      | Fichier de description de l’IP pour l’outil fusesoc |
     | fusesoc.conf      | Fichier de configuration de l’outil fusesoc |
     | Makefile          | Fichier d’execution de commande |
+    | mk                | Dossier contenant les fichiers pour le Makefile |
 
 5.  Toutes les commandes sont encapsulées avec l’outil **make**. Une aide est disponible en exécutant la commande suivante :
 
@@ -226,81 +232,111 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
     L'aide est divisée en 3 parties :
     1.  Les variables du makefile qui peuvent être surchargé
     2.  Les règles du Makefile disponible
-    3.  Les informations contenues dans le fichier **OB8_GPIO.core**
+    3.  Les informations contenues dans le fichier **PicoSoC.core**
 
-    ![image](https://github.com/user-attachments/assets/b17da5bb-15a4-423e-b3c1-2e2198774f97)
+    ![image](doc/ressources/labo02_makefile_help1.png)
+    ![image](doc/ressources/labo02_makefile_help2.png)
 
-7.  Le fichier **asylum-soc-OB8_gpio/src/OB8_GPIO.vhd** contient le top level du SoC présenté dans la Figure 1.
+7.  Le fichier **asylum-soc-picosoc/hdl/PicoSoC_top.vhd** contient le top level du SoC présenté dans la Figure 1.
  
     Ce SoC contient 2 contrôleurs GPIO, le premier connecté aux switchs, le second connecté aux LEDs.
 
-    ![image](https://github.com/user-attachments/assets/33438615-f12f-446a-b871-de1b26f61897)
+    ![image](doc/ressources/labo-labo02.png)
     
-    ***Figure 1 : OB8_GPIO***
+    ***Figure 1 : PicoSoC***
 
     Ouvrir le code source et lister les modules. Les modules doivent être listés dans l'étape 2... sauf 1, lequel et pourquoi ?
 
-9.  Le dossier **asylum-soc-OB8_gpio/soft** contient l’application *identity* qui va lire les switchs et les écrire sur les leds en continu. L’application est écrite en C (identity.c) et en assembleur PicoBlaze (identity.psm).
+9.  Le dossier **asylum-soc-picosoc/esw** contient l’application *identity* qui va lire les switchs et les écrire sur les leds en continu. L’application est écrite en C (identity.c) et en assembleur PicoBlaze (identity.psm).
 
     Lancer la simulation avec l’application écrite en C en utilisant la commande suivante :
     ```
-    make sim_c_identity
+    make sim_soc1_c_identity
     ```
 
     Que fait l’exécution de cette commande ?
 
-10.  Les fichiers générés par les générateurs de fusesoc sont localisés dans le dossier de cache de l'outil :
+10.  Les fichiers générés par les générateurs de fusesoc sont localisés dans le dossier de cache de l'outil.
+
+     Attention, le nom du fichier dépend du VLNC du module (Vendor Library Name Version), du nom du générateur (ici *gen_user_c_identity*) et d'un hash. Le chemin suivant est à titre indicatif :
 
      ```
-     cd ~/.cache/fusesoc/generated/asylum_soc_OB8_GPIO-gen_c_identity_1.1.4
+     cd ~/.cache/fusesoc/generator_cache/asylum_soc_PicoSoC-gen_user_c_identity_2.9.1-f5fb100af797341fb2eb657ead4a0e2a4609165d461f96b8b2ea0908b4860977
      ```
-
+  
      -  Que contient ce dossier ?
-     -  Comparer le fichier **identity.psm** généré avec le fichier **asylum-soc-OB8_gpio/soft/identity.psm**
+     -  Comparer le fichier **user_identity.psm** généré avec le fichier **asylum-soc-picosoc/esw/identity.psm** 
         - Localiser la boucle d'écriture dans l'étape 7
-        - Combien d'instructions contient le fichier **identity.psm** généré par le compilateur ?
-        - Pourquoi le fichier  **asylum-soc-OB8_gpio/soft/identity.psm** contient moins d'instructions ?
-     -  Que contient le fichier identity.vhd ?
+        - Combien d'instructions contient le fichier **user_identity.psm** généré par le compilateur ?
+        - Pourquoi le fichier  **asylum-soc-picosoc/esw/identity.psm** contient moins d'instructions ?
+     - Le fichier **asylum-soc-picosoc/esw/identity.log** contient en plus du code assembleur généré par le compilateur, l'adresse de chaque instruction et son code en hexadécimal (une instruction picoblaze est sur 18 bits).
+        - A quel adresse commence la fonction **main** ?
+        - Quels sont les instructions exécuté pour arriver à la fonction **main** ?
+        - A quoi sert l'instruction suivante :
+          
+          ````
+          __sdcc_loop:
+          JUMP __sdcc_loop
+          ````
+          Expliquer pourquoi cette instruction est situé après l'appel à la fonction **main**.
+     -  Que contient le fichier **user_identity.vhd* ?
         - Quel est le nom du module ?
         - Décrire le contenu du module 
 
   > [!WARNING]
   > Les fichiers psm contiennent des directives de compilation (EQU, ORG), des directives de simulation (DSIN, DSOUT) et des labels. Ce ne sont pas des instructions
 
-9.  La simulation a généré un chronogramme.
+1.  La simulation a généré un chronogramme.
     Ouvrir ce fichier à l’aide de la commande suivante : 
 
     ```
-    gtkwave build/sim_c_identity-ghdl/dut.vcd
+    gtkwave build/asylum_soc_PicoSoC_2.9.1/sim_soc1_c_identity-ghdl/dut.fst
     ```
 
-    Observer les signaux internes au SoC (instance **tb_ob8_gpio/dut/ins_ob8_gpio**).
-    2.  Observer la boucle d'instruction identifiée dans les étapes 7 et 8, en déduire la latence entre 2 lectures de switchs
-    3.  En déduire le temps d’exécution d’une instruction ?
+    Observer les signaux internes au SoC (instance **tb_PicoSoC/dut/ins_soc_user**). Les signaux du processeur 0 sont préfixé **cpu0**.
 
-11. La commande suivante va compiler le module **OB8_GPIO_top** pour le FPGA **NG_MEDIUM** avec l'application *identity* écrite en C
+    ![image](doc/ressources/labo02_cpu0_port_list.png)
+
+    Le processeur ainsi que tous les périphériques de ce SoC utilise l'interface SBI (Simple Bus Interface) telque défini dans le framework de verification [**UVVM**](https://uvvm.github.io/vip_sbi.html#sbi-protocol).
+    1.  Observer la boucle d'instruction identifiée dans l'étape 7, en déduire la latence entre 2 lectures de switchs.
+    2.  En déduire le temps d’exécution d’une instruction.
+
+2.  La commande suivante va préparer la compilation du  **PicoSoC_top** pour le FPGA **NG_MEDIUM** avec l'application *identity* écrite en C
 
     ```
-    make build
+    TARGET=emu_ng_medium_soc1 make setup
+    ```
+
+    La commande suivante va compiler le projet avec l'outil **impulse**
+
+    ```
+    TARGET=emu_ng_medium_soc1 make build
     ```
 
     La commande suivante va initialiser le devkit et télécharger le bitstream généré dans le FPGA
 
     ```
-    make run
+    TARGET=emu_ng_medium_soc1 make run
     ```
 
     L’exécution de la commande `make run` doit fournir la sortie suivante :
+
+    ![image](doc/ressources/labo02_makefile_run.png)
  
+  > [!WARNING]
+  > Lancer la phase **build** avant la phase **setup** va vous générer une erreur
+  >
+  > ![image](doc/ressources/labo02_makefile_build_without_setup.png)
+
   > [!TIP]
   > Il arrive parfois que la commande échoue et n’arrive pas à ce connecter à la board via la l’USB de la VM, n’hésitez pas à relancer la commande `make run`
  
-12. Modifier le code source exécuté par le processeur : **asylum-soc-OB8_gpio/soft/identity.c** pour inverser l'état des switchs avant de les envoyer sur les LEDs.
+12. Modifier le code source exécuté par le processeur : **asylum-soc-picosoc/esw/identity.c** pour inverser l'état des switchs avant de les envoyer sur les LEDs.
 
 13. Simuler le design.
 
     - Quel résultat obtenez-vous ?
-    - Modifier le code de test en conséquence (**asylum-soc-OB8_gpio/sim/tb_OB8_GPIO.vhd**)
+    - Modifier le code de test en conséquence (**asylum-soc-picosoc/sim/tb_PicoSoC.vhd**)
 
 14. Valider sur carte
  
@@ -329,21 +365,21 @@ Le gestionnaire d'interruption du PicoBlaze3 est situé à l'adresse 0x3FF
     ./init.sh
     ```
     
-    Ce script va copier le dossier **labo02/asylum-soc-OB8_gpio** dans le dossier **labo03**.
+    Ce script va copier le dossier **labo02/asylum-soc-picosoc** dans le dossier **labo03**.
 
   > [!CAUTION]
   > Ce script ne doit être exécuté qu'une fois.
 
-3.  Modifier le fichier **asylum-soc-OB8_gpio/src/OB8_GPIO.vhd** pour réaliser l'application Figure 2.
+3.  Modifier le fichier **asylum-soc-picosoc/hdl/PicoSoC.vhd** pour réaliser l'application Figure 2.
     -  Modifier l'interface pour ajouter le vecteur *button_i* et *led1_o*
     -  Utiliser le composant **it_ctrl** situé dans **hdl/it_ctrl.vhd** pour connecter le bouton sur le processeur
-    -  Ajouter ce fichier dans le **OB8_GPIO.core**
+    -  Ajouter ce fichier dans le **PicoSoC.core**
        ![image](https://github.com/user-attachments/assets/b35439cf-c063-4f21-8e88-45d86359976b)
 
     -  Ajouter une instance de GPIO pour connecter le vecteur *led1_o*
     -  Le connecter au OR Bus et lui attribuer l'identifiant **0x8**
-4.  Modifier le fichier  **asylum-soc-OB8_gpio/src/OB8_GPIO_top.vhd** pour incorporer les changements
-5.  Modifier le fichier **asylum-soc-OB8_gpio/boards/NanoXplore-DK625V0/pads.py** pour ajouter les nouveaux ports (led_o et button_i). Les sorties *led0_o[18:16]* seront connectées à 0 dans ce labo.
+4.  Modifier le fichier  **asylum-soc-picosoc/hdl/PicoSoC_top.vhd** pour incorporer les changements
+5.  Modifier le fichier **asylum-soc-picosoc/boards/NanoXplore-DK625V0/pads.py** pour ajouter les nouveaux ports (led_o et button_i). Les sorties *led0_o[18:16]* seront connectées à 0 dans ce labo.
 
     | HDL Name    | Location   | PCB  |
     |-------------|------------|------|
@@ -360,15 +396,15 @@ Le gestionnaire d'interruption du PicoBlaze3 est situé à l'adresse 0x3FF
     | led_o[18]   | USER_D10   | LD19 |
     | button_i[0] | IOB10_D14P | S12  |
 
-6.  Dans le fichier **asylum-soc-OB8_gpio/OB8_GPIO.core**, commenter le paramètre *NB_LED* pour pouvoir utiliser la valeur par défaut.
+6.  Dans le fichier **asylum-soc-picosoc/PicoSoC.core**, commenter le paramètre *NB_LED* pour pouvoir utiliser la valeur par défaut.
 
     ![image](https://github.com/user-attachments/assets/2f166685-e6fe-42d6-b58e-a6a81d2da316)
 
   
-8.  Pour vérifier la bonne intégration du contrôleur GPIO2, modifier l'application incluse dans le fichier **asylum-soc-OB8_gpio/soft/identity.c** pour afficher l'état des switchs sur les LEDs contrôlées par le GPIO1 et l'inverse sur les LEDs contrôlées par le GPIO2.
+8.  Pour vérifier la bonne intégration du contrôleur GPIO2, modifier l'application incluse dans le fichier **asylum-soc-picosoc/esw/identity.c** pour afficher l'état des switchs sur les LEDs contrôlées par le GPIO1 et l'inverse sur les LEDs contrôlées par le GPIO2.
     
 9.  Valider sur carte
-10. Modifier le fichier **asylum-soc-OB8_gpio/soft/identity.c** pour supporter les interruptions.
+10. Modifier le fichier **asylum-soc-picosoc/esw/identity.c** pour supporter les interruptions.
 
     La fonction **pbcc_enable_interrupt(void)**, définit dans le fichier **intr.h**, va démasquer les interruptions.
     Les interruptions sont par défaut masquer dans un processeur.
@@ -420,12 +456,12 @@ Dans cette partie, nous allons réaliser une implémentation avec « Lock Step �
     ./init.sh
     ```
     
-    Ce script va copier le dossier **labo03/asylum-soc-OB8_gpio** dans le dossier **labo04**.
+    Ce script va copier le dossier **labo03/asylum-soc-picosoc** dans le dossier **labo04**.
 
   > [!CAUTION]
   > Ce script ne doit être exécuté qu'une fois.
 
-3.  Editer le fichier **asylum-soc-OB8_gpio/src/OB8_GPIO.vhd** pour ajouter un 2ème processeur (Figure 3)
+3.  Editer le fichier **asylum-soc-picosoc/hdl/PicoSoC.vhd** pour ajouter un 2ème processeur (Figure 3)
 
     Créer le registre **diff_r** (module rouge sur la Figure 3) qui va être initialisé à 0 après un reset et qui va être mis à 1 si l’une des sorties du processeur 0 diffère de celle du processeur 1 (les sorties des processeurs sont *iaddr_o*, *pbi_ini_o*, *it_ack_o*).
     
@@ -459,12 +495,12 @@ Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du
     ./init.sh
     ```
     
-    Ce script va copier le dossier **labo04/asylum-soc-OB8_gpio** dans le dossier **labo05**.
+    Ce script va copier le dossier **labo04/asylum-soc-picosoc** dans le dossier **labo05**.
 
   > [!CAUTION]
   > Ce script ne doit être exécuté qu'une fois.
 
-3.  Créer le fichier **asylum-soc-OB8_gpio/src/OB8_GPIO_supervisor.vhd** pour ajouter le SoC superviseur (Figure 4).
+3.  Créer le fichier **asylum-soc-picosoc/hdl/PicoSoC_supervisor.vhd** pour ajouter le SoC superviseur (Figure 4).
 
     Le SOC superviseur possède 2 contrôleurs GPIO :
     - Le premier contient une sortie d’un bit est va être le reset du SOC applicatif
@@ -473,8 +509,8 @@ Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du
   > [!IMPORTANT]
   >  Le SoC superviseur ressemble au SoC modifié lors du labo 5 en modifiant la largeur des vecteurs de LED et en supprimant les switchs.
 
-4.  Modifier le fichier **asylum-soc-OB8_gpio/src/OB8_GPIO_top.vhd** pour instancier le SoC superviseur et le connecter avec le SoC applicatif.
-5.  Editer le fichier **asylum-soc-OB8_gpio/soft/supervisor.c** qui contient les fonctions suivantes :
+4.  Modifier le fichier **asylum-soc-picosoc/hdl/PicoSoC_top.vhd** pour instancier le SoC superviseur et le connecter avec le SoC applicatif.
+5.  Editer le fichier **asylum-soc-picosoc/esw/supervisor.c** qui contient les fonctions suivantes :
 
     - `void main (void)`
       1.  Faire un reset du SOC applicatif
@@ -486,7 +522,7 @@ Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du
       3.  faire un reset du SOC applicatif
       
     L'interruption du SoC superviseur provient du registre **diff_r** du SoC applicatif.
-6.  Editer le fichier **asylum-soc-OB8_gpio/OB8_GPIO.core**
+6.  Editer le fichier **asylum-soc-picosoc/PicoSoC.core**
 
     -  Ajouter les lignes suivant après le générateur *gen_c_identity* et les lignes d'après dans  la target *emu_ng_medium_c_identity* :
 
@@ -532,12 +568,12 @@ Dans ce labo, nous allons modifier les processeurs en lock-step du soc applicati
     ./init.sh
     ```
     
-    Ce script va copier le dossier **labo05/asylum-soc-OB8_gpio** dans le dossier **labo06**.
+    Ce script va copier le dossier **labo05/asylum-soc-picosoc** dans le dossier **labo06**.
 
   > [!CAUTION]
   > Ce script ne doit être exécuté qu'une fois.
 
-3.  Editer le fichier **asylum-soc-OB8_gpio/src/OB8_GPIO.vhd** pour ajouter les modification suivante (Figure 5) :
+3.  Editer le fichier **asylum-soc-picosoc/hdl/PicoSoC.vhd** pour ajouter les modification suivante (Figure 5) :
 
     1.  Un troisième processeur dans le SOC applicatif
     2.  Toutes les sorties des 3 processeurs doivent être votées
@@ -545,7 +581,7 @@ Dans ce labo, nous allons modifier les processeurs en lock-step du soc applicati
     4.  Le soc superviseur possède 2 GPIO supplémentaires :
         1.  GPIO5 va fournir un vecteur pour masquer les lignes d’interruptions
         2.  GPIO6 va recevoir le vecteur d’interruptions masqués courant.
-4.  Editer le gestionnaire d’interruption défini dans le fichier asylum-soc-OB8_gpio/soft/supervisor.c.
+4.  Editer le gestionnaire d’interruption défini dans le fichier asylum-soc-picosoc/esw/supervisor.c.
 
     Ce dernier va lire l’état des interruptions et en déduire quel est le processeur fautif. Si c’est la première erreur détectée alors il va masquer les interruptions provenant de ce processeur.
 
