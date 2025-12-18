@@ -1,11 +1,29 @@
 # ESIEE_SEI_5201A
 
+## Table des matières
+
+- [ESIEE\_SEI\_5201A](#esiee_sei_5201a)
+  - [Table des matières](#table-des-matières)
+- [Préambule](#préambule)
+  - [Environnement logiciel](#environnement-logiciel)
+  - [Environnement matériel](#environnement-matériel)
+  - [Documentation](#documentation)
+  - [Archive](#archive)
+- [labo01 : Prise en main de l'outil Impulse](#labo01--prise-en-main-de-loutil-impulse)
+- [labo02 : Prise en main du System-on-Chip (SoC)](#labo02--prise-en-main-du-system-on-chip-soc)
+- [labo03 : Esclave modbus](#labo03--esclave-modbus)
+- [labo04 : Ajout d'un CRC matériel](#labo04--ajout-dun-crc-matériel)
+- [labo05 : Lock-Step](#labo05--lock-step)
+- [labo06 : Lock-Step et superviseur](#labo06--lock-step-et-superviseur)
+- [labo07 : TMR](#labo07--tmr)
+- [Annexe : Contournement d’une erreur dans le compilateur C](#annexe--contournement-dune-erreur-dans-le-compilateur-c)
+
 # Préambule
-Dans ces séances de TP, nous allons utiliser un System On Chip académique à base d'un clone du microcontrôleur 8 bits PicoBlaze3 et de quelques périphériques GPIO, UART, SPI, Timer, ...
+Dans ces séances de TP, nous allons utiliser un System-on-Chip (SoC) académique à base d'un clone du microcontrôleur 8 bits PicoBlaze3 et de quelques périphériques GPIO, UART, SPI, Timer, ...
 
 Les TP sont découpés en 4 parties :
-1. Prendre en main l'environnement logiciel et matérielle
-2. Implémenté un nouveau périphérique et intégration dans le SoC existant
+1. Prendre en main l'environnement logiciel et matériel
+2. Implémenter un nouveau périphérique et son intégration dans le SoC existant
 3. Mise en place de la technique du Lock-Step
 4. Mise en place de la technique de la triplication (TMR)
 
@@ -13,12 +31,13 @@ Les TP sont découpés en 4 parties :
 Pour réaliser ce TP, l'environnement logiciel est encapsulé dans une machine virtuelle basée sur une distribution CentOS 8 dont les identifiants sont les suivants :
 
 > [!IMPORTANT]
-> **Login**    : user\
+> **Login**    : user
+> 
 > **Password** : user
 
 ##  Environnement matériel
 Ce TP utilise la carte de développement DK625 intégrant un FPGA NX1H35S.
-Il s'agit d'un FPGA radhard de 35K LUT de la société NanoXplore.
+Il s'agit d'un FPGA rad-hard de 35K LUT de la société NanoXplore.
 
 Dans ce TP, nous allons utiliser 2 outils :
 - L'outil **impulse** génère un bitstream à partir des codes VHDL / Verilog.
@@ -49,11 +68,11 @@ git clone https://github.com/deuskane/ESIEE_SEI_5201A.git
 Dans cette première partie, nous allons prendre en main l’environnement logiciel **impulse**.
 
 
-1. Éditer le fichier *labo01/hdl/labo01.vhd* pour réaliser la fonctionnalité illustrée dans la Figure suivante.
+1.  Éditez le fichier *labo01/hdl/labo01.vhd* pour réaliser la fonctionnalité illustrée dans la Figure suivante.
    ![image](doc/ressources/labo-labo01.png)
 
 
-2. Dans le répertoire *labo01/project*, lancer la commande **impulse**. Cette commande ouvre l’interface graphique présenté dans la figure suivante.
+2. Dans le répertoire *labo01/project*, lancez la commande **impulse**. Cette commande ouvre l’interface graphique présentée dans la figure suivante.
    ![image](doc/ressources/labo-impulse_starting.png)
 
 3. Créer un nouveau projet
@@ -88,14 +107,14 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
 
     - Onglet « 5. Project Summary»
 
-      Après avoir vérifier les informations, cliquez sur « Finish »
+      Après avoir vérifié les informations, cliquez sur « Finish »
 
 
    Après avoir créé le projet, la fenêtre de travail apparaît.
 
    ![image](doc/ressources/labo-impulse_work.png)
 
-1. Sauvegarder votre projet : 
+1. Sauvegardez votre projet : 
 
        File>Save Project
 
@@ -130,7 +149,7 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
 
    Exporter la configuration dans le fichier labo01/hdl/pads.py
 	
-3. Sauvegarder votre Projet
+3. Sauvegardez votre projet
 4. Synthèse : Cliquer sur Synthesis
 5. Placement : Cliquer sur Place
 6. Routage : Cliquer sur Route
@@ -170,13 +189,13 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
 
 13. Expérimenter sur carte
 
-    La connexion entre **nxbase2** et le devkit est établie quand l'exécution de la commande affiche le message suivant :
+    La connexion entre **nxbase2** et le devkit est établie lorsque l'exécution de la commande affiche le message suivant :
     ````
     Init board up to a loadable state
     ````
 
-# labo02 : Prise en main du System On Chip
-Dans cette partie nous allons réaliser la même fonctionnalité que dans le labo01 mais avec un System On Chip à base d'un clone du PicoBlaze3.
+# labo02 : Prise en main du System-on-Chip (SoC)
+Dans cette partie, nous allons réaliser la même fonctionnalité que dans le labo01, mais avec un System-on-Chip (SoC) à base d'un clone du PicoBlaze3.
 
 Les IPs sont présentes dans le dépôt git suivant :
 > https://github.com/deuskane
@@ -192,7 +211,7 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
     cd labo02
     ```
 
-2.  Exécuter le script **init.sh**.
+2.  Exécutez le script **init.sh**.
     ```
     ./init.sh
     ```
@@ -208,7 +227,7 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
   > [!CAUTION]
   > Ce script ne doit être exécuté qu'une fois.
   
-3.  Placer vous dans le dossier nouvellement créé **asylum-soc-picosoc**. Celui-ci contient les fichiers et dossier suivant :
+3.  Placez-vous dans le dossier nouvellement créé **asylum-soc-picosoc**. Celui-ci contient les fichiers et dossiers suivants :
 
     | Fichier / Dossier | Description |
     |-------------------|-------------|
@@ -293,11 +312,11 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
     gtkwave build/asylum_soc_PicoSoC_2.9.1/sim_soc1_c_identity-ghdl/dut.fst
     ```
 
-    Observer les signaux internes au SoC (instance **tb_PicoSoC/dut/ins_soc_user**). Les signaux du processeur 0 sont préfixé **cpu0**.
+    Observer les signaux internes au SoC (instance **tb_PicoSoC/dut/ins_soc_user**). Les signaux du processeur 0 sont préfixés **cpu0**.
 
     ![image](doc/ressources/labo02_cpu0_port_list.png)
 
-    Le processeur ainsi que tous les périphériques de ce SoC utilise l'interface SBI (Simple Bus Interface) telque défini dans le framework de verification [**UVVM**](https://uvvm.github.io/vip_sbi.html#sbi-protocol).
+    Le processeur ainsi que tous les périphériques de ce SoC utilisent l'interface SBI (Simple Bus Interface) tel que défini dans le framework de vérification [**UVVM**](https://uvvm.github.io/vip_sbi.html#sbi-protocol).
     1.  Observer la boucle d'instruction identifiée dans l'étape 7, en déduire la latence entre 2 lectures de switchs.
     2.  En déduire le temps d’exécution d’une instruction.
 
@@ -329,7 +348,7 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
   > ![image](doc/ressources/labo02_makefile_build_without_setup.png)
 
   > [!TIP]
-  > Il arrive parfois que la commande échoue et n’arrive pas à ce connecter à la board via la l’USB de la VM, n’hésitez pas à relancer la commande `make run`
+  > Il arrive parfois que la commande échoue et ne parvienne pas à se connecter à la carte via l'USB de la VM ; n'hésitez pas à relancer la commande `make run`
  
 12. Modifier le code source exécuté par le processeur : **asylum-soc-picosoc/esw/identity.c** pour inverser l'état des switchs avant de les envoyer sur les LEDs.
 
@@ -349,13 +368,13 @@ Un esclave Modbus RTU est un périphérique qui répond aux requêtes d'un maît
 
 Modbus RTU délimite les trames par des périodes de silence et est couramment utilisé pour des communications fiables entre automates, capteurs et actionneurs.
 
-Dans la suite du TP, nous allons implémenter un esclave Modbus RTU qui a les caractéristique suivante :
+Dans la suite du TP, nous allons implémenter un esclave Modbus RTU qui a les caractéristiques suivantes :
 
 | Type                          | Valeur |
 |-------------------------------|--------|
 | Adresse de l'esclave          | 0x5A   |
 | Baud Rate de la liaison série | 9600   |
-| Function Modbus supportée     | Read Holding Registers (0x03) |
+| Fonctions Modbus supportées     | Read Holding Registers (0x03) |
 |                               | Write Single Register (0x06)  |
 
 1.  Placez-vous dans le dossier **labo03**
@@ -364,7 +383,7 @@ Dans la suite du TP, nous allons implémenter un esclave Modbus RTU qui a les ca
     cd labo03
     ```
 
-2.  Exécuter le script **init.sh**.
+2.  Exécutez le script **init.sh**.
     ```
     ./init.sh
     ```
@@ -374,11 +393,11 @@ Dans la suite du TP, nous allons implémenter un esclave Modbus RTU qui a les ca
   > [!CAUTION]
   > Ce script ne doit être exécuté qu'une fois.
 
-3.  L'esclave modbus va utiliser le software présent dans le fichier **asylum-soc-picosoc/esw/user_modbus_rtu.c**. Ce dernier va exécuter en boucle la fonction **modbus_slave** et va attendre des caractères provenant de l'uart. 
+3.  L'esclave Modbus va utiliser le logiciel présent dans le fichier **asylum-soc-picosoc/esw/user_modbus_rtu.c**. Ce dernier va exécuter en boucle la fonction **modbus_slave** et va attendre des caractères provenant de l'UART. 
    
     L'environnement de simulation est fourni dans le fichier **asylum-soc-picosoc/sim/tb_PicoSoC_modbus.vhd**
 
-    Lancer la simulation :
+    Lancez la simulation :
     ```
     make sim_soc1_c_user_modbus_rtu
     ```    
@@ -387,7 +406,7 @@ Dans la suite du TP, nous allons implémenter un esclave Modbus RTU qui a les ca
     - Localiser la fonction qui ajoute un mots de 8b au crc
     - Déterminer l'adresse de début et de fin de cette fonction
     - Dans la waveform généré combien de cycles sont nécessaire pour éxecuter cette fonction ?
-      - Est ce que le temps d'exécution de cette fonction est constant ?
+      - Est-ce que le temps d'exécution de cette fonction est constant ?
       - En regardant le code généré, quel est le nombre d'instruction maximale par bit de donnée, en déduire le nombre de cycle nécessaire. Comparer le résultat obtenu avec celui de l'analyse de la waveform.
 
 4.  Pour réaliser la validation sur cible, il faut un maître modbus qui sera présent sur votre station de travail et se connectera à l'application dans le FPGA au travers d'un chip [FTDI232RL](https://ftdichip.com/wp-content/uploads/2020/08/DS_FT232R.pdf) inclus dans le chip [SH-U09C2 USB to TTL Adapter](https://www.deshide.com/product-details_SH-U09C2.html)
@@ -429,8 +448,104 @@ Dans la suite du TP, nous allons implémenter un esclave Modbus RTU qui a les ca
 
 # labo04 : Ajout d'un CRC matériel
 
+Les labo 1 et 2 vous ont familiarisez avec l'environnement logiciel et matériel.
 
- 
+Le labo 3 a abordé l'application que nous allons utiliser pour les prochaines parties.
+
+L'esclave modbus supporte les fonctions 3 (lecture) et 6 (écritures). La documentation complète est disponible à ce lien: [doc/guide_modbus.pdf](doc/guide_modbus.pdf)
+
+![image](doc/ressources/modbus_function3.png)
+![image](doc/ressources/modbus_function6.png)
+
+Dans les 2 cas, pour éviter toute mauvaise compréhension de la requête du maître et de la réponse de l'esclave, le protocole à ajouter un calcul de CRC dont l'algorithme est le suivant :
+
+![image](doc/ressources/modbus_crc16.png)
+
+L'esclave modbus possède actuellement un calcul de crc logiciel dont le temps d'exécution a été déterminé dans le labo précédent.
+
+L'objectif de ce labo est de faire un périphérique CRC matériel qui remplace le CRC logiciel.
+
+1.  Placez-vous dans le dossier **labo04**
+
+    ```
+    cd labo04
+    ```
+
+2.  Exécutez le script **init.sh**.
+    ```
+    ./init.sh
+    ```
+    
+    Ce script va copier le dossier **labo03/asylum-soc-picosoc** dans le dossier **labo04**.
+
+  > [!CAUTION]
+  > Ce script ne doit être exécuté qu'une fois.
+
+
+> [!NOTE] Durant vos expériences professionnel, vous allez devoir utiliser l'infrastructre, les styles de codages et l'environnment de travail de votre société. Ce labo vous permet de vous initier à cela*
+   
+3. L'interface de registres est généré avec un outil **regtool** qui est situé dans le dépot suivant : [TODO](TODO).
+
+   Crée le fichier **asylum-soc-picosoc/hdl/crc.hjson**. Pour la syntaxe vous pouvez vous inspiré de celui du timer disponible à ce lien : [TODO](TODO).
+
+   Le module doit avoir les registres suivants :
+
+   | Nom | Address | swtype | hwtype | Commentaire |
+   |-----|---------|--------|--------|-------------|
+   | data | 0x0    | Read/Write | Read Only | Donnée à accumulé dans le CRC |
+   | crc_byte0 | 0x2 | Read/Write | Read/Write | CRC [7:0] |
+   | crc_byte1 | 0x3 | Read/Write | Read/Write | CRC [15:8] |
+
+4. Compléter le fichier PicoSoC.core 
+  
+   ````
+   #---------------------------------------
+   gen_csr:
+   #---------------------------------------
+     generator : regtool
+     parameters:
+       file         : csr/crc.hjson
+       name         : crc
+       copy         : hdl
+       logical_name : asylum
+   ````
+
+   Ajouter l'appel au générateur dans la target **default** :
+  
+   ````
+   #---------------------------------------
+   default: &default
+   #---------------------------------------
+     description     : Default Target (DON'T RUN)
+     filesets        :
+       - files_hdl
+     toplevel        : PicoSoC
+     default_tool    : ghdl
+     generate        :
+       - gen_csr
+   ````
+
+5. Lancer la simulation pour générer les fichiers (utiliser la cible **sim_soc1_c_user_modbus_rtu**)
+   
+   Le générateur va vous générer les fichiers suivants :
+
+   ![image](doc/ressources/labo04_crc_files.png)
+
+   Le fichier **crc_csr_pkg.vhd** va vous fournir les types VHDL que vous aller utiliser pour l'intégration du CSR (Configuration and Status Registers) dans votre module **sbi_crc**.
+   C'est également le module CSR qui va avoir un port esclave SBI.
+
+6. Creée le module **sbi_crc** dans le fichier **asylum-soc-picosoc/hdl/sbi_crc.vhd** avec l'interface suivante :
+   
+   | Nom      | Direction | Type      | Commentaire                          |
+   |----------|-----------|-----------|--------------------------------------|
+   | clk_i    | in        | std_logic | Horloge du module crc                |
+   | arst_b_i | in        | std_logic | Reset asynchrone actif bas           |
+   | sbi_ini_i| in        | sbi_ini_t | Interface SBI provenant du maître    |
+   | sbi_tgt_o| out       | sbi_tgt_t | Interface SBI provenant de l'esclave |
+
+   Ce module va instancier le module **CRC_registers** crée à l'étape d'avant.  
+
+
 # labo05 : Lock-Step
 Dans cette partie, nous allons réaliser une implémentation avec « Lock Step » du SOC vu dans le labo03.
 
@@ -444,7 +559,7 @@ Dans cette partie, nous allons réaliser une implémentation avec « Lock Step �
     cd labo04
     ```
 
-2.  Exécuter le script **init.sh**.
+2.  Exécutez le script **init.sh**.
     ```
     ./init.sh
     ```
@@ -454,18 +569,18 @@ Dans cette partie, nous allons réaliser une implémentation avec « Lock Step �
   > [!CAUTION]
   > Ce script ne doit être exécuté qu'une fois.
 
-3.  Editer le fichier **asylum-soc-picosoc/hdl/PicoSoC.vhd** pour ajouter un 2ème processeur (Figure 3)
+3.  Éditez le fichier **asylum-soc-picosoc/hdl/PicoSoC.vhd** pour ajouter un 2ème processeur (Figure 3)
 
     Créer le registre **diff_r** (module rouge sur la Figure 3) qui va être initialisé à 0 après un reset et qui va être mis à 1 si l’une des sorties du processeur 0 diffère de celle du processeur 1 (les sorties des processeurs sont *iaddr_o*, *pbi_ini_o*, *it_ack_o*).
     
 4.  Valider sur carte que le comportement est inchangé par rapport à la partie précédente.
   
-5.  Est ce que l'implémentation *"Lock Step"* permet de ...
+5.  Est-ce que l'implémentation *"Lock Step"* permet de ...
     - ... détecter une faute dans un processeur 0
     - ... détecter une faute dans un processeur 1
     - ... corriger une faute dans un processeur 0
     - ... corriger une faute dans un processeur 1
-    - ... détecteur une faute dans le reste du SoC
+    - ... détecter une faute dans le reste du SoC
     - ... corriger une faute dans le reste du SoC
   
 6.  Que faire du registre diff_r ?
@@ -483,7 +598,7 @@ Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du
     cd labo05
     ```
 
-2.  Exécuter le script **init.sh**.
+2.  Exécutez le script **init.sh**.
     ```
     ./init.sh
     ```
@@ -495,27 +610,27 @@ Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du
 
 3.  Créer le fichier **asylum-soc-picosoc/hdl/PicoSoC_supervisor.vhd** pour ajouter le SoC superviseur (Figure 4).
 
-    Le SOC superviseur possède 2 contrôleurs GPIO :
-    - Le premier contient une sortie d’un bit est va être le reset du SOC applicatif
-    - Le second contient une sortie de 3 bits connectés aux leds LD17 à LD19.
+    Le SoC superviseur possède 2 contrôleurs GPIO :
+    - Le premier contient une sortie d’un bit et va être utilisée comme signal de reset du SoC applicatif
+    - Le second contient une sortie de 3 bits connectée aux leds LD17 à LD19.
 
   > [!IMPORTANT]
   >  Le SoC superviseur ressemble au SoC modifié lors du labo 5 en modifiant la largeur des vecteurs de LED et en supprimant les switchs.
 
 4.  Modifier le fichier **asylum-soc-picosoc/hdl/PicoSoC_top.vhd** pour instancier le SoC superviseur et le connecter avec le SoC applicatif.
-5.  Editer le fichier **asylum-soc-picosoc/esw/supervisor.c** qui contient les fonctions suivantes :
+5.  Éditez le fichier **asylum-soc-picosoc/esw/supervisor.c** qui contient les fonctions suivantes :
 
     - `void main (void)`
-      1.  Faire un reset du SOC applicatif
+      1.  Faire un reset du SoC applicatif
       2.  Autoriser les interruptions
       3.  Faire une boucle infinie (équivalent à un `while (1);` )
     -  `void isr (void) __interrupt(1)`
       1.  Incrémenter un compteur global
       2.  Envoyer l’état du compteur sur les leds LD17 à LD19
-      3.  faire un reset du SOC applicatif
+      3.  Faire un reset du SoC applicatif
       
     L'interruption du SoC superviseur provient du registre **diff_r** du SoC applicatif.
-6.  Editer le fichier **asylum-soc-picosoc/PicoSoC.core**
+6.  Éditez le fichier **asylum-soc-picosoc/PicoSoC.core**
 
     -  Ajouter les lignes suivant après le générateur *gen_c_identity* et les lignes d'après dans  la target *emu_ng_medium_c_identity* :
 
@@ -537,14 +652,14 @@ generate : [gen_c_identity, gen_c_supervisor]
 
     | HDL Name          | Location   | PCB  | Comment             |
     |-------------------|------------|------|---------------------|
-    | inject_error_i[0] | IOB10_D07P | S8   | Injection d'une erreur sur le processor 0 |
-    | inject_error_i[1] | IOB10_D12P | S9   | Injection d'une erreur sur le processor 1 |
-    | inject_error_i[2] | IOB10_D07N | S10  | Injection d'une erreur sur le processor 2 (cf labo06) |
+    | inject_error_i[0] | IOB10_D07P | S8   | Injection d'une erreur sur le processeur 0 |
+    | inject_error_i[1] | IOB10_D12P | S9   | Injection d'une erreur sur le processeur 1 |
+    | inject_error_i[2] | IOB10_D07N | S10  | Injection d'une erreur sur le processeur 2 (cf labo06) |
 
 9.  Valider sur carte
  
 # labo07 : TMR
-Dans ce labo, nous allons modifier les processeurs en lock-step du soc applicatif par des processeurs avec triplication.
+Dans ce labo, nous allons modifier les processeurs en lock-step du SoC applicatif par des processeurs avec triplication.
 
 ![image](https://github.com/user-attachments/assets/d3c9fb6b-d132-47df-91e8-f1c76a8b5f0a)
 
@@ -566,15 +681,15 @@ Dans ce labo, nous allons modifier les processeurs en lock-step du soc applicati
   > [!CAUTION]
   > Ce script ne doit être exécuté qu'une fois.
 
-3.  Editer le fichier **asylum-soc-picosoc/hdl/PicoSoC.vhd** pour ajouter les modification suivante (Figure 5) :
+3.  Éditez le fichier **asylum-soc-picosoc/hdl/PicoSoC.vhd** pour ajouter les modifications suivantes (Figure 5) :
 
-    1.  Un troisième processeur dans le SOC applicatif
+    1.  Un troisième processeur dans le SoC applicatif
     2.  Toutes les sorties des 3 processeurs doivent être votées
-    3.  Les différences doivent être calculées processeur par processeur et être envoyées au soc superviseur (le registre *diff_r* est donc sur 3 bits)
-    4.  Le soc superviseur possède 2 GPIO supplémentaires :
+    3.  Les différences doivent être calculées processeur par processeur et être envoyées au SoC superviseur (le registre *diff_r* est donc sur 3 bits)
+    4.  Le SoC superviseur possède 2 GPIO supplémentaires :
         1.  GPIO5 va fournir un vecteur pour masquer les lignes d’interruptions
         2.  GPIO6 va recevoir le vecteur d’interruptions masqués courant.
-4.  Editer le gestionnaire d’interruption défini dans le fichier asylum-soc-picosoc/esw/supervisor.c.
+4.  Éditez le gestionnaire d’interruption défini dans le fichier asylum-soc-picosoc/esw/supervisor.c.
 
     Ce dernier va lire l’état des interruptions et en déduire quel est le processeur fautif. Si c’est la première erreur détectée alors il va masquer les interruptions provenant de ce processeur.
 
