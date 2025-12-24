@@ -2,7 +2,7 @@
 
 function init_main()
 {
-    local work_repo=asylum-soc-OB8_gpio
+    local work_repo=asylum-soc-picosoc
     local work_branch=student
     local cores_repo=asylum-cores
     local cores_branch=main

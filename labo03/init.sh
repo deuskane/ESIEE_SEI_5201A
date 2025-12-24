@@ -2,37 +2,30 @@
 
 function init_main()
 {
-    local repo_work=asylum-soc-OB8_gpio
-    local repo_cores=asylum-cores
+    local work_repo=asylum-soc-picosoc
+    local cores_repo=asylum-cores
     
     # Header
-    echo ""
+    echo "--------------------------------------------------"
     echo "Run initialization script for $(basename ${PWD})"
-    echo ""
+    echo "--------------------------------------------------"
 
     # Get Repository
-    if test -d ${repo_work};
+    if test -d ${work_repo};
     then
-	echo "Directory \"${repo_work}\" exists, exit the script"
+	echo "Directory \"${work_repo}\" exists, exit the script"
 	return
     fi
 
-    git clone https://github.com/deuskane/${repo_work}.git
-
-    # Re-create directory if unexist
-    rm -fr   ~/.config/fusesoc/
-    mkdir -p ~/.config/fusesoc/
-
-    # Remove previous clone repo
-    rm -fr   ~/.local/share/fusesoc/${repo_cores}
-
-    # Add global Library
-    fusesoc library add ${repo_cores} https://github.com/deuskane/${repo_cores}.git --global
+    cp -r ../labo02/${repo_work} .
 
     # Add local Library
-    cd ${repo_work}
+    cd ${work_repo}
     rm -f fusesoc.conf
     fusesoc library add local .
+
+    # Clean
+    make clean
 
     # Check Core list
     make info

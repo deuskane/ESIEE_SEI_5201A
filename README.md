@@ -573,6 +573,9 @@ L'objectif de ce labo est de faire un périphérique CRC matériel qui remplace 
 
 9. Une fois la simulation opérationnelle, vous pouvez lancer votre application sur la carte
 
+   - Combien de registres avez vous utiliser dans votre design (incluant le CSR) ?
+   - Combien de ressources (LUT + DFF) avez vous en plus ?
+
 
 # labo05 : Lock-Step
 Dans cette partie, nous allons réaliser une implémentation avec « Lock Step » du SOC vu dans le labo03.
