@@ -69,11 +69,11 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
 
 
 1.  Éditez le fichier *labo01/hdl/labo01.vhd* pour réaliser la fonctionnalité illustrée dans la Figure suivante.
-   ![image](doc/ressources/labo-labo01.png)
+   ![image](doc/ressources/exports_labo/labo-labo01.png)
 
 
 2. Dans le répertoire *labo01/project*, lancez la commande **impulse**. Cette commande ouvre l’interface graphique présentée dans la figure suivante.
-   ![image](doc/ressources/labo-impulse_starting.png)
+   ![image](doc/ressources/exports_labo/labo-impulse_starting.png)
 
 3. Créer un nouveau projet
 
@@ -85,13 +85,13 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
      | Project Name | labo01         | Nom du projet |
      | Path         | labo01/project | Définition du dossier de travail. |
         
-     ![image](doc/ressources/labo-impulse_project_1.png)
+     ![image](doc/ressources/exports_labo/labo-impulse_project_1.png)
 
    -  Onglet « 2. Add Sources »
       - Ajouter le fichier *labo01/hdl/labo01.vhd*
       - Définir le Top cell name comme étant **labo01**
       
-       ![image](doc/ressources/labo-impulse_project_2.png)
+       ![image](doc/ressources/exports_labo/labo-impulse_project_2.png)
 
    - Onglet « 4. Select Devices »
 
@@ -102,7 +102,7 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
       | Device       | NG-MEDIUM    | |
       | Package      | LGA-625      | |
 
-      ![image](doc/ressources/labo-impulse_project_4.png)
+      ![image](doc/ressources/exports_labo/labo-impulse_project_4.png)
 
 
     - Onglet « 5. Project Summary»
@@ -112,7 +112,7 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
 
    Après avoir créé le projet, la fenêtre de travail apparaît.
 
-   ![image](doc/ressources/labo-impulse_work.png)
+   ![image](doc/ressources/exports_labo/labo-impulse_work.png)
 
 1. Sauvegardez votre projet : 
 
@@ -260,7 +260,7 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
  
     Ce SoC contient 2 contrôleurs GPIO, le premier connecté aux switchs, le second connecté aux LEDs.
 
-    ![image](doc/ressources/labo-labo02.png)
+    ![image](doc/ressources/exports_labo/labo-labo02.png)
     
     ***Figure 1 : PicoSoC***
 
