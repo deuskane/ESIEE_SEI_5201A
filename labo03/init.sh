@@ -17,7 +17,16 @@ function init_main()
 	return
     fi
 
-    cp -r ../labo02/${repo_work} .
+    # Get current dir
+    dirname_current=$(basename "$PWD")
+    dirname_current_prefix=${dirname_current//[0-9]/}
+    dirname_current_number=$(echo $dirname_current | grep -oE '[0-9]+')
+
+    # Get previous dir
+    dirname_previous_number=$(printf "%02d" $((10#$dirname_current_number - 1)))
+    dirname_previous="${dirname_current_prefix}${dirname_previous_number}"
+
+    cp -r ../${dirname_previous}/${work_repo} .
 
     # Add local Library
     cd ${work_repo}
