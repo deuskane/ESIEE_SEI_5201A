@@ -448,9 +448,9 @@ Dans la suite du TP, nous allons implémenter un esclave Modbus RTU qui a les ca
 
 # labo04 : Ajout d'un CRC matériel
 
-Les labo 1 et 2 vous ont familiarisez avec l'environnement logiciel et matériel.
+Les labo 1 et 2 vous ont familiarisés avec l'environnement logiciel et matériel.
 
-Le labo 3 a abordé l'application que nous allons utiliser pour les prochaines parties.
+Le labo 3 a abordée l'application que nous allons utiliser pour les prochaines parties.
 
 L'esclave modbus supporte les fonctions 3 (lecture) et 6 (écritures). La documentation complète est disponible à ce lien: [doc/guide_modbus.pdf](doc/guide_modbus.pdf)
 
@@ -482,21 +482,24 @@ L'objectif de ce labo est de faire un périphérique CRC matériel qui remplace 
   > Ce script ne doit être exécuté qu'une fois.
 
 
-> [!NOTE] Durant vos expériences professionnel, vous allez devoir utiliser l'infrastructre, les styles de codages et l'environnment de travail de votre société. Ce labo vous permet de vous initier à cela*
+> [!NOTE] 
+> Durant vos expériences professionnel, vous allez devoir utiliser l'infrastructre, les styles de codages et l'environnment de travail de votre société. Ce labo vous permet de vous initier à cela*
    
-3. L'interface de registres est généré avec un outil **regtool** qui est situé dans le dépot suivant : [TODO](TODO).
+3. L'interface de registres est généré avec un outil **regtool** qui est situé dans le dépot suivant : [https://github.com/deuskane/asylum-utils-generators](https://github.com/deuskane/asylum-utils-generators).
 
-   Crée le fichier **asylum-soc-picosoc/hdl/crc.hjson**. Pour la syntaxe vous pouvez vous inspiré de celui du timer disponible à ce lien : [TODO](TODO).
+   Crée le fichier **asylum-soc-picosoc/hdl/crc.hjson**. Pour la syntaxe vous pouvez vous inspiré de celui du timer disponible à ce lien : [https://github.com/deuskane/asylum-component-timer/blob/main/hdl/csr/timer.hjson](https://github.com/deuskane/asylum-component-timer/blob/main/hdl/csr/timer.hjson).
 
    Le module doit avoir les registres suivants :
 
-   | Nom | Address | swtype | hwtype | Commentaire |
-   |-----|---------|--------|--------|-------------|
-   | data | 0x0    | Read/Write | Read Only | Donnée à accumulé dans le CRC |
-   | crc_byte0 | 0x2 | Read/Write | Read/Write | CRC [7:0] |
-   | crc_byte1 | 0x3 | Read/Write | Read/Write | CRC [15:8] |
+   | Nom       | Address | swtype     | hwtype     | Commentaire |
+   |-----------|---------|------------|------------|-------------|
+   | data      | 0x0     | Read/Write | Read Only  | Donnée à accumulé dans le CRC |
+   | crc_byte0 | 0x2     | Read/Write | Read/Write | CRC [7:0] |
+   | crc_byte1 | 0x3     | Read/Write | Read/Write | CRC [15:8] |
 
-4. Compléter le fichier PicoSoC.core 
+4. Compléter le fichier PicoSoC.core. 
+
+   1. Ajouter la génération du banc de registre 
   
    ````
    #---------------------------------------
@@ -510,7 +513,7 @@ L'objectif de ce labo est de faire un périphérique CRC matériel qui remplace 
        logical_name : asylum
    ````
 
-   Ajouter l'appel au générateur dans la target **default** :
+   2. Ajouter l'appel au générateur dans la target **default** :
   
    ````
    #---------------------------------------
@@ -525,16 +528,17 @@ L'objectif de ce labo est de faire un périphérique CRC matériel qui remplace 
        - gen_csr
    ````
 
-5. Lancer la simulation pour générer les fichiers (utiliser la cible **sim_soc1_c_user_modbus_rtu**)
+
+   3. Lancer la simulation pour générer les fichiers (utiliser la cible **sim_soc1_c_user_modbus_rtu**)
    
-   Le générateur va vous générer les fichiers suivants :
+      Le générateur va vous générer les fichiers suivants :
 
-   ![image](doc/ressources/labo04_crc_files.png)
+      ![image](doc/ressources/labo04_crc_files.png)
 
-   Le fichier **crc_csr_pkg.vhd** va vous fournir les types VHDL que vous aller utiliser pour l'intégration du CSR (Configuration and Status Registers) dans votre module **sbi_crc**.
-   C'est également le module CSR qui va avoir un port esclave SBI.
+      Le fichier **crc_csr_pkg.vhd** va vous fournir les types VHDL que vous allez utiliser pour l'intégration du CSR (Configuration and Status Registers) dans votre module **sbi_crc**.
+      C'est également le module CSR qui va avoir un port esclave SBI.
 
-6. Creée le module **sbi_crc** dans le fichier **asylum-soc-picosoc/hdl/sbi_crc.vhd** avec l'interface suivante :
+5. Creée le module **sbi_crc** dans le fichier **asylum-soc-picosoc/hdl/sbi_crc.vhd** avec l'interface suivante :
    
    | Nom      | Direction | Type      | Commentaire                          |
    |----------|-----------|-----------|--------------------------------------|
@@ -544,6 +548,30 @@ L'objectif de ce labo est de faire un périphérique CRC matériel qui remplace 
    | sbi_tgt_o| out       | sbi_tgt_t | Interface SBI provenant de l'esclave |
 
    Ce module va instancier le module **CRC_registers** crée à l'étape d'avant.  
+
+6. Intégrer le module **sbi_crc** dans le SoC **PicoSoC_user** (**asylum-soc-picosoc/hdl/PicoSoC_user.vhd**). 
+   
+   Le module CRC devra être positiionné à l'adresse de base **0x70**.
+
+> [!NOTE] 
+> Aidez vous de l'intégration du module **sbi_timer**.
+
+7. Modifier le firmware du SoC **PicoSoC_user**, disponible dans le fichier **asylum-soc-picosoc/esw/user_modbus_rtu.c**.
+
+   Ce fichier C contient la macro **CRC_HW** :
+   
+   - Si elle n'est pas définit, les fonctions **crc16_next** et **crc16_init** vont utiliser la version logicielle du CRC16
+   - Si elle est définit, les fonctions **crc16_next** et **crc16_init** vont utiliser le périphérique que vous avez développer.
+
+8. Une fois le périphérique développer (étapes 3 à 5) et intégrer (étapes 6 à 7), vous pouvez lancer la simulation.
+   
+   Les 2 images suivantes vous présentes les données et la valeurs du CRC pour la première requête.
+
+   ![image](doc/ressources/labo04_crc_part1.png)
+
+   ![image](doc/ressources/labo04_crc_part2.png)
+
+9. Une fois la simulation opérationnelle, vous pouvez lancer votre application sur la carte
 
 
 # labo05 : Lock-Step
