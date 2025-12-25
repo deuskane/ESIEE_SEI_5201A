@@ -17,7 +17,7 @@ IMAGE_TARGETS := $(shell \
 		$(DRAWIO_APP) --uncompressed -x -o "$$f.xml" "$$f" > /dev/null 2>&1; \
 		grep -o 'name="[^"]*"' "$$f.xml" | sed 's/name="//;s/"//' | \
 		while read name; do \
-			echo "exports_$${base}/$${base}-$$name.$(FORMAT)"; \
+			echo "exports_$${base}/$${base}-$${name}.$(FORMAT)"; \
 		done; \
 		rm -f "$$f.xml"; \
 	done \
