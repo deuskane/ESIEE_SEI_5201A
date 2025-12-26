@@ -308,8 +308,6 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
 
     ![image](doc/ressources/labo-labo02.png)
     
-    ***Figure 1 : PicoSoC***
-
     Ouvrir le code source et lister les modules. Les modules doivent être listés dans l'étape 2... sauf 1, lequel et pourquoi ?
 
 9.  Le dossier **asylum-soc-picosoc/esw** contient l’application *identity* qui va lire les switchs et les écrire sur les leds en continu. L’application est écrite en C (identity.c) et en assembleur PicoBlaze (identity.psm).
@@ -631,8 +629,6 @@ Dans cette partie, nous allons réaliser une implémentation avec « Lock Step �
 
 ![image](doc/ressources/labo-labo05.png)
 
-***Figure 3 : labo04***
-
 1.  Placez-vous dans le dossier **labo04**
 
     ```
@@ -668,9 +664,7 @@ Dans cette partie, nous allons réaliser une implémentation avec « Lock Step �
 # labo06 : Lock-Step et superviseur
 Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du lock step.
 
-![image](https://github.com/user-attachments/assets/199074a6-8fd0-4d2c-93f2-741ab774b7a8)
-
-***Figure 4 : labo05***
+![image](doc/ressources/labo-labo06.png)
 
 1.  Placez-vous dans le dossier **labo05**
 
@@ -741,9 +735,7 @@ generate : [gen_c_identity, gen_c_supervisor]
 # labo07 : TMR
 Dans ce labo, nous allons modifier les processeurs en lock-step du SoC applicatif par des processeurs avec triplication.
 
-![image](https://github.com/user-attachments/assets/d3c9fb6b-d132-47df-91e8-f1c76a8b5f0a)
-
-***Figure 5 : labo06***
+![image](doc/ressources/labo-labo07.png)
 
 1.  Placez-vous dans le dossier **labo06**
 
