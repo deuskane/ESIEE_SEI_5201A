@@ -580,7 +580,7 @@ L'objectif de ce labo est de faire un périphérique CRC matériel qui remplace 
 # labo05 : Lock-Step
 Dans cette partie, nous allons réaliser une implémentation avec « Lock Step » du SOC vu dans le labo03.
 
-![image](https://github.com/user-attachments/assets/16d872fe-c980-497c-b6a4-e8f4895039fa)
+![image](doc/ressources/labo-labo05.png)
 
 ***Figure 3 : labo04***
 
