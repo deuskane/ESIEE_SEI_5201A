@@ -2,8 +2,6 @@
 
 ## Table des matières
 
-- [ESIEE\_SEI\_5201A](#esiee_sei_5201a)
-  - [Table des matières](#table-des-matières)
 - [Préambule](#préambule)
   - [Environnement logiciel](#environnement-logiciel)
   - [Environnement matériel](#environnement-matériel)
@@ -22,10 +20,58 @@
 Dans ces séances de TP, nous allons utiliser un System-on-Chip (SoC) académique à base d'un clone du microcontrôleur 8 bits PicoBlaze3 et de quelques périphériques GPIO, UART, SPI, Timer, ...
 
 Les TP sont découpés en 4 parties :
-1. Prendre en main l'environnement logiciel et matériel
-2. Implémenter un nouveau périphérique et son intégration dans le SoC existant
-3. Mise en place de la technique du Lock-Step
-4. Mise en place de la technique de la triplication (TMR)
+1. Prendre en main l'environnement logiciel et matériel (labo01 et labo02)
+2. Implémenter un nouveau périphérique et son intégration dans le SoC existant (labo03 et labo04)
+3. Mise en place de la technique du Lock-Step (labo05 et labo06)
+4. Mise en place de la technique de la triplication (TMR) (labo07)
+
+> ![IMPORTANT]
+> Les premiers labo sont dirigistes, la difficulté et l'autonomie requise est croissante.
+
+
+## Evaluation
+
+### Livraison
+Archive contenant le rapport et vos codes sources.
+
+#### Rapport
+Un rapport d’une dizaine de pages doit être fourni pour évaluer les acquis de cette unité.
+
+Ce rapport possède les sections suivantes :
+- Introduction
+  - Dans cette partie, vous expliquerez les enjeux d’un circuit numérique pour une application spatiale.
+- Outils et environnement (labo 1 à 2)
+  - Dans cette partie, vous discuterez des outils utilisés au cours de ces Tps (nxmap, nxpython et fusesoc) et de votre retour personnelle (prise en main, complexité, ...)
+    - Il n’est pas nécessaire de parler du contenu des exercice
+- Application de référence (labo 5)
+  - Dans cette partie, vous détaillerez l’architecture de référence
+    - Vous pouvez fournir du code commenté
+    - Il est intéressant de fournir des résultats pertinents comme :
+      - Le nombre de LUT / DFF de votre implémentation
+      - La fréquence maximale de votre implémentation
+      - Vous devez répondre aux questions
+- Lock-Step (labo 6)
+  - Dans cette partie, vous détaillerez l’approche Lock-Step
+  - Vous expliquerez les modifications architecturales
+  - Vous fournirez également des résultats pertinents du labo 6
+  - Vous devez répondre aux questions
+- Superviseur (labo 7)
+  - Dans cette partie, vous détaillerez l’intérêt du SoC Superviseur
+  - Vous détaillerez l’architecture du SoC superviseur
+  - Vous expliquerez également les domaines des resets
+  - Vous fournirez également des résultats pertinents du labo 7
+  - Vous devez également répondre à ces 4 questions :
+    - Que ce passe t’il si un SEE intervient dans l’un des processeurs applicatifs ?
+    - Que ce passe t’il si un SEE intervient dans l’un des GPIOs du SoC applicatif ?
+    - Que ce passe t’il si un SEE intervient dans le processeur du SoC superviseur ?
+    - Que ce passe t’il si un SEE intervient dans l’un des GPIOs du SoC superviseur ?
+- TMR (labo 8)
+  - Dans cette partie, vous détaillerez le principe d’une approche de type TMR
+  - Vous fournirez également des résultats pertinents du labo 8
+  - Vous devez répondre aux questions
+- Conclusion
+  - Dans cette dernière partie, vous confronterez une approche non tolérante aux radiations avec approche résistance par architecture. Vous pouvez évaluer la facilité de mise en œuvre, le coût en surface, les performances en termes de fréquence d’horloge.
+
 
 ## Environnement logiciel
 Pour réaliser ce TP, l'environnement logiciel est encapsulé dans une machine virtuelle basée sur une distribution CentOS 8 dont les identifiants sont les suivants :
@@ -464,6 +510,9 @@ Dans les 2 cas, pour éviter toute mauvaise compréhension de la requête du ma�
 L'esclave modbus possède actuellement un calcul de crc logiciel dont le temps d'exécution a été déterminé dans le labo précédent.
 
 L'objectif de ce labo est de faire un périphérique CRC matériel qui remplace le CRC logiciel.
+
+![image](doc/ressources/labo-labo04.png)
+
 
 1.  Placez-vous dans le dossier **labo04**
 
