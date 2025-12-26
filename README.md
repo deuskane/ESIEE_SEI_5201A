@@ -3,6 +3,7 @@
 ## Table des matières
 
 - [Préambule](#préambule)
+  - [Evaluation](#evaluation)
   - [Environnement logiciel](#environnement-logiciel)
   - [Environnement matériel](#environnement-matériel)
   - [Documentation](#documentation)
@@ -25,11 +26,10 @@ Les TP sont découpés en 4 parties :
 3. Mise en place de la technique du Lock-Step (labo05 et labo06)
 4. Mise en place de la technique de la triplication (TMR) (labo07)
 
-> ![IMPORTANT]
+> [!IMPORTANT]
 > Les premiers labo sont dirigistes, la difficulté et l'autonomie requise est croissante.
 
-
-## Evaluation
+## Evaluation
 
 ### Livraison
 Archive contenant le rapport et vos codes sources.
@@ -847,3 +847,4 @@ ADD sF, 01       ; Incrément du pointeur de pile
 FETCH s0, (sF)   ; Restauration du contexte d'exécution (sF est le pointeur de pile)
 RETURNI ENABLE
 ```
+
