@@ -625,14 +625,14 @@ L'objectif de ce labo est de faire un périphérique CRC matériel qui remplace 
 
 
 # labo05 : Lock-Step
-Dans cette partie, nous allons réaliser une implémentation avec « Lock Step » du SOC vu dans le labo03.
+Dans cette partie, nous allons réaliser une implémentation avec « Lock Step » du SOC vu dans le labo04.
 
 ![image](doc/ressources/labo-labo05.png)
 
-1.  Placez-vous dans le dossier **labo04**
+1.  Placez-vous dans le dossier **labo05**
 
     ```
-    cd labo04
+    cd labo05
     ```
 
 2.  Exécutez le script **init.sh**.
@@ -640,18 +640,34 @@ Dans cette partie, nous allons réaliser une implémentation avec « Lock Step �
     ./init.sh
     ```
     
-    Ce script va copier le dossier **labo03/asylum-soc-picosoc** dans le dossier **labo04**.
+    Ce script va copier le dossier **labo04/asylum-soc-picosoc** dans le dossier **labo05**.
 
   > [!CAUTION]
   > Ce script ne doit être exécuté qu'une fois.
 
-3.  Éditez le fichier **asylum-soc-picosoc/hdl/PicoSoC.vhd** pour ajouter un 2ème processeur (Figure 3)
+3.  Éditez le fichier **asylum-soc-picosoc/hdl/PicoSoC_user.vhd** pour ajouter un 2ème processeur
 
-    Créer le registre **diff_r** (module rouge sur la Figure 3) qui va être initialisé à 0 après un reset et qui va être mis à 1 si l’une des sorties du processeur 0 diffère de celle du processeur 1 (les sorties des processeurs sont *iaddr_o*, *pbi_ini_o*, *it_ack_o*).
+    - Le module **PicoSoC_user** dispose du paramètre **SAFETY** qui dispose de 3 valeurs. Se paramètre va influencé les constantes **CPU1_ENABLE**, **CPU2_ENABLE** et **LOCK_STEP_DEPTH_INT** :
+
+      | SAFETY    | CPU1_ENABLE | CPU2_ENABLE | LOCK_STEP_DEPTH_INT | Commentaire |
+      |-----------|-------------|-------------|--------------------|-------------|
+      | none      | false | false | 0               | Un seul processeur est implémenté.|
+      | lock-step | true  | false | LOCK_STEP_DEPTH | 2 processeurs sont implémentés, le processeur 0 est le processeur primaire et le processeur 1 est le processeur redondant.
+      | tmr       | true  | true  | 0               | 3 processeurs sont implémentés, les sorties de chaque processeur sont votés. |
+
+      La variante **tmr** sera vu pour le labo07.
+
+    - Lister les sorties du proceseur.
+
+    - Créer le registre **diff_r** qui va être initialisé à 0 après un reset et qui va être mis à 1 si l’une des sorties du processeur 0 diffère de celle du processeur 1.
+
+4.  Valider en simulation que le comportement est inchangé par rapport à la partie précédente.
     
-4.  Valider sur carte que le comportement est inchangé par rapport à la partie précédente.
+5.  Valider sur carte que le comportement est inchangé par rapport à la partie précédente.
+
+    - Combien de ressources supplémentaire utilise cette implémentation ?
   
-5.  Est-ce que l'implémentation *"Lock Step"* permet de ...
+6.  Est-ce que l'implémentation *"Lock Step"* permet de ...
     - ... détecter une faute dans un processeur 0
     - ... détecter une faute dans un processeur 1
     - ... corriger une faute dans un processeur 0
@@ -659,7 +675,7 @@ Dans cette partie, nous allons réaliser une implémentation avec « Lock Step �
     - ... détecter une faute dans le reste du SoC
     - ... corriger une faute dans le reste du SoC
   
-6.  Que faire du registre diff_r ?
+7.  Que faire du registre diff_r ?
  
 # labo06 : Lock-Step et superviseur
 Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du lock step.

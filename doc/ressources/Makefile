@@ -40,7 +40,7 @@ IMAGE_TARGETS += $(2)
 #-------------------------------------------------------------------
 $(2): $(1)
 #-------------------------------------------------------------------
-	$(DRAWIO_APP) --export --format $(FORMAT) --transparent --scale $(SCALE) --page-index $(3) --crop --output "$(2)" "$(1)"
+	$(DRAWIO_APP) --export --format $(FORMAT) --scale $(SCALE) --page-index $(3) --crop --output "$(2)" "$(1)"
 endef
 
 $(foreach tgt,$(RULE_IMAGE_TARGETS),$(eval $(call GEN_RULE,$(shell echo "$(tgt)" | cut -d'#' -f1),$(shell echo "$(tgt)" | cut -d'#' -f3),$(shell echo "$(tgt)" | cut -d'#' -f2))))
