@@ -682,10 +682,10 @@ Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du
 
 ![image](doc/ressources/labo-labo06.png)
 
-1.  Placez-vous dans le dossier **labo05**
+1.  Placez-vous dans le dossier **labo06**
 
     ```
-    cd labo05
+    cd labo06
     ```
 
 2.  Exécutez le script **init.sh**.
@@ -693,49 +693,23 @@ Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du
     ./init.sh
     ```
     
-    Ce script va copier le dossier **labo04/asylum-soc-picosoc** dans le dossier **labo05**.
+    Ce script va copier le dossier **labo05/asylum-soc-picosoc** dans le dossier **labo06**.
 
   > [!CAUTION]
   > Ce script ne doit être exécuté qu'une fois.
 
-3.  Créer le fichier **asylum-soc-picosoc/hdl/PicoSoC_supervisor.vhd** pour ajouter le SoC superviseur (Figure 4).
+3.  Le fichier **asylum-soc-picosoc/hdl/PicoSoC_supervisor.vhd** contient le SoC superviseur.
 
-    Le SoC superviseur possède 2 contrôleurs GPIO :
-    - Le premier contient une sortie d’un bit et va être utilisée comme signal de reset du SoC applicatif
-    - Le second contient une sortie de 3 bits connectée aux leds LD17 à LD19.
+    Le SoC superviseur possède 2 contrôleurs GPIO et un controlleur d'interruption :
+    - Le premier contrôlleur GPIO contient une sortie d’un bit et va être utilisée comme signal de reset du SoC applicatif
+    - Le second contrôlleur GPIO contient une sortie de 3 bits connectée aux leds LD17 à LD19.
+    - Le GIC va prendre en entrée les erreurs soulevés par le SoC User et les concentrés vers le processeur du SoC superviseur.
 
-  > [!IMPORTANT]
-  >  Le SoC superviseur ressemble au SoC modifié lors du labo 5 en modifiant la largeur des vecteurs de LED et en supprimant les switchs.
+    Modifier le fichier **asylum-soc-picosoc/hdl/PicoSoC_top.vhd** pour instancier le SoC superviseur et le connecter avec le SoC applicatif.
 
-4.  Modifier le fichier **asylum-soc-picosoc/hdl/PicoSoC_top.vhd** pour instancier le SoC superviseur et le connecter avec le SoC applicatif.
-5.  Éditez le fichier **asylum-soc-picosoc/esw/supervisor.c** qui contient les fonctions suivantes :
+6.  Simuler avec la règle **sim_soc3_c_modbus_rtu**
 
-    - `void main (void)`
-      1.  Faire un reset du SoC applicatif
-      2.  Autoriser les interruptions
-      3.  Faire une boucle infinie (équivalent à un `while (1);` )
-    -  `void isr (void) __interrupt(1)`
-      1.  Incrémenter un compteur global
-      2.  Envoyer l’état du compteur sur les leds LD17 à LD19
-      3.  Faire un reset du SoC applicatif
-      
-    L'interruption du SoC superviseur provient du registre **diff_r** du SoC applicatif.
-6.  Éditez le fichier **asylum-soc-picosoc/PicoSoC.core**
-
-    -  Ajouter les lignes suivant après le générateur *gen_c_identity* et les lignes d'après dans  la target *emu_ng_medium_c_identity* :
-
-```
-gen_c_supervisor :
-  generator : pbcc_gen
-  parameters :
-    file : soft/supervisor.c
-    type : c
-    entity : ROM_supervisor
-```
-
-```
-generate : [gen_c_identity, gen_c_supervisor]
-```
+    Le comportement doit être inchangé.
 
 7.  Valider sur carte
 8.  Modifier votre design pour injecter une erreur sur une entrée du processeur. L'erreur injectée sera sur le MSB de l'entrée idata_i du processeur (donc l'instruction est corrompue).
