@@ -707,30 +707,35 @@ Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du
 
     Modifier le fichier **asylum-soc-picosoc/hdl/PicoSoC_top.vhd** pour instancier le SoC superviseur et le connecter avec le SoC applicatif.
 
-6.  Simuler avec la règle **sim_soc3_c_modbus_rtu**
+4.  Simuler avec la règle **sim_soc3_c_modbus_rtu**
 
     Le comportement doit être inchangé.
 
-7.  Valider sur carte
-8.  Modifier votre design pour injecter une erreur sur une entrée du processeur. L'erreur injectée sera sur le MSB de l'entrée idata_i du processeur (donc l'instruction est corrompue).
+5.  Modifier votre design pour injecter une erreur sur une entrée du processeur. L'erreur injectée sera sur leq bits de poids fort de l'instruction provenant de la ROM (entrée *idata_i*) du processeur. Cela va corrompre l'instruction entrante.
+
+    Utiliser le paramètre générique **FAULT_INJECTION** .
 
     | HDL Name          | Location   | PCB  | Comment             |
     |-------------------|------------|------|---------------------|
-    | inject_error_i[0] | IOB10_D07P | S8   | Injection d'une erreur sur le processeur 0 |
-    | inject_error_i[1] | IOB10_D12P | S9   | Injection d'une erreur sur le processeur 1 |
-    | inject_error_i[2] | IOB10_D07N | S10  | Injection d'une erreur sur le processeur 2 (cf labo06) |
+    | inject_error_i[0] | IOB10_D07P | S8   | Injection d'une erreur sur le processeur 0 - Corruption du bit 17 |
+    | inject_error_i[1] | IOB10_D12P | S9   | Injection d'une erreur sur le processeur 1 - Corruption du bit 16 |
+    | inject_error_i[2] | IOB10_D07N | S10  | Injection d'une erreur sur le processeur 2 - Corruption du bit 15 (cf labo07) |
 
-9.  Valider sur carte
+6.  Simuler avec la règle **sim_soc3_fault_c_modbus_rtu**.
+
+    Ce test va injecter des erreurs dans le processeur et vérifier que l'application subit bien un reset.
+
+7.  Valider sur carte avec la règle **emu_soc3_fault_c_modbus_rtu**.
  
 # labo07 : TMR
 Dans ce labo, nous allons modifier les processeurs en lock-step du SoC applicatif par des processeurs avec triplication.
 
 ![image](doc/ressources/labo-labo07.png)
 
-1.  Placez-vous dans le dossier **labo06**
+1.  Placez-vous dans le dossier **labo07**
 
     ```
-    cd labo06
+    cd labo07
     ```
 
 2.  Exécuter le script **init.sh**.
@@ -738,19 +743,16 @@ Dans ce labo, nous allons modifier les processeurs en lock-step du SoC applicati
     ./init.sh
     ```
     
-    Ce script va copier le dossier **labo05/asylum-soc-picosoc** dans le dossier **labo06**.
+    Ce script va copier le dossier **labo05/asylum-soc-picosoc** dans le dossier **labo07**.
 
   > [!CAUTION]
   > Ce script ne doit être exécuté qu'une fois.
 
-3.  Éditez le fichier **asylum-soc-picosoc/hdl/PicoSoC.vhd** pour ajouter les modifications suivantes (Figure 5) :
+3.  Éditez le fichier **asylum-soc-picosoc/hdl/PicoSoC_user.vhd** pour ajouter les modifications suivantes :
 
     1.  Un troisième processeur dans le SoC applicatif
     2.  Toutes les sorties des 3 processeurs doivent être votées
     3.  Les différences doivent être calculées processeur par processeur et être envoyées au SoC superviseur (le registre *diff_r* est donc sur 3 bits)
-    4.  Le SoC superviseur possède 2 GPIO supplémentaires :
-        1.  GPIO5 va fournir un vecteur pour masquer les lignes d’interruptions
-        2.  GPIO6 va recevoir le vecteur d’interruptions masqués courant.
 4.  Éditez le gestionnaire d’interruption défini dans le fichier asylum-soc-picosoc/esw/supervisor.c.
 
     Ce dernier va lire l’état des interruptions et en déduire quel est le processeur fautif. Si c’est la première erreur détectée alors il va masquer les interruptions provenant de ce processeur.
@@ -760,9 +762,12 @@ Dans ce labo, nous allons modifier les processeurs en lock-step du SoC applicati
     - Pourquoi ne faisons-nous pas de reset après la première erreur détectée ?
     - Pourquoi ne faisons-nous pas de reset du processeur fautif uniquement ?
     - Pourquoi pouvons-nous continuer l'exécution avec un processeur ayant une erreur ?
-5.  Valider sur carte
-6.  Modifier votre design pour injecter une erreur sur une entrée du processeur 0 avec le bouton S8 (IOB10_D07P).
-7.  Valider sur carte
+5.  Simuler avec la règle **sim_soc4_fault_c_modbus_rtu**.
+
+    Ce test va injecter des erreurs dans le processeur et vérifier que l'application subit bien un reset.
+
+6.  Valider sur carte avec la règle **emu_soc4_fault_c_modbus_rtu**.
+
  
 # Annexe : Contournement d’une erreur dans le compilateur C
 
