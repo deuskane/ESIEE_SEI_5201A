@@ -17,10 +17,12 @@
 - [labo07 : TMR](#labo07--tmr)
 - [Annexe : Contournement d’une erreur dans le compilateur C](#annexe--contournement-dune-erreur-dans-le-compilateur-c)
 
-# Préambule
+## Préambule
+
 Dans ces séances de TP, nous allons utiliser un System-on-Chip (SoC) académique à base d'un clone du microcontrôleur 8 bits PicoBlaze3 et de quelques périphériques GPIO, UART, SPI, Timer, ...
 
 Les TP sont découpés en 4 parties :
+
 1. Prendre en main l'environnement logiciel et matériel (labo01 et labo02)
 2. Implémenter un nouveau périphérique et son intégration dans le SoC existant (labo03 et labo04)
 3. Mise en place de la technique du Lock-Step (labo05 et labo06)
@@ -29,15 +31,18 @@ Les TP sont découpés en 4 parties :
 > [!IMPORTANT]
 > Les premiers labo sont dirigistes, la difficulté et l'autonomie requise est croissante.
 
-## Evaluation
+### Evaluation
 
-### Livraison
+#### Livraison
+
 Archive contenant le rapport et vos codes sources.
 
 #### Rapport
+
 Un rapport d’une dizaine de pages doit être fourni pour évaluer les acquis de cette unité.
 
 Ce rapport possède les sections suivantes :
+
 - Introduction
   - Dans cette partie, vous expliquerez les enjeux d’un circuit numérique pour une application spatiale.
 - Outils et environnement (labo 1 à 2)
@@ -73,7 +78,8 @@ Ce rapport possède les sections suivantes :
   - Dans cette dernière partie, vous confronterez une approche non tolérante aux radiations avec approche résistance par architecture. Vous pouvez évaluer la facilité de mise en œuvre, le coût en surface, les performances en termes de fréquence d’horloge.
 
 
-## Environnement logiciel
+### Environnement logiciel
+
 Pour réaliser ce TP, l'environnement logiciel est encapsulé dans une machine virtuelle basée sur une distribution CentOS 8 dont les identifiants sont les suivants :
 
 > [!IMPORTANT]
@@ -81,18 +87,22 @@ Pour réaliser ce TP, l'environnement logiciel est encapsulé dans une machine v
 > 
 > **Password** : user
 
-##  Environnement matériel
+###  Environnement matériel
+
 Ce TP utilise la carte de développement DK625 intégrant un FPGA NX1H35S.
 Il s'agit d'un FPGA rad-hard de 35K LUT de la société NanoXplore.
 
 Dans ce TP, nous allons utiliser 2 outils :
+
 - L'outil **impulse** génère un bitstream à partir des codes VHDL / Verilog.
 - L'outil **nxbase** télécharge le bitstream dans le FPGA.
 
  ![image](doc/ressources/Devkit_ng_medium.jpg)
 
-## Documentation
+### Documentation
+
 Les documentations sont disponibles dans les liens suivants :
+
 | Documentation |       Lien |
 |---------------|------|
 | CPU           | [ug129](https://docs.amd.com/v/u/en-US/ug129) |
@@ -100,7 +110,8 @@ Les documentations sont disponibles dans les liens suivants :
 |               | [NanoXplore_NX1H35S_DevKitV3_Schematics](https://files.nanoxplore.com/f/c5dcf72c018e44939a2f) |
 | NG-MEDIUM     | [NanoXplore NX1H35AS Datasheet](https://files.nanoxplore.com/f/5ad5e8a333654fb2ac76) |
  
-## Archive
+### Archive
+
 Les sources du TP sont disponibles sur le dépôt suivant :
 > https://github.com/deuskane/ESIEE_SEI_5201A 
 
@@ -110,7 +121,8 @@ Récupérer les sources en clonant le dépôt :
 git clone https://github.com/deuskane/ESIEE_SEI_5201A.git
 ```
 
-# labo01 : Prise en main de l'outil Impulse
+## labo01 : Prise en main de l'outil Impulse
+
 Dans cette première partie, nous allons prendre en main l’environnement logiciel **impulse**.
 
 
@@ -236,11 +248,13 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
 13. Expérimenter sur carte
 
     La connexion entre **nxbase2** et le devkit est établie lorsque l'exécution de la commande affiche le message suivant :
+    
     ````
     Init board up to a loadable state
     ````
 
-# labo02 : Prise en main du System-on-Chip (SoC)
+## labo02 : Prise en main du System-on-Chip (SoC)
+
 Dans cette partie, nous allons réaliser la même fonctionnalité que dans le labo01, mais avec un System-on-Chip (SoC) à base d'un clone du PicoBlaze3.
 
 Les IPs sont présentes dans le dépôt git suivant :
@@ -404,7 +418,7 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
 14. Valider sur carte
  
 
-# labo03 : Esclave modbus
+## labo03 : Esclave modbus
 
 A partir du SoC précédent, nous allons prendre une application plus représentative : **un esclave modbus**.
 
@@ -490,7 +504,7 @@ Dans la suite du TP, nous allons implémenter un esclave Modbus RTU qui a les ca
    -  Incrémenter le compteur
 
 
-# labo04 : Ajout d'un CRC matériel
+## labo04 : Ajout d'un CRC matériel
 
 Les labo 1 et 2 vous ont familiarisés avec l'environnement logiciel et matériel.
 
@@ -624,7 +638,7 @@ L'objectif de ce labo est de faire un périphérique CRC matériel qui remplace 
    - Combien de ressources (LUT + DFF) avez vous en plus ?
 
 
-# labo05 : Lock-Step
+#" labo05 : Lock-Step
 Dans cette partie, nous allons réaliser une implémentation avec « Lock Step » du SOC vu dans le labo04.
 
 ![image](doc/ressources/labo-labo05.png)
@@ -677,7 +691,8 @@ Dans cette partie, nous allons réaliser une implémentation avec « Lock Step �
   
 7.  Que faire du registre diff_r ?
  
-# labo06 : Lock-Step et superviseur
+## labo06 : Lock-Step et superviseur
+
 Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du lock step.
 
 ![image](doc/ressources/labo-labo06.png)
@@ -727,7 +742,8 @@ Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du
 
 7.  Valider sur carte avec la règle **emu_soc3_fault_c_modbus_rtu**.
  
-# labo07 : TMR
+## labo07 : TMR
+
 Dans ce labo, nous allons modifier les processeurs en lock-step du SoC applicatif par des processeurs avec triplication.
 
 ![image](doc/ressources/labo-labo07.png)
@@ -769,7 +785,7 @@ Dans ce labo, nous allons modifier les processeurs en lock-step du SoC applicati
 6.  Valider sur carte avec la règle **emu_soc4_fault_c_modbus_rtu**.
 
  
-# Annexe : Contournement d’une erreur dans le compilateur C
+## Annexe : Contournement d’une erreur dans le compilateur C
 
 La fonction suivante ne compile pas correctement :
 ```
