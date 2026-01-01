@@ -79,14 +79,12 @@ Ce rapport possède les sections suivantes :
 - Conclusion
   - Dans cette dernière partie, vous confronterez une approche non tolérante aux radiations avec une approche résistante par architecture. Vous pourrez évaluer la facilité de mise en œuvre, le coût en surface, les performances en termes de fréquence d’horloge.
 
-
 ### Environnement logiciel
 
 Pour réaliser ce TP, l'environnement logiciel est encapsulé dans une machine virtuelle basée sur une distribution CentOS 8 dont les identifiants sont les suivants :
 
 > [!IMPORTANT]
 > **Login**    : user
-> 
 > **Password** : user
 
 ### Environnement matériel
@@ -111,7 +109,7 @@ Les documentations sont disponibles dans les liens suivants :
 | Devkit        | [NanoXplore_NX1H35S_DevKitV3_User_Guide](https://files.nanoxplore.com/f/79d605999def475da0ec/) |
 |               | [NanoXplore_NX1H35S_DevKitV3_Schematics](https://files.nanoxplore.com/f/c5dcf72c018e44939a2f) |
 | NG-MEDIUM     | [NanoXplore NX1H35AS Datasheet](https://files.nanoxplore.com/f/5ad5e8a333654fb2ac76) |
- 
+
 ### Sources
 
 Les sources du TP sont disponibles sur le dépôt suivant :
@@ -127,14 +125,13 @@ git clone https://github.com/deuskane/ESIEE_SEI_5201A.git
 
 Dans cette première partie, nous allons prendre en main l’environnement logiciel **impulse**.
 
-
-1.  Éditez le fichier *labo01/hdl/labo01.vhd* pour réaliser la fonctionnalité illustrée dans la Figure suivante.
+1. Éditez le fichier *labo01/hdl/labo01.vhd* pour réaliser la fonctionnalité illustrée dans la Figure suivante.
    ![image](doc/ressources/labo-labo01.png)
 
-
-2. Dans le répertoire *labo01/project*, lancez la commande **impulse**. Cette commande ouvre l’interface graphique présentée dans la figure suivante.
+2. Dans le répertoire *labo01/project*, lancez la commande **impulse**.
+   Cette commande ouvre l’interface graphique présentée dans la figure suivante.
    ![image](doc/ressources/labo-impulse_starting.png)
- 
+
 3. Créer un nouveau projet
 
    Create New Project (ou File/Project)
@@ -144,19 +141,17 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
      |--------------|----------------|---------------|
      | Project Name | labo01         | Nom du projet |
      | Path         | labo01/project | Définition du dossier de travail. |
-        
+
      ![image](doc/ressources/labo-impulse_project_1.png)
 
-   -  Onglet « 2. Add Sources »
+   - Onglet « 2. Add Sources »
       - Ajouter le fichier *labo01/hdl/labo01.vhd*
       - Définir le Top cell name comme étant **labo01**
-      
+
        ![image](doc/ressources/labo-impulse_project_2.png)
 
    - Onglet « 4. Select Devices »
 
-     
-     
       | Champ        | Valeur       | Description |
       |--------------|--------------|---------------|
       | Device       | NG-MEDIUM    | |
@@ -164,24 +159,24 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
 
       ![image](doc/ressources/labo-impulse_project_4.png)
 
-
-    - Onglet « 5. Project Summary»
+   - Onglet « 5. Project Summary»
 
       Après avoir vérifié les informations, cliquez sur « Finish »
-
 
    Après avoir créé le projet, la fenêtre de travail apparaît.
 
    ![image](doc/ressources/labo-impulse_work.png) 
 
-1. Sauvegardez votre projet : 
+4. Sauvegardez votre projet :
 
-       File>Save Project
+   ```
+   File>Save Project
+   ```
 
-2. Affectation des IOs 
+5. Affectation des IOs
 
-   Au début d’un projet, les IOs et les bancs ne sont pas configurés : le placement des IOs sera automatique ce qui peut être dangereux pour une exécution sur carte.
- 
+   Au début d’un projet, les IOs et les bancs ne sont pas configurés : le placement des IOs sera automatique ce qui peut être **dangereux** pour une exécution sur carte.
+
    Pour cet exemple, vous devez avoir la configuration suivante :
 
    | HDL Name      | FPGA Name       | PCB Name |
@@ -208,38 +203,38 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
    | IOB10         | 1.8V    |
 
    Exportez la configuration dans le fichier labo01/hdl/pads.py
-	
-3. Sauvegardez votre projet
-4. Synthèse : Cliquer sur Synthesis
-5. Placement : Cliquer sur Place
-6. Routage : Cliquer sur Route
-7.  Générer un Bitstream : Cliquer sur Bitstream
-8.  Dans le dossier labo01/project il y a les fichiers suivants :
-    - pads.py : fichier d’affectation des IOs et de configuration des bancs
-    - labo01.nxb : fichier de bitstream
-    - Fichiers *.nym : Fichier interne à la suite Impulse
-    - transcript.py : Fichier pour relancer le projet en ligne de commande
-    - logs : contient les différents logs de l’outils :
-      - instances.rpt : ce fichier fournit les statistiques d'utilisation des ressources internes du FPGA.
+
+6. Sauvegardez votre projet
+7. Synthèse : Cliquer sur *Synthesis*
+8. Placement : Cliquer sur *Place*
+9. Routage : Cliquer sur *Route*
+10. Générer un Bitstream : Cliquer sur *Bitstream*
+11. Dans le dossier labo01/project il y a les fichiers suivants :
+    - *pads.py* : fichier d’affectation des IOs et de configuration des bancs
+    - *labo01.nxb* : fichier de bitstream
+    - *Fichiers \*.nym* : Fichier interne à la suite Impulse
+    - *transcript.py* : Fichier pour relancer le projet en ligne de commande
+    - *logs* : contient les différents logs de l’outils :
+      - *instances.rpt* : ce fichier fournit les statistiques d'utilisation des ressources internes du FPGA.
       
-        ````
+        ```
         Ce labo utilise 6 LUTs, ces dernières réalisent les 6 inverseurs du design
-        ````
+        ```
 
         ![image](doc/ressources/labo01_instances.png)
 
-      - ios.rpt : ce fichier fournit un résumé des E/S.
+      - *ios.rpt* : ce fichier fournit un résumé des E/S.
 
-9.  Téléchargement du bitstream sur la carte :
+12. Téléchargement du bitstream sur la carte :
 
     Dans le répertoire labo01/nxmap, exécutez-le avec la commande suivante :
-    ````
+    ```
     nxbase2 labo01.nxb
-    ````
-    
+    ```
+
   > [!AVERTISSEMENT]
   > Le périphérique USB « **584E:424E** » doit être accessible par la VM, sinon vous risquez d'avoir le message suivant :
-  > 
+  >
   > No board found, please plug a board
 
   > [!NOTE]
@@ -251,9 +246,9 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
 
     La connexion entre **nxbase2** et le devkit est établie lorsque l'exécution de la commande affiche le message suivant :
     
-    ````
+    ```
     Init board up to a loadable state
-    ````
+    ```
 
 ## labo02 : Prise en main du System-on-Chip (SoC)
 
@@ -640,7 +635,7 @@ L'objectif de ce labo est de créer un périphérique CRC matériel qui remplace
    - Combien de ressources (LUT + DFF) avez-vous en plus ?
 
 
-#" labo05 : Lock-Step
+## labo05 : Lock-Step
 Dans cette partie, nous allons réaliser une implémentation avec « Lock Step » du SOC vu dans le labo04.
 
 ![image](doc/ressources/labo-labo05.png)
