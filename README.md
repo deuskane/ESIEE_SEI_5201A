@@ -7,7 +7,7 @@
   - [Environnement logiciel](#environnement-logiciel)
   - [Environnement matériel](#environnement-matériel)
   - [Documentation](#documentation)
-  - [Archive](#archive)
+  - [Sources](#sources)
 - [labo01 : Prise en main de l'outil Impulse](#labo01--prise-en-main-de-loutil-impulse)
 - [labo02 : Prise en main du System-on-Chip (SoC)](#labo02--prise-en-main-du-system-on-chip-soc)
 - [labo03 : Esclave modbus](#labo03--esclave-modbus)
@@ -41,38 +41,40 @@ Archive contenant le rapport et vos codes sources.
 
 Un rapport d’une dizaine de pages doit être fourni pour évaluer les acquis de cette unité.
 
+> [!IMPORTANT]
+> Vous pouvez utiliser l'IA pour générer votre rapport, cependant il faudra le préciser dans l'énoncé.
+
 Ce rapport possède les sections suivantes :
 
 - Introduction
   - Dans cette partie, vous expliquerez les enjeux d’un circuit numérique pour une application spatiale.
 - Outils et environnement (labo 1 à 2)
-  - Dans cette partie, vous discuterez des outils utilisés au cours de ces Tps (nxmap, nxpython et fusesoc) et de votre retour personnelle (prise en main, complexité, ...)
-    - Il n’est pas nécessaire de parler du contenu des exercice
-- Application de référence (labo 5)
+  - Dans cette partie, vous discuterez des outils utilisés au cours de ces Tps et de votre retour personnelle (prise en main, complexité, problème rencontré ...)
+- Application de référence (labo 3 et labo 4)
   - Dans cette partie, vous détaillerez l’architecture de référence
     - Vous pouvez fournir du code commenté
     - Il est intéressant de fournir des résultats pertinents comme :
       - Le nombre de LUT / DFF de votre implémentation
       - La fréquence maximale de votre implémentation
       - Vous devez répondre aux questions
-- Lock-Step (labo 6)
+- Lock-Step (labo 5)
   - Dans cette partie, vous détaillerez l’approche Lock-Step
   - Vous expliquerez les modifications architecturales
-  - Vous fournirez également des résultats pertinents du labo 6
+  - Vous fournirez également des résultats pertinents du labo 5
   - Vous devez répondre aux questions
-- Superviseur (labo 7)
+- Superviseur (labo 6)
   - Dans cette partie, vous détaillerez l’intérêt du SoC Superviseur
   - Vous détaillerez l’architecture du SoC superviseur
   - Vous expliquerez également les domaines des resets
-  - Vous fournirez également des résultats pertinents du labo 7
+  - Vous fournirez également des résultats pertinents du labo 6
   - Vous devez également répondre à ces 4 questions :
     - Que ce passe t’il si un SEE intervient dans l’un des processeurs applicatifs ?
     - Que ce passe t’il si un SEE intervient dans l’un des GPIOs du SoC applicatif ?
     - Que ce passe t’il si un SEE intervient dans le processeur du SoC superviseur ?
     - Que ce passe t’il si un SEE intervient dans l’un des GPIOs du SoC superviseur ?
-- TMR (labo 8)
+- TMR (labo 7)
   - Dans cette partie, vous détaillerez le principe d’une approche de type TMR
-  - Vous fournirez également des résultats pertinents du labo 8
+  - Vous fournirez également des résultats pertinents du labo 7
   - Vous devez répondre aux questions
 - Conclusion
   - Dans cette dernière partie, vous confronterez une approche non tolérante aux radiations avec approche résistance par architecture. Vous pouvez évaluer la facilité de mise en œuvre, le coût en surface, les performances en termes de fréquence d’horloge.
@@ -87,7 +89,7 @@ Pour réaliser ce TP, l'environnement logiciel est encapsulé dans une machine v
 > 
 > **Password** : user
 
-###  Environnement matériel
+### Environnement matériel
 
 Ce TP utilise la carte de développement DK625 intégrant un FPGA NX1H35S.
 Il s'agit d'un FPGA rad-hard de 35K LUT de la société NanoXplore.
@@ -110,7 +112,7 @@ Les documentations sont disponibles dans les liens suivants :
 |               | [NanoXplore_NX1H35S_DevKitV3_Schematics](https://files.nanoxplore.com/f/c5dcf72c018e44939a2f) |
 | NG-MEDIUM     | [NanoXplore NX1H35AS Datasheet](https://files.nanoxplore.com/f/5ad5e8a333654fb2ac76) |
  
-### Archive
+### Sources
 
 Les sources du TP sont disponibles sur le dépôt suivant :
 > https://github.com/deuskane/ESIEE_SEI_5201A 
