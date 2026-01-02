@@ -1,21 +1,6 @@
 # ESIEE_SEI_5201A
 
-## Table des matières
-
-- [Préambule](#préambule)
-  - [Evaluation](#evaluation)
-  - [Environnement logiciel](#environnement-logiciel)
-  - [Environnement matériel](#environnement-matériel)
-  - [Documentation](#documentation)
-  - [Sources](#sources)
-- [labo01 : Prise en main de l'outil Impulse](#labo01--prise-en-main-de-loutil-impulse)
-- [labo02 : Prise en main du System-on-Chip (SoC)](#labo02--prise-en-main-du-system-on-chip-soc)
-- [labo03 : Esclave modbus](#labo03--esclave-modbus)
-- [labo04 : Ajout d'un CRC matériel](#labo04--ajout-dun-crc-matériel)
-- [labo05 : Lock-Step](#labo05--lock-step)
-- [labo06 : Lock-Step et superviseur](#labo06--lock-step-et-superviseur)
-- [labo07 : TMR](#labo07--tmr)
-- [Annexe : Contournement d’une erreur dans le compilateur C](#annexe--contournement-dune-erreur-dans-le-compilateur-c)
+[TOC]
 
 ## Préambule
 
