@@ -117,7 +117,7 @@ Les sources du TP sont disponibles sur le dépôt suivant :
 
 Récupérer les sources en clonant le dépôt :
 
-```
+```bash
 git clone https://github.com/deuskane/ESIEE_SEI_5201A.git
 ```
 
@@ -169,7 +169,7 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
 
 4. Sauvegardez votre projet :
 
-   ```
+   ```text
    File>Save Project
    ```
 
@@ -217,7 +217,7 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
     - *logs* : contient les différents logs de l’outils :
       - *instances.rpt* : ce fichier fournit les statistiques d'utilisation des ressources internes du FPGA.
       
-        ```
+        ```text
         Ce labo utilise 6 LUTs, ces dernières réalisent les 6 inverseurs du design
         ```
 
@@ -228,7 +228,7 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
 12. Téléchargement du bitstream sur la carte :
 
     Dans le répertoire labo01/nxmap, exécutez-le avec la commande suivante :
-    ```
+    ```bash
     nxbase2 labo01.nxb
     ```
 
@@ -246,13 +246,13 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
 
     La connexion entre **nxbase2** et le devkit est établie lorsque l'exécution de la commande affiche le message suivant :
     
-    ```
+    ```text
     Init board up to a loadable state
     ```
 
 ## labo02 : Prise en main du System-on-Chip (SoC)
 
-Dans cette partie, nous allons réaliser la même fonctionnalité que dans le labo01, mais avec un System-on-Chip (SoC) à base d'un clone du PicoBlaze3.
+Dans cette partie, nous allons réaliser la même fonctionnalité que dans le labo01 (c'est à dire lire les switchs et les envoyés sur les leds), mais avec un System-on-Chip (SoC) à base d'un clone du PicoBlaze3.
 
 Les IPs sont présentes dans le dépôt git suivant :
 > https://github.com/deuskane
@@ -262,17 +262,17 @@ Dans la suite de ce TP, nous utiliserons l’outil fusesoc et son encapsulation 
 
 Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
 
-1.  Placez-vous dans le dossier **labo02**
+1. Placez-vous dans le dossier **labo02**
 
-    ```
-    cd labo02
-    ```
+   ```bash
+   cd labo02
+   ```
 
 2.  Exécutez le script **init.sh**.
-    ```
+    ```bash
     ./init.sh
     ```
-    
+
     Ce script va cloner le dépôt **asylum-soc-picosoc** qui contient les sources du SoC.
 
     ![image](doc/ressources/labo02_init_script.png)
@@ -283,7 +283,7 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
 
   > [!CAUTION]
   > Ce script ne doit être exécuté qu'une fois.
-  
+
 3.  Placez-vous dans le dossier nouvellement créé **asylum-soc-picosoc**. Celui-ci contient les fichiers et dossiers suivants :
 
     | Fichier / Dossier | Description |
@@ -301,7 +301,7 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
 
 5.  Toutes les commandes sont encapsulées avec l’outil **make**. Une aide est disponible en exécutant la commande suivante :
 
-    ```
+    ```bash
     make help
     ```
     
@@ -309,10 +309,10 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
     1.  Les variables du makefile qui peuvent être surchargé
     2.  Les règles du Makefile disponible
     3.  Les informations contenues dans le fichier **PicoSoC.core**
- 
+
     ![image](doc/ressources/labo02_makefile_help1.png)
     ![image](doc/ressources/labo02_makefile_help2.png)
-
+ 
 7.  Le fichier **asylum-soc-picosoc/hdl/PicoSoC_top.vhd** contient le top level du SoC présenté dans la Figure 1.
  
     Ce SoC contient 2 contrôleurs GPIO, le premier connecté aux switchs, le second connecté aux LEDs.
@@ -324,19 +324,19 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
 9.  Le dossier **asylum-soc-picosoc/esw** contient l’application *identity* qui va lire les switchs et les écrire sur les leds en continu. L’application est écrite en C (identity.c) et en assembleur PicoBlaze (identity.psm).
 
     Lancer la simulation avec l’application écrite en C en utilisant la commande suivante :
-    ```
+    ```bash
     make sim_soc1_c_identity
     ```
-
+ 
     Que fait l’exécution de cette commande ?
 
 10.  Les fichiers générés par les générateurs de fusesoc sont localisés dans le dossier de cache de l'outil.
 
      Attention, le nom du fichier dépend du VLNC du module (Vendor Library Name Version), du nom du générateur (ici *gen_user_c_identity*) et d'un hash. Le chemin suivant est à titre indicatif :
 
-     ```
+     ```bash
      cd ~/.cache/fusesoc/generator_cache/asylum_soc_PicoSoC-gen_user_c_identity_2.9.1-f5fb100af797341fb2eb657ead4a0e2a4609165d461f96b8b2ea0908b4860977
-     ```
+     ``` 
     
      -  Que contient ce dossier ?
      -  Comparer le fichier **user_identity.psm** généré avec le fichier **asylum-soc-picosoc/esw/identity.psm** 
@@ -348,10 +348,10 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
         - Quels sont les instructions exécuté pour arriver à la fonction **main** ?
         - A quoi sert l'instruction suivante :
           
-          ````
+          ```assembler
           __sdcc_loop:
           JUMP __sdcc_loop
-          ````
+          ```
           Expliquer pourquoi cette instruction est situé après l'appel à la fonction **main**.
      -  Que contient le fichier **user_identity.vhd* ?
         - Quel est le nom du module ? 
@@ -360,10 +360,10 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
   > [!WARNING]
   > Les fichiers psm contiennent des directives de compilation (EQU, ORG), des directives de simulation (DSIN, DSOUT) et des labels. Ce ne sont pas des instructions
 
-1.  La simulation a généré un chronogramme.
+11.  La simulation a généré un chronogramme.
     Ouvrir ce fichier à l’aide de la commande suivante : 
 
-    ```
+    ```bash
     gtkwave build/asylum_soc_PicoSoC_2.9.1/sim_soc1_c_identity-ghdl/dut.fst
     ```
 
@@ -377,22 +377,22 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
 
 2.  La commande suivante va préparer la compilation du  **PicoSoC_top** pour le FPGA **NG_MEDIUM** avec l'application *identity* écrite en C
 
-    ```
+    ```bash
     TARGET=emu_ng_medium_soc1 make setup
     ```
 
     La commande suivante va compiler le projet avec l'outil **impulse**
 
-    ```
+    ```bash
     TARGET=emu_ng_medium_soc1 make build
     ```
 
     La commande suivante va initialiser le devkit et télécharger le bitstream généré dans le FPGA
 
-    ```
+    ```bash
     TARGET=emu_ng_medium_soc1 make run
     ```
-
+ 
     L’exécution de la commande `make run` doit fournir la sortie suivante :
 
     ![image](doc/ressources/labo02_makefile_run.png)
@@ -405,7 +405,7 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
   > [!TIP]
   > Il arrive parfois que la commande échoue et ne parvienne pas à se connecter à la carte via l'USB de la VM ; n'hésitez pas à relancer la commande `make run`
  
-12. Modifier le code source exécuté par le processeur : **asylum-soc-picosoc/esw/identity.c** pour inverser l'état des switchs avant de les envoyer sur les LEDs.
+12. Modifier le code source exécuté par le processeur : **asylum-soc-picosoc/esw/identity.c** pour inverser l'état des switchs avant de les envoyer sur les LEDs. 
 
 13. Simuler le design.
 
@@ -434,15 +434,15 @@ Dans la suite du TP, nous allons implémenter un esclave Modbus RTU qui a les ca
 
 1.  Placez-vous dans le dossier **labo03**
 
-    ```
+    ```bash
     cd labo03
     ```
 
 2.  Exécutez le script **init.sh**.
-    ```
+    ```bash
     ./init.sh
     ```
-    
+
     Ce script va copier le dossier **labo02/asylum-soc-picosoc** dans le dossier **labo03**.
 
   > [!CAUTION]
@@ -453,10 +453,10 @@ Dans la suite du TP, nous allons implémenter un esclave Modbus RTU qui a les ca
     L'environnement de simulation est fourni dans le fichier **asylum-soc-picosoc/sim/tb_PicoSoC_modbus.vhd**
 
     Lancez la simulation :
-    ```
+    ```bash
     make sim_soc1_c_user_modbus_rtu
     ```    
-    
+
     Déterminer combien de cycles sont nécessaire pour faire le calcul du CRC:
     - Localiser la fonction qui ajoute un mots de 8b au crc
     - Déterminer l'adresse de début et de fin de cette fonction
@@ -468,7 +468,7 @@ Dans la suite du TP, nous allons implémenter un esclave Modbus RTU qui a les ca
     
     La connexion entre l'adaptateur se fait comme indiqué sur la photo suivante :
     
-    ![image](doc/ressources/labo03_uart_env.jpeg)
+    ![image](doc/ressources/labo03_uart_env.jpeg) 
 
     Ainsi les broches du banc 5 sont connecté comme tel :
 
@@ -486,10 +486,10 @@ Dans la suite du TP, nous allons implémenter un esclave Modbus RTU qui a les ca
 
     Une fois l'adaptateur connecté, lancez la compilation avec l'esclave Modbus :
 
-    ````
+    ```bash
     TARGET=emu_ng_medium_soc1_modbus make target
-    ````
-
+    ```
+ 
     > [!TIP]
     > La règle de makefile **target** est équivalente à **setup**, **build** et **run**
 
@@ -525,15 +525,15 @@ L'objectif de ce labo est de créer un périphérique CRC matériel qui remplace
 
 1.  Placez-vous dans le dossier **labo04**
 
-    ```
+    ```bash
     cd labo04
     ```
 
 2.  Exécutez le script **init.sh**.
-    ```
+    ```bash
     ./init.sh
     ```
-    
+
     Ce script va copier le dossier **labo03/asylum-soc-picosoc** dans le dossier **labo04**.
 
   > [!CAUTION]
@@ -543,7 +543,7 @@ L'objectif de ce labo est de créer un périphérique CRC matériel qui remplace
 > [!NOTE] 
 > Durant vos expériences professionnelles, vous allez devoir utiliser l'infrastructure, les styles de codage et l'environnement de travail de votre société. Ce labo vous permet de vous initier à cela.
    
-3. L'interface de registres est générée avec un outil **regtool** qui est situé dans le dépôt suivant : [https://github.com/deuskane/asylum-utils-generators](https://github.com/deuskane/asylum-utils-generators).
+3. L'interface de registres est générée avec un outil **regtool** qui est situé dans le dépôt suivant : [https://github.com/deuskane/asylum-utils-generators](https://github.com/deuskane/asylum-utils-generators). 
 
    Créez le fichier **asylum-soc-picosoc/hdl/crc.hjson**. Pour la syntaxe, vous pouvez vous inspirer de celui du timer disponible à ce lien : [https://github.com/deuskane/asylum-component-timer/blob/main/hdl/csr/timer.hjson](https://github.com/deuskane/asylum-component-timer/blob/main/hdl/csr/timer.hjson).
 
@@ -559,7 +559,7 @@ L'objectif de ce labo est de créer un périphérique CRC matériel qui remplace
 
    1. Ajouter la génération du banc de registre 
   
-   ````
+   ```text
    #---------------------------------------
    gen_csr:
    #---------------------------------------
@@ -569,11 +569,11 @@ L'objectif de ce labo est de créer un périphérique CRC matériel qui remplace
        name         : crc
        copy         : hdl
        logical_name : asylum
-   ````
-
+   ```
+ 
    2. Ajouter l'appel au générateur dans la target **default** :
   
-   ````
+   ```text
    #---------------------------------------
    default: &default
    #---------------------------------------
@@ -584,8 +584,8 @@ L'objectif de ce labo est de créer un périphérique CRC matériel qui remplace
      default_tool    : ghdl
      generate        :
        - gen_csr
-   ````
-
+   ```
+ 
 
    3. Lancer la simulation pour générer les fichiers (utiliser la cible **sim_soc1_c_user_modbus_rtu**)
    
@@ -597,7 +597,7 @@ L'objectif de ce labo est de créer un périphérique CRC matériel qui remplace
       C'est également le module CSR qui aura un port esclave SBI.
 
 5. Creée le module **sbi_crc** dans le fichier **asylum-soc-picosoc/hdl/sbi_crc.vhd** avec l'interface suivante :
-   
+
    | Nom      | Direction | Type      | Commentaire                          |
    |----------|-----------|-----------|--------------------------------------|
    | clk_i    | in        | std_logic | Horloge du module crc                |
@@ -607,7 +607,7 @@ L'objectif de ce labo est de créer un périphérique CRC matériel qui remplace
 
    Ce module va instancier le module **CRC_registers** crée à l'étape d'avant.  
 
-6. Intégrer le module **sbi_crc** dans le SoC **PicoSoC_user** (**asylum-soc-picosoc/hdl/PicoSoC_user.vhd**). 
+6. Intégrer le module **sbi_crc** dans le SoC **PicoSoC_user** (**asylum-soc-picosoc/hdl/PicoSoC_user.vhd**).
    
    Le module CRC devra être positionné à l'adresse de base **0x70**.
 
@@ -624,7 +624,7 @@ L'objectif de ce labo est de créer un périphérique CRC matériel qui remplace
 8. Une fois le périphérique développer (étapes 3 à 5) et intégrer (étapes 6 à 7), vous pouvez lancer la simulation.
     
    Les 2 images suivantes vous présentes les données et la valeurs du CRC pour la première requête.
- 
+
    ![image](doc/ressources/labo04_crc_part1.png)
  
    ![image](doc/ressources/labo04_crc_part2.png)
@@ -642,15 +642,15 @@ Dans cette partie, nous allons réaliser une implémentation avec « Lock Step �
 
 1.  Placez-vous dans le dossier **labo05**
 
-    ```
+    ```bash
     cd labo05
     ```
 
 2.  Exécutez le script **init.sh**.
-    ```
+    ```bash
     ./init.sh
     ```
-    
+
     Ce script va copier le dossier **labo04/asylum-soc-picosoc** dans le dossier **labo05**.
 
   > [!CAUTION]
@@ -659,7 +659,7 @@ Dans cette partie, nous allons réaliser une implémentation avec « Lock Step �
 3.  Éditez le fichier **asylum-soc-picosoc/hdl/PicoSoC_user.vhd** pour ajouter un 2ème processeur
 
     - Le module **PicoSoC_user** dispose du paramètre **SAFETY** qui dispose de 3 valeurs. Se paramètre va influencé les constantes **CPU1_ENABLE**, **CPU2_ENABLE** et **LOCK_STEP_DEPTH_INT** :
-
+ 
       | SAFETY    | CPU1_ENABLE | CPU2_ENABLE | LOCK_STEP_DEPTH_INT | Commentaire | 
       |-----------|-------------|-------------|--------------------|-------------|
       | none      | false | false | 0               | Un seul processeur est implémenté.|
@@ -672,7 +672,7 @@ Dans cette partie, nous allons réaliser une implémentation avec « Lock Step �
 
     - Créer le registre **diff_r** qui va être initialisé à 0 après un reset et qui va être mis à 1 si l’une des sorties du processeur 0 diffère de celle du processeur 1.
 
-4.  Valider en simulation que le comportement est inchangé par rapport à la partie précédente.
+4.  Valider en simulation que le comportement est inchangé par rapport à la partie précédente. 
     
 5.  Valider sur carte que le comportement est inchangé par rapport à la partie précédente.
 
@@ -696,15 +696,15 @@ Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du
 
 1.  Placez-vous dans le dossier **labo06**
 
-    ```
+    ```bash
     cd labo06
     ```
 
 2.  Exécutez le script **init.sh**.
-    ```
+    ```bash
     ./init.sh
     ```
-    
+
     Ce script va copier le dossier **labo05/asylum-soc-picosoc** dans le dossier **labo06**.
 
   > [!CAUTION]
@@ -718,7 +718,7 @@ Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du
     - Le GIC va prendre en entrée les erreurs soulevées par le SoC User et les concentrer vers le processeur du SoC superviseur.
 
     Modifiez le fichier **asylum-soc-picosoc/hdl/PicoSoC_top.vhd** pour instancier le SoC superviseur et le connecter avec le SoC applicatif.
-
+ 
 4.  Simuler avec la règle **sim_soc3_c_modbus_rtu**
 
     Le comportement doit être inchangé.
@@ -730,7 +730,7 @@ Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du
     | HDL Name          | Location   | PCB  | Comment             |
     |-------------------|------------|------|---------------------|
     | inject_error_i[0] | IOB10_D07P | S8   | Injection d'une erreur sur le processeur 0 - Corruption du bit 17 |
-    | inject_error_i[1] | IOB10_D12P | S9   | Injection d'une erreur sur le processeur 1 - Corruption du bit 16 |
+    | inject_error_i[1] | IOB10_D12P | S9   | Injection d'une erreur sur le processeur 1 - Corruption du bit 16 | 
     | inject_error_i[2] | IOB10_D07N | S10  | Injection d'une erreur sur le processeur 2 - Corruption du bit 15 (cf labo07) |
 
 6.  Simuler avec la règle **sim_soc3_fault_c_modbus_rtu**.
@@ -747,15 +747,15 @@ Dans ce labo, nous allons modifier les processeurs en lock-step du SoC applicati
 
 1.  Placez-vous dans le dossier **labo07**
 
-    ```
+    ```bash
     cd labo07
     ```
 
 2.  Exécuter le script **init.sh**.
-    ```
+    ```bash
     ./init.sh
     ```
-    
+
     Ce script va copier le dossier **labo05/asylum-soc-picosoc** dans le dossier **labo07**.
 
   > [!CAUTION]
@@ -767,7 +767,7 @@ Dans ce labo, nous allons modifier les processeurs en lock-step du SoC applicati
     2.  Toutes les sorties des 3 processeurs doivent être votées
     3.  Les différences doivent être calculées processeur par processeur et être envoyées au SoC superviseur (le registre *diff_r* est donc sur 3 bits)
 4.  Éditez le gestionnaire d’interruption défini dans le fichier asylum-soc-picosoc/esw/supervisor.c. 
-
+ 
     Ce dernier va lire l’état des interruptions et en déduire quel est le processeur fautif. Si c’est la première erreur détectée, alors il va masquer les interruptions provenant de ce processeur.
  
     Si une seconde erreur est détectée alors le SoC applicatif va être remis à zéro.
@@ -785,7 +785,7 @@ Dans ce labo, nous allons modifier les processeurs en lock-step du SoC applicati
 ## Annexe : Contournement d’une erreur dans le compilateur C
 
 La fonction suivante ne compile pas correctement :
-```
+```c
 void isr (void) __interrupt(1)
 {
 PORT_WR(LED1,cpt);
@@ -794,7 +794,7 @@ cpt ++;
 ```
 
 En assembleur cela donne :
-```
+```assembler
 _isr:
 ; soft/identity.c:34: PORT_WR(LED1,cpt);
 STORE s0, (sF)   ; Sauvegarde du contexte d'exécution
@@ -811,7 +811,7 @@ RETURNI ENABLE
 L’instruction STORE est placée après la restauration du contexte.
 
 Le contournement trouvé est d’appeler une fonction **null** avant de chaque retour de fonction pour obliger le compilateur à mettre à jour les variables globales.
-``` 
+```c
 void null (void)
 {
 // Empty
@@ -826,7 +826,7 @@ null();
 }
 ```
 
-```
+```assembler
 ; soft/identity.c:27: void null (void)
 _null:
 ; soft/identity.c:30: }
