@@ -638,57 +638,60 @@ L'objectif de ce laboratoire est de concevoir un périphérique matériel dédi�
    - Combien de ressources (LUT + DFF) avez-vous en plus ?
 
 ## labo05 : Lock-Step
+
 Dans cette partie, nous allons réaliser une implémentation avec « Lock Step » du SOC vu dans le labo04.
 
 ![image](doc/ressources/labo-labo05.png)
 
-1.  Placez-vous dans le dossier **labo05**
+1. Placez-vous dans le dossier **labo05**
 
-    ```bash
-    cd labo05
-    ```
+   ```bash
+   cd labo05
+   ```
 
-2.  Exécutez le script **init.sh**.
-    ```bash
-    ./init.sh
-    ```
+2. Exécutez le script **init.sh**.
 
-    Ce script va copier le dossier **labo04/asylum-soc-picosoc** dans le dossier **labo05**.
+   ```bash
+   ./init.sh
+   ```
 
-  > [!CAUTION]
-  > Ce script ne doit être exécuté qu'une fois.
+   Ce script va copier le dossier **labo04/asylum-soc-picosoc** dans le dossier **labo05**.
 
-3.  Éditez le fichier **asylum-soc-picosoc/hdl/PicoSoC_user.vhd** pour ajouter un 2ème processeur
+   > [!CAUTION]
+   > Ce script ne doit être exécuté qu'une fois.
 
-    - Le module **PicoSoC_user** dispose du paramètre **SAFETY** qui dispose de 3 valeurs. Se paramètre va influencé les constantes **CPU1_ENABLE**, **CPU2_ENABLE** et **LOCK_STEP_DEPTH_INT** :
- 
-      | SAFETY    | CPU1_ENABLE | CPU2_ENABLE | LOCK_STEP_DEPTH_INT | Commentaire | 
-      |-----------|-------------|-------------|--------------------|-------------| 
-      | none      | false | false | 0               | Un seul processeur est implémenté.|
-      | lock-step | true  | false | LOCK_STEP_DEPTH | 2 processeurs sont implémentés, le processeur 0 est le processeur primaire et le processeur 1 est le processeur redondant.
-      | tmr       | true  | true  | 0               | 3 processeurs sont implémentés, les sorties de chaque processeur sont votés. |
+3. Éditez le fichier **asylum-soc-picosoc/hdl/PicoSoC_user.vhd** pour ajouter un 2ème processeur
 
-      La variante **tmr** sera vu pour le labo07.
+   - Le module **PicoSoC_user** dispose du paramètre **SAFETY** qui dispose de 3 valeurs. Se paramètre va influencé les constantes **CPU1_ENABLE**, **CPU2_ENABLE** et **LOCK_STEP_DEPTH_INT** :
 
-    - Lister les sorties du processeur.
+      | SAFETY    | CPU1_ENABLE | CPU2_ENABLE | LOCK_STEP_DEPTH_INT | Commentaire                                                                                       |
+      |-----------|-------------|-------------|---------------------|---------------------------------------------------------------------------------------------------|
+      | none      | false       | false       | 0                   | Un seul processeur est implémenté.                                                                |
+      | lock-step | true        | false       | LOCK_STEP_DEPTH     | 2 processeurs sont implémentés, le processeur primaire (cpu 0) et le processeur redondant (cpu 1).|
+      | tmr       | true        | true        | 0                   | 3 processeurs sont implémentés, les sorties de chaque processeur sont votés.                      |
 
-    - Créer le registre **diff_r** qui va être initialisé à 0 après un reset et qui va être mis à 1 si l’une des sorties du processeur 0 diffère de celle du processeur 1.
+     > [!NOTE]
+     > La variante **tmr** sera vu pour le labo07.
 
-4.  Valider en simulation que le comportement est inchangé par rapport à la partie précédente. 
-    
-5.  Valider sur carte que le comportement est inchangé par rapport à la partie précédente. 
+   - Lister les sorties du processeur.
 
-    - Combien de ressources supplémentaires utilise cette implémentation ?
+   - Créer le registre **diff_r** qui va être initialisé à 0 après un reset et qui va être mis à 1 si l’une des sorties du processeur 0 diffère de celle du processeur 1.
+
+4. Valider en simulation que le comportement est inchangé par rapport à la partie précédente.
+
+5. Valider sur carte que le comportement est inchangé par rapport à la partie précédente.
+
+   - Combien de ressources supplémentaires utilise cette implémentation ?
   
-6.  Est-ce que l'implémentation *"Lock Step"* permet de ...
-    - ... détecter une faute dans un processeur 0
-    - ... détecter une faute dans un processeur 1
-    - ... corriger une faute dans un processeur 0
-    - ... corriger une faute dans un processeur 1
-    - ... détecter une faute dans le reste du SoC
-    - ... corriger une faute dans le reste du SoC
+6. Est-ce que l'implémentation *"Lock Step"* permet de ...
+   - ... détecter une faute dans un processeur 0
+   - ... détecter une faute dans un processeur 1
+   - ... corriger une faute dans un processeur 0
+   - ... corriger une faute dans un processeur 1
+   - ... détecter une faute dans le reste du SoC
+   - ... corriger une faute dans le reste du SoC
   
-7.  Que faire du registre diff_r ?
+7. Que faire du registre diff_r ?
 
 ## labo06 : Lock-Step et superviseur
 
@@ -696,50 +699,51 @@ Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du
 
 ![image](doc/ressources/labo-labo06.png)
 
-1.  Placez-vous dans le dossier **labo06**
+1. Placez-vous dans le dossier **labo06**
 
-    ```bash
-    cd labo06
-    ```
+   ```bash
+   cd labo06
+   ```
 
-2.  Exécutez le script **init.sh**.
-    ```bash
-    ./init.sh
-    ```
+2. Exécutez le script **init.sh**.
 
-    Ce script va copier le dossier **labo05/asylum-soc-picosoc** dans le dossier **labo06**.
+   ```bash
+   ./init.sh
+   ```
 
-  > [!CAUTION]
-  > Ce script ne doit être exécuté qu'une fois.
+   Ce script va copier le dossier **labo05/asylum-soc-picosoc** dans le dossier **labo06**.
 
-3.  Le fichier **asylum-soc-picosoc/hdl/PicoSoC_supervisor.vhd** contient le SoC superviseur.
+   > [!CAUTION]
+   > Ce script ne doit être exécuté qu'une fois.
 
-    Le SoC superviseur possède 2 contrôleurs GPIO et un controlleur d'interruption :
-    - Le premier contrôlleur GPIO contient une sortie d’un bit et va être utilisée comme signal de reset du SoC applicatif
-    - Le second contrôleur GPIO contient une sortie de 3 bits connectée aux leds LD17 à LD19.
-    - Le GIC va prendre en entrée les erreurs soulevées par le SoC User et les concentrer vers le processeur du SoC superviseur.
+3. Le fichier **asylum-soc-picosoc/hdl/PicoSoC_supervisor.vhd** contient le SoC superviseur.
 
-    Modifiez le fichier **asylum-soc-picosoc/hdl/PicoSoC_top.vhd** pour instancier le SoC superviseur et le connecter avec le SoC applicatif. 
- 
-4.  Simuler avec la règle **sim_soc3_c_modbus_rtu**
+   Le SoC superviseur possède 2 contrôleurs GPIO et un controlleur d'interruption :
+   - Le premier contrôlleur GPIO contient une sortie d’un bit et va être utilisée comme signal de reset du SoC applicatif
+   - Le second contrôleur GPIO contient une sortie de 3 bits connectée aux leds LD17 à LD19.
+   - Le GIC va prendre en entrée les erreurs soulevées par le SoC User et les concentrer vers le processeur du SoC superviseur.
 
-    Le comportement doit être inchangé.
+   Modifiez le fichier **asylum-soc-picosoc/hdl/PicoSoC_top.vhd** pour instancier le SoC superviseur et le connecter avec le SoC applicatif.
 
-5.  Modifier votre design pour injecter une erreur sur une entrée du processeur. L'erreur injectée sera sur leq bits de poids fort de l'instruction provenant de la ROM (entrée *idata_i*) du processeur. Cela va corrompre l'instruction entrante.
+4. Simuler avec la règle **sim_soc3_c_modbus_rtu**
+
+   Le comportement doit être inchangé.
+
+5. Modifier votre design pour injecter une erreur sur une entrée du processeur. L'erreur injectée sera sur les bits de poids fort de l'instruction provenant de la ROM (entrée *idata_i*) du processeur. Cela va corrompre l'instruction entrante.
 
     Utilisez le paramètre générique **FAULT_INJECTION**.
 
-    | HDL Name          | Location   | PCB  | Comment             |
-    |-------------------|------------|------|---------------------|
-    | inject_error_i[0] | IOB10_D07P | S8   | Injection d'une erreur sur le processeur 0 - Corruption du bit 17 | 
-    | inject_error_i[1] | IOB10_D12P | S9   | Injection d'une erreur sur le processeur 1 - Corruption du bit 16 | 
+    | HDL Name          | Location   | PCB  | Comment                                                                       |
+    |-------------------|------------|------|-------------------------------------------------------------------------------|
+    | inject_error_i[0] | IOB10_D07P | S8   | Injection d'une erreur sur le processeur 0 - Corruption du bit 17             |
+    | inject_error_i[1] | IOB10_D12P | S9   | Injection d'une erreur sur le processeur 1 - Corruption du bit 16             |
     | inject_error_i[2] | IOB10_D07N | S10  | Injection d'une erreur sur le processeur 2 - Corruption du bit 15 (cf labo07) |
 
-6.  Simuler avec la règle **sim_soc3_fault_c_modbus_rtu**.
+6. Simuler avec la règle **sim_soc3_fault_c_modbus_rtu**.
 
-    Ce test va injecter des erreurs dans le processeur et vérifier que l'application subit bien un reset.
+   Ce test va injecter des erreurs dans le processeur et vérifier que l'application subit bien un reset.
 
-7.  Valider sur carte avec la règle **emu_soc3_fault_c_modbus_rtu**.
+7. Valider sur carte avec la règle **emu_soc3_fault_c_modbus_rtu**.
 
 ## labo07 : TMR
 
