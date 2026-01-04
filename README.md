@@ -227,20 +227,21 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
 
 12. Téléchargement du bitstream sur la carte :
 
-   Dans le répertoire labo01/nxmap, exécutez-le avec la commande suivante :
+    Dans le répertoire labo01/nxmap, exécutez-le avec la commande suivante :
 
-   ```bash
-   nxbase2 labo01.nxb
-   ```
+    ```bash
+    nxbase2 labo01.nxb
+    ```
 
-   > [!AVERTISSEMENT]
-   > Le périphérique USB « **584E:424E** » doit être accessible par la VM, sinon vous risquez d'avoir le message suivant :
-   >
-   > No board found, please plug a board
-   > [!NOTE]
-   > Après la première exécution, Windows va remapper le périphérique inconnu en « **Nanoxplore Angie USB-JTAG** ». Ce périphérique doit également être accessible par la VM, sinon vous risquez d'avoir le message suivant : 
-   >
-   > Cannot find the new board
+> [!WARNING]
+> Le périphérique USB « **584E:424E** » doit être accessible par la VM, sinon vous risquez d'avoir le message suivant :
+>
+> No board found, please plug a board
+
+> [!NOTE]
+> Après la première exécution, Windows va remapper le périphérique inconnu en « **Nanoxplore Angie USB-JTAG** ». Ce périphérique doit également être accessible par la VM, sinon vous risquez d'avoir le message suivant : 
+>
+> Cannot find the new board
 
 13. Expérimenter sur carte
 
@@ -282,8 +283,8 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
 
     ![image](doc/ressources/labo02_cores_list.png)
 
-    > [!CAUTION]
-    > Ce script ne doit être exécuté qu'une fois.
+> [!WARNING]
+> Ce script ne doit être exécuté qu'une fois.
 
 3. Placez-vous dans le dossier nouvellement créé **asylum-soc-picosoc**. Celui-ci contient les fichiers et dossiers suivants :
 
@@ -360,8 +361,8 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
       - Quel est le nom du module ?
       - Décrire le contenu du module
 
-   > [!WARNING]
-   > Les fichiers psm contiennent des directives de compilation (EQU, ORG), des directives de simulation (DSIN, DSOUT) et des labels. Ce ne sont pas des instructions
+> [!WARNING]
+> Les fichiers psm contiennent des directives de compilation (EQU, ORG), des directives de simulation (DSIN, DSOUT) et des labels. Ce ne sont pas des instructions
 
 8. La simulation a généré un chronogramme.
     Ouvrir ce fichier à l’aide de la commande suivante :
@@ -400,12 +401,13 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
 
     ![image](doc/ressources/labo02_makefile_run.png)
 
-   > [!WARNING]
-   > Lancer la phase **build** avant la phase **setup** va vous générer une erreur
-   >
-   > ![image](doc/ressources/labo02_makefile_build_without_setup.png)
-   > [!TIP]
-   > Il arrive parfois que la commande échoue et ne parvienne pas à se connecter à la carte via l'USB de la VM ; n'hésitez pas à relancer la commande `make run`
+> [!WARNING]
+> Lancer la phase **build** avant la phase **setup** va vous générer une erreur
+>
+> ![image](doc/ressources/labo02_makefile_build_without_setup.png)
+
+> [!TIP]
+> Il arrive parfois que la commande échoue et ne parvienne pas à se connecter à la carte via l'USB de la VM ; n'hésitez pas à relancer la commande `make run`
 
 10. Modifier le code source exécuté par le processeur : **asylum-soc-picosoc/esw/identity.c** pour inverser l'état des switchs avant de les envoyer sur les LEDs.
 
@@ -447,8 +449,8 @@ Dans la suite du TP, nous allons implémenter un esclave Modbus RTU qui a les ca
 
     Ce script va copier le dossier **labo02/asylum-soc-picosoc** dans le dossier **labo03**.
 
-   > [!CAUTION]
-   > Ce script ne doit être exécuté qu'une fois.
+> [!WARNING]
+> Ce script ne doit être exécuté qu'une fois.
 
 3. L'esclave Modbus va utiliser le logiciel présent dans le fichier **asylum-soc-picosoc/esw/user_modbus_rtu.c**. Ce dernier va exécuter en boucle la fonction **modbus_slave** et va attendre des caractères provenant de l'UART.
 
@@ -493,8 +495,8 @@ Dans la suite du TP, nous allons implémenter un esclave Modbus RTU qui a les ca
     TARGET=emu_ng_medium_soc1_modbus make target
     ```
 
-    > [!TIP]
-    > La règle de makefile **target** est équivalente à **setup**, **build** et **run**
+> [!TIP]
+> La règle de makefile **target** est équivalente à **setup**, **build** et **run**
 
 5. Une fois l'application chargé dans le FPGA, lancer le script **asylum-soc-picosoc/tools/modbus_server.py** qui va effectuer les actions suivantes en continue :
 
@@ -538,10 +540,10 @@ L'objectif de ce laboratoire est de concevoir un périphérique matériel dédi�
 
    Ce script va copier le dossier **labo03/asylum-soc-picosoc** dans le dossier **labo04**.
 
-   > [!CAUTION]
-   > Ce script ne doit être exécuté qu'une fois.
-   > [!NOTE]
-   > Durant vos expériences professionnelles, vous allez devoir utiliser l'infrastructure, les styles de codage et l'environnement de travail de votre société. Ce labo vous permet de vous initier à cela.
+> [!CAUTION]
+> Ce script ne doit être exécuté qu'une fois.
+> [!NOTE]
+> Durant vos expériences professionnelles, vous allez devoir utiliser l'infrastructure, les styles de codage et l'environnement de travail de votre société. Ce labo vous permet de vous initier à cela.
 
 3. L'interface de registres est générée avec un outil **regtool** qui est situé dans le dépôt suivant : [https://github.com/deuskane/asylum-utils-generators](https://github.com/deuskane/asylum-utils-generators).
 
@@ -611,8 +613,8 @@ L'objectif de ce laboratoire est de concevoir un périphérique matériel dédi�
 
    Le module CRC devra être positionné à l'adresse de base **0x70**.
 
-   > [!NOTE]
-   > Aidez-vous de l'intégration du module **sbi_timer**.
+> [!NOTE]
+> Aidez-vous de l'intégration du module **sbi_timer**.
 
 7. Modifiez le firmware du SoC **PicoSoC_user**, disponible dans le fichier **asylum-soc-picosoc/esw/user_modbus_rtu.c**.
 
@@ -654,8 +656,8 @@ Dans cette partie, nous allons réaliser une implémentation avec « Lock Step �
 
    Ce script va copier le dossier **labo04/asylum-soc-picosoc** dans le dossier **labo05**.
 
-   > [!CAUTION]
-   > Ce script ne doit être exécuté qu'une fois.
+> [!CAUTION]
+> Ce script ne doit être exécuté qu'une fois.
 
 3. Éditez le fichier **asylum-soc-picosoc/hdl/PicoSoC_user.vhd** pour ajouter un 2ème processeur
 
@@ -667,8 +669,8 @@ Dans cette partie, nous allons réaliser une implémentation avec « Lock Step �
       | lock-step | true        | false       | LOCK_STEP_DEPTH     | 2 processeurs sont implémentés, le processeur primaire (cpu 0) et le processeur redondant (cpu 1).|
       | tmr       | true        | true        | 0                   | 3 processeurs sont implémentés, les sorties de chaque processeur sont votés.                      |
 
-     > [!NOTE]
-     > La variante **tmr** sera vu pour le labo07.
+> [!NOTE]
+> La variante **tmr** sera vu pour le labo07.
 
    - Lister les sorties du processeur.
 
@@ -710,8 +712,8 @@ Dans cette partie, nous allons ajouter un superviseur pour gérer les erreurs du
 
    Ce script va copier le dossier **labo05/asylum-soc-picosoc** dans le dossier **labo06**.
 
-   > [!CAUTION]
-   > Ce script ne doit être exécuté qu'une fois.
+> [!CAUTION]
+> Ce script ne doit être exécuté qu'une fois.
 
 3. Le fichier **asylum-soc-picosoc/hdl/PicoSoC_supervisor.vhd** contient le SoC superviseur.
 
@@ -762,8 +764,8 @@ Dans ce labo, nous allons modifier les processeurs en lock-step du SoC applicati
 
    Ce script va copier le dossier **labo06/asylum-soc-picosoc** dans le dossier **labo07**.
 
-   > [!CAUTION]
-   > Ce script ne doit être exécuté qu'une fois.
+> [!CAUTION]
+> Ce script ne doit être exécuté qu'une fois.
 
 3. Éditez le fichier **asylum-soc-picosoc/hdl/PicoSoC_user.vhd** pour ajouter les modifications suivantes :
 
@@ -856,3 +858,4 @@ ADD sF, 01       ; Incrément du pointeur de pile
 FETCH s0, (sF)   ; Restauration du contexte d'exécution (sF est le pointeur de pile)
 RETURNI ENABLE
 ```
+
