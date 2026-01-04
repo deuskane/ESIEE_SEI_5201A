@@ -152,7 +152,7 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
 
    - Onglet « 4. Select Devices »
 
-      | Champ        | Valeur       | Description |
+      | Champ        | Valeur       | Description   |
       |--------------|--------------|---------------|
       | Device       | NG-MEDIUM    | |
       | Package      | LGA-625      | |
@@ -165,7 +165,7 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
 
    Après avoir créé le projet, la fenêtre de travail apparaît.
 
-   ![image](doc/ressources/labo-impulse_work.png) 
+   ![image](doc/ressources/labo-impulse_work.png)
 
 4. Sauvegardez votre projet :
 
@@ -214,9 +214,9 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
     - *labo01.nxb* : fichier de bitstream
     - *Fichiers \*.nym* : Fichier interne à la suite Impulse
     - *transcript.py* : Fichier pour relancer le projet en ligne de commande
-    - *logs* : contient les différents logs de l’outils : 
+    - *logs* : contient les différents logs de l’outils :
       - *instances.rpt* : ce fichier fournit les statistiques d'utilisation des ressources internes du FPGA.
-      
+
         ```text
         Ce labo utilise 6 LUTs, ces dernières réalisent les 6 inverseurs du design
         ```
@@ -227,26 +227,25 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
 
 12. Téléchargement du bitstream sur la carte :
 
-    Dans le répertoire labo01/nxmap, exécutez-le avec la commande suivante :
-    
-    ```bash
-    nxbase2 labo01.nxb
-    ```
+   Dans le répertoire labo01/nxmap, exécutez-le avec la commande suivante :
 
-  > [!AVERTISSEMENT]
-  > Le périphérique USB « **584E:424E** » doit être accessible par la VM, sinon vous risquez d'avoir le message suivant :
-  >
-  > No board found, please plug a board
+   ```bash
+   nxbase2 labo01.nxb
+   ```
 
-  > [!NOTE]
-  > Après la première exécution, Windows va remapper le périphérique inconnu en « **Nanoxplore Angie USB-JTAG** ». Ce périphérique doit également être accessible par la VM, sinon vous risquez d'avoir le message suivant : 
-  >
-  > Cannot find the new board
+   > [!AVERTISSEMENT]
+   > Le périphérique USB « **584E:424E** » doit être accessible par la VM, sinon vous risquez d'avoir le message suivant :
+   >
+   > No board found, please plug a board
+   > [!NOTE]
+   > Après la première exécution, Windows va remapper le périphérique inconnu en « **Nanoxplore Angie USB-JTAG** ». Ce périphérique doit également être accessible par la VM, sinon vous risquez d'avoir le message suivant : 
+   >
+   > Cannot find the new board
 
 13. Expérimenter sur carte
 
     La connexion entre **nxbase2** et le devkit est établie lorsque l'exécution de la commande affiche le message suivant :
-    
+
     ```text
     Init board up to a loadable state
     ```
@@ -256,10 +255,10 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
 Dans cette partie, nous allons réaliser la même fonctionnalité que dans le labo01 (c'est à dire lire les switchs et les envoyés sur les leds), mais avec un System-on-Chip (SoC) à base d'un clone du PicoBlaze3.
 
 Les IPs sont présentes dans le dépôt git suivant :
-> https://github.com/deuskane
+> [https://github.com/deuskane](https://github.com/deuskane)
 
 Dans la suite de ce TP, nous utiliserons l’outil fusesoc et son encapsulation dans des Makefile.
-> https://github.com/olofk/fusesoc
+> [https://github.com/olofk/fusesoc](https://github.com/olofk/fusesoc)
 
 Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
 
@@ -344,7 +343,7 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
    - Que contient ce dossier ?
    - Comparer le fichier **user_identity.psm** généré avec le fichier **asylum-soc-picosoc/esw/identity.psm**
       - Localiser la boucle d'écriture dans l'étape 7
-      - Combien d'instructions contient le fichier **user_identity.psm** généré par le compilateur ? 
+      - Combien d'instructions contient le fichier **user_identity.psm** généré par le compilateur ?
       - Pourquoi le fichier  **asylum-soc-picosoc/esw/identity.psm** contient moins d'instructions ?
    - Le fichier **asylum-soc-picosoc/esw/identity.log** contient en plus du code assembleur généré par le compilateur, l'adresse de chaque instruction et son code en hexadécimal (une instruction picoblaze est sur 18 bits).
       - À quelle adresse commence la fonction **main** ?
@@ -358,8 +357,8 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
 
         Expliquer pourquoi cette instruction est situé après l'appel à la fonction **main**.
    - Que contient le fichier **user_identity.vhd** ?
-      - Quel est le nom du module ? 
-      - Décrire le contenu du module 
+      - Quel est le nom du module ?
+      - Décrire le contenu du module
 
    > [!WARNING]
    > Les fichiers psm contiennent des directives de compilation (EQU, ORG), des directives de simulation (DSIN, DSOUT) et des labels. Ce ne sont pas des instructions
@@ -405,7 +404,6 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
    > Lancer la phase **build** avant la phase **setup** va vous générer une erreur
    >
    > ![image](doc/ressources/labo02_makefile_build_without_setup.png)
-
    > [!TIP]
    > Il arrive parfois que la commande échoue et ne parvienne pas à se connecter à la carte via l'USB de la VM ; n'hésitez pas à relancer la commande `make run`
 
@@ -542,10 +540,9 @@ L'objectif de ce laboratoire est de concevoir un périphérique matériel dédi�
 
    > [!CAUTION]
    > Ce script ne doit être exécuté qu'une fois.
-
    > [!NOTE]
    > Durant vos expériences professionnelles, vous allez devoir utiliser l'infrastructure, les styles de codage et l'environnement de travail de votre société. Ce labo vous permet de vous initier à cela.
- 
+
 3. L'interface de registres est générée avec un outil **regtool** qui est situé dans le dépôt suivant : [https://github.com/deuskane/asylum-utils-generators](https://github.com/deuskane/asylum-utils-generators).
 
    Créez le fichier **asylum-soc-picosoc/hdl/crc.hjson**.
@@ -751,46 +748,49 @@ Dans ce labo, nous allons modifier les processeurs en lock-step du SoC applicati
 
 ![image](doc/ressources/labo-labo07.png)
 
-1.  Placez-vous dans le dossier **labo07**
+1. Placez-vous dans le dossier **labo07**
 
-    ```bash
-    cd labo07
-    ```
+   ```bash
+   cd labo07
+   ```
 
-2.  Exécuter le script **init.sh**.
-    ```bash
-    ./init.sh
-    ```
+2. Exécuter le script **init.sh**.
 
-    Ce script va copier le dossier **labo05/asylum-soc-picosoc** dans le dossier **labo07**.
+   ```bash
+   ./init.sh
+   ```
 
-  > [!CAUTION]
-  > Ce script ne doit être exécuté qu'une fois.
+   Ce script va copier le dossier **labo06/asylum-soc-picosoc** dans le dossier **labo07**.
 
-3.  Éditez le fichier **asylum-soc-picosoc/hdl/PicoSoC_user.vhd** pour ajouter les modifications suivantes :
+   > [!CAUTION]
+   > Ce script ne doit être exécuté qu'une fois.
 
-    1.  Un troisième processeur dans le SoC applicatif
-    2.  Toutes les sorties des 3 processeurs doivent être votées
-    3.  Les différences doivent être calculées processeur par processeur et être envoyées au SoC superviseur (le registre *diff_r* est donc sur 3 bits)
-4.  Éditez le gestionnaire d’interruption défini dans le fichier asylum-soc-picosoc/esw/supervisor.c. 
+3. Éditez le fichier **asylum-soc-picosoc/hdl/PicoSoC_user.vhd** pour ajouter les modifications suivantes :
 
-    Ce dernier va lire l’état des interruptions et en déduire quel est le processeur fautif. Si c’est la première erreur détectée, alors il va masquer les interruptions provenant de ce processeur.
- 
-    Si une seconde erreur est détectée alors le SoC applicatif va être remis à zéro.
+   1. Un troisième processeur dans le SoC applicatif
+   2. Toutes les sorties des 3 processeurs doivent être votées (vers la ROM, vers l'ICN et l'acquittement des interruptions)
+   3. Les différences doivent être calculées processeur par processeur et être envoyées au SoC superviseur (le registre *diff_r* est donc sur 3 bits)
 
-    - Pourquoi ne faisons-nous pas de reset après la première erreur détectée ?
-    - Pourquoi ne faisons-nous pas de reset du processeur fautif uniquement ?
-    - Pourquoi pouvons-nous continuer l'exécution avec un processeur ayant une erreur ?
-5.  Simuler avec la règle **sim_soc4_fault_c_modbus_rtu**.
+4. Éditez le gestionnaire d’interruption défini dans le fichier asylum-soc-picosoc/esw/supervisor.c.
 
-    Ce test va injecter des erreurs dans le processeur et vérifier que l'application subit bien un reset.
+   Ce dernier va lire l’état des interruptions et en déduire quel est le processeur fautif. Si c’est la première erreur détectée, alors il va masquer les interruptions provenant de ce processeur.
 
-6.  Valider sur carte avec la règle **emu_soc4_fault_c_modbus_rtu**.
- 
- 
+   Si une seconde erreur est détectée alors le SoC applicatif va être remis à zéro.
+
+   - Pourquoi ne faisons-nous pas de reset après la première erreur détectée ?
+   - Pourquoi ne faisons-nous pas de reset du processeur fautif uniquement ?
+   - Pourquoi pouvons-nous continuer l'exécution avec un processeur ayant une erreur ?
+
+5. Simuler avec la règle **sim_soc4_fault_c_modbus_rtu**.
+
+   Ce test va injecter des erreurs dans le processeur et vérifier que l'application subit bien un reset.
+
+6. Valider sur carte avec la règle **emu_soc4_fault_c_modbus_rtu**.
+
 ## Annexe : Contournement d’une erreur dans le compilateur C
 
 La fonction suivante ne compile pas correctement :
+
 ```c
 void isr (void) __interrupt(1)
 {
@@ -800,6 +800,7 @@ cpt ++;
 ```
 
 En assembleur cela donne :
+
 ```assembler
 _isr:
 ; soft/identity.c:34: PORT_WR(LED1,cpt);
@@ -814,9 +815,11 @@ FETCH s0, (sF)   ; Restauration du contexte d'exécution (sF est le pointeur de 
 STORE s0, _cpt   ; Mise à jour de cpt, s0 ne contient plus cpt !!!
 RETURNI ENABLE
 ```
+
 L’instruction STORE est placée après la restauration du contexte.
 
 Le contournement trouvé est d’appeler une fonction **null** avant de chaque retour de fonction pour obliger le compilateur à mettre à jour les variables globales.
+
 ```c
 void null (void)
 {
