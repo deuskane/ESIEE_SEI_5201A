@@ -42,7 +42,7 @@ Archive contenant le rapport et vos codes sources.
 Un rapport d’une dizaine de pages doit être fourni pour évaluer les acquis de cette unité.
 
 > [!IMPORTANT]
-> Vous pouvez utiliser l'IA pour générer votre rapport, cependant il faudra le préciser dans l'énoncé.
+> Vous pouvez utiliser l'IA pour générer votre rapport, cependant il faudra le préciser dans l'introduction.
 
 Ce rapport possède les sections suivantes :
 
@@ -175,6 +175,11 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
 
 5. Synthèse : Cliquer sur *Synthesis*
 
+   La synthèse fini en erreur car le module est vide.
+   Remplir le contenu du module **labo01**.
+
+   Modifier votre design jusqu'à ce que la synthèse passe.
+
 6. Affectation des IOs
 
    Au début d’un projet, les IOs et les bancs ne sont pas configurés : le placement des IOs sera automatique ce qui peut être **dangereux** pour une exécution sur carte.
@@ -182,26 +187,26 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
    Pour cet exemple, vous devez avoir la configuration suivante :
 
    | HDL Name      | FPGA Name       | PCB Name |
-	 |---------------|-----------------|----------|
-   | led_n_o[0]    | IOB0_D01P       | LD1	    |
+   |---------------|-----------------|----------|
+   | led_n_o[0]    | IOB0_D01P       | LD1      |
    | led_n_o[1]    | IOB0_D03N       | LD2      |
-   | led_n_o[2]    | IOB0_D03P       | LD3	    |
-   | led_n_o[3]    | IOB1_D05N       | LD4	    |
-   | led_n_o[4]    | IOB1_D05P       | LD5	    |
-   | led_n_o[5]    | IOB1_D06N       | LD6	    |
-   | led_n_o[6]    | IOB1_D06P       | LD7	    |
-   | led_n_o[7]    | IOB1_D02N       | LD8	    |
-   | switch_i[0]   | IOB10_D09P      | S1	      |
+   | led_n_o[2]    | IOB0_D03P       | LD3      |
+   | led_n_o[3]    | IOB1_D05N       | LD4      |
+   | led_n_o[4]    | IOB1_D05P       | LD5      |
+   | led_n_o[5]    | IOB1_D06N       | LD6      |
+   | led_n_o[6]    | IOB1_D06P       | LD7      |
+   | led_n_o[7]    | IOB1_D02N       | LD8      |
+   | switch_i[0]   | IOB10_D09P      | S1       |
    | switch_i[1]   | IOB10_D03P      | S2       |
-   | switch_i[2]   | IOB10_D03N      | S3	      |
-   | switch_i[3]   | IOB10_D04P      | S4	      |
-   | switch_i[4]   | IOB10_D09N      | S5	      |
+   | switch_i[2]   | IOB10_D03N      | S3       |
+   | switch_i[3]   | IOB10_D04P      | S4       |
+   | switch_i[4]   | IOB10_D09N      | S5       |
    | switch_i[5]   | IOB10_D04N      | S6       |
 
    | Bank Name     | Voltage |
-	 |---------------|---------|
+   |---------------|---------|
    | IOB0          | 3.3V    |
-   | IOB1          | 3.3V	   |
+   | IOB1          | 3.3V    |
    | IOB10         | 1.8V    |
 
    Exportez la configuration dans le fichier labo01/hdl/pads.py
@@ -479,7 +484,7 @@ Dans la suite du TP, nous allons implémenter un esclave Modbus RTU qui a les ca
    Ainsi les broches du banc 5 sont connecté comme tel :
 
    | HDL Name        | FPGA Name       | PCB Name | Emplacement   | Couleur du câble |
-	 |-----------------|-----------------|----------|---------------|------------------|
+         |-----------------|-----------------|----------|---------------|------------------|
    | debug_uart_tx_o | IOB5_D05P       | P505     | 2ème à gauche | N/A              |
    | N/A             | IOB5_D05N       | N505     | 3ème à gauche | N/A              |
    | uart_rts_b_o    | IOB5_D01P       | P501     | 4ème à gauche | Blanc            |
