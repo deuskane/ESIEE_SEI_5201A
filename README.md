@@ -321,7 +321,7 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
     ![image](doc/ressources/labo02_makefile_help1.png)
     ![image](doc/ressources/labo02_makefile_help2.png)
 
-5. Le fichier **asylum-soc-picosoc/hdl/PicoSoC_top.vhd** contient le top level du SoC présenté dans la Figure 1.
+5. Le fichier **asylum-soc-picosoc/hdl/PicoSoC_user.vhd** contient le top level du SoC présenté dans la Figure 1.
 
    Ce SoC contient 2 contrôleurs GPIO, le premier connecté aux switchs, le second connecté aux LEDs.
 
@@ -341,7 +341,7 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
 
 7. Les fichiers générés par les générateurs de fusesoc sont localisés dans le dossier de cache de l'outil.
 
-   Attention, le nom du fichier dépend du VLNC du module (Vendor Library Name Version), du nom du générateur (ici *gen_user_c_identity*) et d'un hash. Le chemin suivant est à titre indicatif :
+   Attention, le nom du fichier dépend du VLNV du module (Vendor Library Name Version), du nom du générateur (ici *gen_user_c_identity*) et d'un hash. Le chemin suivant est à titre indicatif :
 
    ```bash
    cd ~/.cache/fusesoc/generator_cache/asylum_soc_PicoSoC-gen_user_c_identity_2.9.1-f5fb100af797341fb2eb657ead4a0e2a4609165d461f96b8b2ea0908b4860977
