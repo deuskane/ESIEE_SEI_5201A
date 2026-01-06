@@ -173,7 +173,9 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
    File>Save Project
    ```
 
-5. Affectation des IOs
+5. Synthèse : Cliquer sur *Synthesis*
+
+6. Affectation des IOs
 
    Au début d’un projet, les IOs et les bancs ne sont pas configurés : le placement des IOs sera automatique ce qui peut être **dangereux** pour une exécution sur carte.
 
@@ -204,8 +206,7 @@ Dans cette première partie, nous allons prendre en main l’environnement logic
 
    Exportez la configuration dans le fichier labo01/hdl/pads.py
 
-6. Sauvegardez votre projet
-7. Synthèse : Cliquer sur *Synthesis*
+7. Sauvegardez votre projet
 8. Placement : Cliquer sur *Place*
 9. Routage : Cliquer sur *Route*
 10. Générer un Bitstream : Cliquer sur *Bitstream*
