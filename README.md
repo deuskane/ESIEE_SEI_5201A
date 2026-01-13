@@ -484,7 +484,7 @@ Dans la suite du TP, nous allons implémenter un esclave Modbus RTU qui a les ca
    Ainsi les broches du banc 5 sont connecté comme tel :
 
    | HDL Name        | FPGA Name       | PCB Name | Emplacement   | Couleur du câble |
-         |-----------------|-----------------|----------|---------------|------------------|
+   |-----------------|-----------------|----------|---------------|------------------|
    | debug_uart_tx_o | IOB5_D05P       | P505     | 2ème à gauche | N/A              |
    | N/A             | IOB5_D05N       | N505     | 3ème à gauche | N/A              |
    | uart_rts_b_o    | IOB5_D01P       | P501     | 4ème à gauche | Blanc            |
@@ -864,4 +864,5 @@ ADD sF, 01       ; Incrément du pointeur de pile
 FETCH s0, (sF)   ; Restauration du contexte d'exécution (sF est le pointeur de pile)
 RETURNI ENABLE
 ```
+
 
