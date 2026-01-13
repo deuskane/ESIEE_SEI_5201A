@@ -344,7 +344,7 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
    Attention, le nom du fichier dépend du VLNV du module (Vendor Library Name Version), du nom du générateur (ici *gen_user_c_identity*) et d'un hash. Le chemin suivant est à titre indicatif :
 
    ```bash
-   cd ~/.cache/fusesoc/generator_cache/asylum_soc_PicoSoC-gen_user_c_identity_2.9.1-f5fb100af797341fb2eb657ead4a0e2a4609165d461f96b8b2ea0908b4860977
+   cd ~/.cache/fusesoc/generator_cache/asylum_soc_PicoSoC-gen_user_c_identity_2.9.2-b39a5654289dfdc6a854fee57798a464d2b2cf24cf09bd1873ec071692b218c9
    ```
 
    - Que contient ce dossier ?
@@ -374,7 +374,7 @@ Cet outil gère les IPs et aide à créer, construire et simuler des SoC.
     Ouvrir ce fichier à l’aide de la commande suivante :
 
     ```bash
-    gtkwave build/asylum_soc_PicoSoC_2.9.1/sim_soc1_c_identity-ghdl/dut.fst
+    gtkwave build/asylum_soc_PicoSoC_2.9.2/sim_soc1_c_identity-ghdl/dut.fst
     ```
 
     Observer les signaux internes au SoC (instance **tb_PicoSoC/dut/ins_soc_user**). Les signaux du processeur 0 sont préfixés **cpu0**.
@@ -498,7 +498,7 @@ Dans la suite du TP, nous allons implémenter un esclave Modbus RTU qui a les ca
     Une fois l'adaptateur connecté, lancez la compilation avec l'esclave Modbus :
 
     ```bash
-    TARGET=emu_ng_medium_soc1_modbus make target
+    TARGET=emu_ng_medium_soc1_modbus_rtu make target
     ```
 
 > [!TIP]
