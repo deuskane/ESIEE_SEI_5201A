@@ -517,7 +517,7 @@ Les labo 1 et 2 vous ont familiarisés avec l'environnement logiciel et matérie
 
 Le labo 3 a abordée l'application que nous allons utiliser pour les prochaines parties.
 
-L'esclave Modbus prend en charge les fonctions 3 (lecture de registres) et 6 (écriture de registre unique). Une documentation détaillée est accessible via ce lien : [doc/guide_modbus.pdf](doc/guide_modbus.pdf)
+L'esclave Modbus prend en charge les fonctions 3 (lecture de registres) et 6 (écriture de registre unique). Une documentation détaillée est accessible via ce lien : [doc/Modbus/guide_modbus.pdf](doc/Modbus/guide_modbus.pdf)
 
 ![image](doc/ressources/modbus_function3.png)
 ![image](doc/ressources/modbus_function6.png)
