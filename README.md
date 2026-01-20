@@ -575,7 +575,7 @@ L'objectif de ce laboratoire est de concevoir un périphérique matériel dédi�
       #---------------------------------------
         generator : regtool
         parameters:
-          file         : csr/crc.hjson
+          file         : hdl/crc.hjson
           name         : crc
           copy         : hdl
           logical_name : asylum
@@ -865,6 +865,7 @@ ADD sF, 01       ; Incrément du pointeur de pile
 FETCH s0, (sF)   ; Restauration du contexte d'exécution (sF est le pointeur de pile)
 RETURNI ENABLE
 ```
+
 
 
 
