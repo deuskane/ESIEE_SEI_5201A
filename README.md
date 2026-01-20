@@ -548,6 +548,7 @@ L'objectif de ce laboratoire est de concevoir un périphérique matériel dédi�
 
 > [!CAUTION]
 > Ce script ne doit être exécuté qu'une fois.
+
 > [!NOTE]
 > Durant vos expériences professionnelles, vous allez devoir utiliser l'infrastructure, les styles de codage et l'environnement de travail de votre société. Ce labo vous permet de vous initier à cela.
 
@@ -864,5 +865,6 @@ ADD sF, 01       ; Incrément du pointeur de pile
 FETCH s0, (sF)   ; Restauration du contexte d'exécution (sF est le pointeur de pile)
 RETURNI ENABLE
 ```
+
 
 
