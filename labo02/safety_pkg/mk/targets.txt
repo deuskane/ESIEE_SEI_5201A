@@ -1,0 +1,13 @@
+default                              : Default Target
+emu_ng_medium_safety_dff_ecc         : NanoXplore NG_MEDIUM with tf_dff ecc
+emu_ng_medium_safety_dff_none        : NanoXplore NG_MEDIUM with tf_dff none
+emu_ng_medium_safety_dff_parity_even : NanoXplore NG_MEDIUM with tf_dff parity_even
+emu_ng_medium_safety_dff_parity_odd  : NanoXplore NG_MEDIUM with tf_dff parity_odd
+emu_ng_medium_safety_dff_tmr         : NanoXplore NG_MEDIUM with tf_dff tmr
+sim                                  : Default Target for Simulation
+sim_safety_ecc                       : Unit test for ECC algorithm
+sim_safety_none                      : Unit test for NONE algorithm
+sim_safety_parity_even               : Unit test for parity even algorithm
+sim_safety_parity_odd                : Unit test for parity odd algorithm
+sim_safety_tmr                       : Unit test for TMR algorithm
+

@@ -1,0 +1,198 @@
+CAPI=2:
+
+#-----------------------------------------------------------------------------
+# Title      : Safety Package
+# Project    : Asylum
+#-----------------------------------------------------------------------------
+# File       : safety_pkg.core
+# Author     : mrosiere
+#-----------------------------------------------------------------------------
+# Description: 
+#-----------------------------------------------------------------------------
+# Copyright (c) 2026
+#-----------------------------------------------------------------------------
+# Revisions  :
+# Date        Version  Author   Description
+# 2026-09-16  1.0.0    mrosiere Created
+#-----------------------------------------------------------------------------
+
+name        : asylum:utils:safety:1.0.0
+description : Safety Package
+
+#=========================================
+filesets:
+#=========================================
+
+  #---------------------------------------
+  # Source Files
+  #---------------------------------------
+
+  #---------------------------------------
+  hdl:
+  #---------------------------------------
+    files:
+      - hdl/safety_pkg.vhd
+      - hdl/safety_pkg_body.vhd
+      - hdl/safety_enc.vhd
+      - hdl/safety_dec.vhd
+      - hdl/safety_dff.vhd
+      
+    file_type    : vhdlSource-2008
+    logical_name : asylum
+    depend :
+      - asylum:utils:pkg
+      
+  #---------------------------------------
+  sim:
+  #---------------------------------------
+    files:
+      - sim/tb_safety_none.vhd
+      - sim/tb_safety_parity_odd.vhd
+      - sim/tb_safety_parity_even.vhd
+      - sim/tb_safety_tmr.vhd
+      - sim/tb_safety_ecc.vhd
+    file_type : vhdlSource-2008
+    depend       :
+      - bitvis:verification:uvvm 
+
+  #---------------------------------------
+  syn:
+  #---------------------------------------
+    files:
+      - syn/top_ft_dff.vhd
+      - syn/constraints/options.py : {file_type : nx_options}
+
+    file_type : vhdlSource-2008
+    logical_name : asylum
+
+#=========================================
+targets:
+#=========================================
+
+  #---------------------------------------
+  default: &default
+  #---------------------------------------
+    description : Default Target
+    filesets    :
+      - hdl
+
+  #---------------------------------------
+  sim: &sim
+  #---------------------------------------
+    << : *default
+    description     : Default Target for Simulation
+    filesets_append :
+      - sim
+    default_tool    : ghdl
+    tools :
+      ghdl :
+        analyze_options : ["-Wall","-frelaxed"]
+        run_options     : ["--fst=dut.fst"]
+
+  #---------------------------------------
+  sim_safety_none:
+  #---------------------------------------
+    << : *sim
+    description     : Unit test for NONE algorithm
+    toplevel        : tb_safety_none
+
+  #---------------------------------------
+  sim_safety_parity_odd:
+  #---------------------------------------
+    << : *sim
+    description     : Unit test for parity odd algorithm
+    toplevel        : tb_safety_parity_odd
+
+  #---------------------------------------
+  sim_safety_parity_even:
+  #---------------------------------------
+    << : *sim
+    description     : Unit test for parity even algorithm
+    toplevel        : tb_safety_parity_even
+
+  #---------------------------------------
+  sim_safety_tmr:
+  #---------------------------------------
+    << : *sim
+    description     : Unit test for TMR algorithm
+    toplevel        : tb_safety_tmr
+
+  #---------------------------------------
+  sim_safety_ecc:
+  #---------------------------------------
+    << : *sim
+    description     : Unit test for ECC algorithm
+    toplevel        : tb_safety_ecc
+
+  #---------------------------------------
+  emu_ng_medium_safety_dff_none : &emu_ng_medium_safety_dff_none
+  #---------------------------------------
+    << : *default
+    description  : NanoXplore NG_MEDIUM with tf_dff none
+    default_tool : nxmap
+    filesets_append :
+      - syn
+    parameters   :
+      - WIDTH=32
+      - SAFETY_ALGO=0
+      - SELF_REFRESH=false
+    tools:
+      nxmap:
+        fpga         : NG-MEDIUM-EMBEDDED
+        program      : False
+        logical_name : asylum
+    toplevel : top_safety_dff
+
+  #---------------------------------------
+  emu_ng_medium_safety_dff_parity_odd:
+  #---------------------------------------
+    << : *emu_ng_medium_safety_dff_none
+    description  : NanoXplore NG_MEDIUM with tf_dff parity_odd
+    parameters_append   :
+      - SAFETY_ALGO=1
+
+  #---------------------------------------
+  emu_ng_medium_safety_dff_parity_even:
+  #---------------------------------------
+    << : *emu_ng_medium_safety_dff_none
+    description  : NanoXplore NG_MEDIUM with tf_dff parity_even
+    parameters_append   :
+      - SAFETY_ALGO=2
+
+  #---------------------------------------
+  emu_ng_medium_safety_dff_tmr:
+  #---------------------------------------
+    << : *emu_ng_medium_safety_dff_none
+    description  : NanoXplore NG_MEDIUM with tf_dff tmr
+    parameters_append   :
+      - SAFETY_ALGO=3
+
+  #---------------------------------------
+  emu_ng_medium_safety_dff_ecc:
+  #---------------------------------------
+    << : *emu_ng_medium_safety_dff_none
+    description  : NanoXplore NG_MEDIUM with tf_dff ecc
+    parameters_append   :
+      - SAFETY_ALGO=4
+
+#=========================================
+parameters :
+#=========================================
+
+  WIDTH :
+    description : Data Width
+    datatype    : int
+    default     : 32
+    paramtype   : generic
+
+  SAFETY_ALGO :
+    description : Fault Tolerant Algo
+    datatype    : int
+    default     : 0
+    paramtype   : generic
+
+  SELF_REFRESH :
+    description : Rewrite in DFF
+    datatype    : bool
+    default     : false
+    paramtype   : generic
