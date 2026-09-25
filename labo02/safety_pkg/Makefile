@@ -23,6 +23,7 @@ SHELL            = /bin/bash
 include mk/defs.mk
 
 FILE_TARGETS     = mk/targets.txt
+FILE_FUSESOC     = fusesoc.conf
 
 CORE_NAME       := $(shell grep ^name $(FILE_CORE) | head -n1 | tr -d ' ')
 
@@ -105,13 +106,15 @@ help : $(FILE_TARGETS)
 
 #--------------------------------------------------------
 # Generate the Information file
-$(FILE_TARGETS) : $(FILE_CORE)
+$(FILE_TARGETS) : $(FILE_CORE) $(FILE_FUSESOC)
 #--------------------------------------------------------
 	@fusesoc core show $(VLNV) | awk '/Targets:/{flag=1; next} flag' > $(FILE_TARGETS)
 
+$(FILE_FUSESOC) :
+	@fusesoc library add ip .
 #--------------------------------------------------------
 # Display library list and cores list
-info :
+info : $(FILE_FUSESOC) 
 #--------------------------------------------------------
 	@fusesoc library list
 	@fusesoc gen     list
@@ -121,28 +124,28 @@ info :
 
 #--------------------------------------------------------
 # Update the FuseSoC core libraries
-update :
+update : $(FILE_FUSESOC) 
 #--------------------------------------------------------
 	@fusesoc library update
 
 .PHONY : update
 
 #--------------------------------------------------------
-target :
+target : $(FILE_FUSESOC) 
 #--------------------------------------------------------
 	fusesoc run $(FUSESOC_OPT) --target $(TARGET) --tool $(TOOL) $(VLNV)
 
 .PHONY : target
 
 #--------------------------------------------------------
-setup build run :
+setup build run : $(FILE_FUSESOC) 
 #--------------------------------------------------------
 	fusesoc run $(FUSESOC_OPT) --$@ --target $(TARGET) --tool $(TOOL) $(VLNV)
 
 .PHONY : setup build run
 
 #--------------------------------------------------------
-$(TARGETS_ALL) :
+$(TARGETS_ALL) : $(FILE_FUSESOC) 
 #--------------------------------------------------------
 	@fusesoc run $(FUSESOC_OPT) --target $@ $(VLNV)
 
