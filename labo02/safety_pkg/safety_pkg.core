@@ -59,7 +59,7 @@ filesets:
   syn:
   #---------------------------------------
     files:
-      - syn/top_ft_dff.vhd
+      - syn/top_safety_dff.vhd
       - syn/constraints/options.py : {file_type : nx_options}
 
     file_type : vhdlSource-2008
